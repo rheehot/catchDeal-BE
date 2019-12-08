@@ -1,7 +1,7 @@
 ## rake hit_news_ppom:auto_collect
 ## 뿜뿌
 
-namespace :hit_news_ppom_1 do
+namespace :hit_news_ppom do
   desc "TODO"
   task auto_collect: :environment do
     
