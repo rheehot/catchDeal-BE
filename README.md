@@ -1,5 +1,5 @@
 # 특가만 모았다, 팝스타 모미! (popStarMomi-BE-V2)
-<div align="center"><img src="/public/img/app_example.png?raw=true" width="200px"></div>
+<div align="center"><img src="/public/img/app_example.png?raw=true" width="500px"></div>
 
 ## 팀원
 #### 서현석, 김철민
