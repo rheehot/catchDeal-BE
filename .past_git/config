@@ -1,0 +1,14 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/kbs4674/popStarMomi-BE-V2
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[remote "hs"]
+	url = https://github.com/samslow/popStarMomi-BE-V2
+	fetch = +refs/heads/*:refs/remotes/hs/*
+[remote "heroku"]
+	url = https://git.heroku.com/popstar-momi.git
+	fetch = +refs/heads/*:refs/remotes/heroku/*

@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  product_id: MyString
+  date: MyString
+  title: MyString
+  url: MyString
+  brand: MyString
+  view: 1
+  comment: 1
+  like: 1
+  score: 1
+
+two:
+  product_id: MyString
+  date: MyString
+  title: MyString
+  url: MyString
+  brand: MyString
+  view: 1
+  comment: 1
+  like: 1
+  score: 1

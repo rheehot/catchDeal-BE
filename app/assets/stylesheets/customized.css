@@ -1,0 +1,24 @@
+.login-status-box { margin-top: 15px; background-color: #d5daff; padding: 10px }
+.catch-hello { text-align: center; margin-top: 30px; }
+.catch-header { text-align: center; margin-top: 50px; }
+.instruct-title { border-bottom: 1px solid #b5b5b5; padding: 10px; margin-top: 30px; }
+.instruct-content { margin-top: 30px; font-size: 15px; }
+.block-title { font-weight: bold; margin-bottom: 10px; }
+
+@media screen and (min-width: 769px) {
+   .code-block { margin-top: 10px; background-color: #d4d4d4; width: 100%; overflow-x: auto; white-space:nowrap; border: 1px solid #9a9a9a; padding: 10px; }
+}
+
+@media screen and (max-width: 768px) {
+    .code-block { margin-top: 10px; background-color: #d4d4d4; width: 300px; overflow-x: auto; white-space:nowrap; border: 1px solid #9a9a9a; padding: 10px; }
+}
+
+.parameger-block { background-color: #d9fffb; width: 100%; padding: 10px; margin-top: 10px; }
+.fe { color: #5056ff; font-weight: bold; }
+.be { color: #ff7dbf; font-weight: bold; }
+.contributor-title { margin-top: 20px; font-size: 20px; font-weight: bold; }
+.space-top { margin-top: 10px; }
+.etc { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.button-right { float: right; }
+.limit-characters { color:red; font-size:12pt; font-style:italic; border: 1px solid rgba(255, 255, 255, 0); margin-top: 10px; }
+.pagy-bootstrap-nav { justify-content: center; }

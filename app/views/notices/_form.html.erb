@@ -1,0 +1,35 @@
+<%= form_with(model: notice, local: true) do |form| %>
+  <% if notice.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(notice.errors.count, "error") %> prohibited this notice from being saved:</h2>
+
+      <ul>
+      <% notice.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="alert alert-warning" role="alert">
+    <small>앱에서 실제로 공지사항 내용이 보여지는 부분은 "내용" 부분 입니다.</small>
+  </div>
+
+  <div class="row">
+    <div class="col-2 col-md-1">제목</div>
+    <div class="col-10 col-md-11"><%= form.text_field :title, class: "form-control" %></div>
+  </div>
+
+  <div class="row space-top">
+    <div class="col-2 col-md-1">분류탭</div>
+    <div class="col-10 col-md-11"><%= select_tag("notice[category]", options_for_select([["일반", "일반"],["중요", "중요"],["특가", "특가"]])) %></div>
+  </div>
+
+  <div class="row space-top">
+    <div class="col-2 col-md-1">내용</div>
+    <div class="col-10 col-md-11"><%= form.text_area :content, class: "form-control", onKeyDown: "textCounter(this,20);", onKeyUp: "textCounter(this,'notice-content' , 20)", rows: 2 %></div>
+    <div class="offset-2 offset-md-1 col-10 col-md-11"><input class="limit-characters" readonly type="text" id='notice-content' size="3" maxlength="3" value="20">글자</div>
+  </div>
+
+  <div class="text-center space-top"><%= form.submit("글 쓰기", class: "btn btn-sm btn-primary") %> <%= link_to '목록', notices_path, class: "btn btn-sm btn-secondary" %></div>
+<% end %>

@@ -1,0 +1,15 @@
+defaults: &defaults
+  url: redis://localhost:6379/1
+  object_redis_url: redis://localhost:6379/2
+ 
+development:
+  <<: *defaults
+ 
+production:
+  <<: *defaults
+ 
+test:
+  <<: *defaults
+ 
+spec:
+  <<: *defaults

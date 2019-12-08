@@ -1,0 +1,27 @@
+<div class="container">
+<h1 class="text-center">공지사항</h1>
+<p id="notice"><%= notice %></p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">분류</th>
+      <th scope="col">내용</th>
+      <th scope="col">작성</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @notices.each do |notice| %>
+        <tr>
+          <td><%= link_to content_tag(:div, notice.category, class: "etc"), notice_path(notice), style: "text-decoration: none" %></td>
+          <td><%= link_to content_tag(:div, notice.content, class: "etc"), notice_path(notice), style: "text-decoration: none" %></td>
+          <td><%= link_to content_tag(:div, "#{time_ago_in_words(notice.created_at)} 전", class: "etc"), notice_path(notice), style: "text-decoration: none" %></td>
+        </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div><%= pagy_bootstrap_nav(@pagy).html_safe %></div>
+
+<div class="button-right"><%= link_to '새 글 쓰기', new_notice_path, class: "btn btn-sm btn-primary" %></div>
+</div>

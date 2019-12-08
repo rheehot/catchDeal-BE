@@ -1,0 +1,6 @@
+ko:
+    pagy:
+        nav:
+            prev: "‹ 이전"
+            next: "다음 ›"
+            gap: "…"

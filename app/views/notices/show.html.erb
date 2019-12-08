@@ -1,0 +1,18 @@
+<div class="container">
+  <p id="notice"><%= notice %></p>
+  
+  <h3><%= @notice.title %></h3>
+  <div style="color: #545454;"><%= @notice.category %> | <%= @notice.created_at.strftime('%Y-%m-%d %H:%M') %></div>
+  <hr/>
+  <div style="color: #545454;"><%= @notice.user.email %></div>
+  
+  <div style="margin-top: 20px; margin-bottom: 20px;">
+    <%= @notice.content %>
+  </div>
+  
+  <div class="button-right">
+    <%= link_to '수정', edit_notice_path(@notice) %> |
+    <%= link_to '삭제', @notice, method: :delete, data: { confirm: "게시글을 삭제하면 복구가 안됩니다." } %> |
+    <%= link_to '목록', notices_path %>
+  </div>
+</div>

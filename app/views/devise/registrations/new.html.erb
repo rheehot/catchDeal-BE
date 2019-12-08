@@ -1,0 +1,50 @@
+<div class="container devise_form">
+  <div align="center" style="margin-bottom: 30px">
+    <img src="<%= asset_path 'popstarAri.png' %>" style="width: 500px; margin-bottom: 50px;">
+  </div>
+  
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= devise_error_messages! %>
+
+    <% if alert %>
+      <div class="alert alert-warning" role="alert">
+        <div><i class="fas fa-exclamation-triangle"></i> 경고!</div>
+        <div><%= alert %></div>
+      </div>
+    <% end %>
+
+    <div class="row">
+      <div class="field col-md-5 col-12">
+        <%= f.label :"이메일" %><br />
+        <%= f.email_field :email, class: "devise_noborder", required: true, autofocus: true, autocomplete: "email" %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field col-md-5 col-5">
+        <%= f.label :"암호" %>
+        <% if @minimum_password_length %>
+          <em>(최소 <%= @minimum_password_length %>글자 이상)</em>
+        <% end %><br />
+        <%= f.password_field :password, class: "devise_noborder", required: true, autocomplete: "off" %>
+      </div>
+
+      <div class="field offset-md-2 offset-1 col-md-5 col-6">
+        <%= f.label :"암호 재 확인" %><br />
+        <%= f.password_field :password_confirmation, class: "devise_noborder", required: true, autocomplete: "off" %>
+      </div>
+    </div>
+
+    <div class="actions d-none d-md-block" style="margin-top: 50px; text-align: right">
+      <%= f.submit "회원가입", class: "btn btn-sm btn-primary" %>
+    </div>
+
+    <div class="actions d-md-none" style="margin-top: 50px; text-align: center">
+      <%= f.submit "회원가입", class: "btn btn-sm btn-primary" %>
+    </div>
+  <% end %>
+  
+  <div style="margin-top: 30px" align="center">
+    <%= render "devise/shared/info" %>
+  </div>
+</div>
