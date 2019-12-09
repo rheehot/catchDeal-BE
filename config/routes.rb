@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get '/notice.json' => 'notices#index_json'
 	
   # devise_for :users
-  devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
+  devise_for :users
                
   authenticate :user, lambda { |u| u.admin? } do
     begin

@@ -2,18 +2,7 @@
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
-Devise.setup do |config|
-	  
-  config.jwt do |jwt|
-    jwt.secret = ENV['SECRET_KEY_BASE']
-    jwt.dispatch_requests = [
-        ['POST', %r{^/users/sign_in$}],
-        ['GET', %r{^/$}]
-    ]
-    jwt.request_formats = { user: [:json] }
-    jwt.expiration_time = 8.hours.to_i
-  end
-  
+Devise.setup do |config|  
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.

@@ -91,4 +91,3 @@ gem 'rolify'
 gem 'pagy'
 
 ## JWT 설치
-gem 'devise-jwt'
