@@ -1,5 +1,5 @@
 ## rake hit_news_ppom:auto_collect
-## 뿜뿌
+## 뽐뿌
 
 namespace :hit_news_ppom do
   desc "TODO"
@@ -40,7 +40,7 @@ namespace :hit_news_ppom do
     
     def data_write(dataArray)
       dataArray.each do |currentData|
-        puts "[뿜뿌] Process : Data Writing..."
+        puts "[뽐뿌] Process : Data Writing..."
         
         ## 제목 변경 체크
         @previousUrl = HitProduct.find_by(url: currentData[9], website: currentData[3])
@@ -72,7 +72,7 @@ namespace :hit_news_ppom do
     def crawl_ppom(index, url, failStack)
       
       begin
-        puts "[뿜뿌 #{index}] 크롤링 시작!"
+        puts "[뽐뿌 #{index}] 크롤링 시작!"
         @dataArray = Array.new
         
         @browser.navigate().to "http://m.ppomppu.co.kr/new/bbs_list.php?id=ppomppu&page=#{index}"
@@ -121,7 +121,7 @@ namespace :hit_news_ppom do
           # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
           # puts "==============================================="
           
-          @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @time, @title, "뿜뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
+          @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @time, @title, "뽐뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
           # @newHotDeal = HitProduct.create(product_id: "ppom_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "뿜뿌", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
         end
         
