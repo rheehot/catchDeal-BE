@@ -47,7 +47,7 @@ namespace :hit_news_deal_bada do
             @comment = @titleContent.split("\n")[1].to_i rescue @comment = 0
             @like = t.find_element(css: 'td.td_num_g > span:nth-child(1)').text.to_i
             @score = @view/7 * @like/2 + @comment
-            @url = t.find_element(tag_name: "td.td_subject > a").attribute("href")
+            @url = t.find_element(tag_name: "td.td_subject > a").attribute("href").gsub("http", "https")
     
             @sailStatus = t.find_element(css: "td.td_subject > a > img") rescue @sailStatus = nil
             if not (@sailStatus.nil?)
