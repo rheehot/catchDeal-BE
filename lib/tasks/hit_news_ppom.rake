@@ -18,6 +18,26 @@ namespace :hit_news_ppom do
     options.add_argument('--headless') # 크롬 헤드리스 모드 사용 위해 headless setting
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
+    def sub_data_find(articleId, failStack)
+      begin
+        puts "articleId : #{articleId}"
+        doc = Nokogiri::HTML(open("http://m.ppomppu.co.kr/new/bbs_view.php?id=ppomppu&no=#{articleId}"))
+        
+        begin
+          @time = doc.css("span.hi").text.split("|")[1].to_time - 9.hours
+        rescue
+          @time = Time.now.strftime('%Y-%m-%d %H:%M')
+        end
+        
+        return 1
+      rescue Timeout::Error
+        # puts "sub_data_find failStack : #{failStack}"
+        # puts "타임아웃 에러 발생, 크롤링 재시작"
+        
+        return sub_data_find(articleId, failStack+1)
+      end
+    end
+    
     def data_write(dataArray)
       dataArray.each do |currentData|
         puts "[뿜뿌] Process : Data Writing..."
@@ -83,26 +103,23 @@ namespace :hit_news_ppom do
           @urlPostNo = @urlExtract['no'].to_a[0]
           @url = "http://www.ppomppu.co.kr/zboard/view.php?id=ppomppu&no=" + @urlPostNo
           
-          begin
-            docs = Nokogiri::HTML(open("http://m.ppomppu.co.kr/new/bbs_view.php?id=ppomppu&no=#{@urlPostNo}"))
-            @time = docs.at("span.hi").text.split("|")[2].to_time - 9.hours
-            @imageUrlCollect = docs.at("div.cont").at('img').attr('src')
-            
-            if @imageUrlCollect.include?("cdn.ppomppu.co.kr") == false
-              @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
-            elsif @imageUrlCollect.include?("cdn.ppomppu.co.kr") == true
-              @imageUrl = "https:" + "#{@imageUrlCollect}"
-            end
-          rescue
+          
+          @imageUrlCollect = t.find_element(css: 'img').attribute("src")
+          @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
+          
+          if @imageUrl == "https://static.ppomppu.co.kr/www/img/noimage/noimage_60x50.jpg" || @imageUrl == "https://m.ppomppu.co.kr/new/asset/images/no_img.gif"
             @imageUrl = nil
           end
           
           
+          sub_data_find(@urlPostNo, 0)
+          
+          
           ## Console 확인용
-          # puts "index : #{index}"
-          # puts "title : #{@title} / time : #{@time} / view : #{@view}"
-          # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
-          # puts "==============================================="
+          puts "index : #{index}"
+          puts "title : #{@title} / time : #{@time} / view : #{@view}"
+          puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
+          puts "==============================================="
           
           @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @time, @title, "뿜뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
           # @newHotDeal = HitProduct.create(product_id: "ppom_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "뿜뿌", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
@@ -112,7 +129,7 @@ namespace :hit_news_ppom do
         return 1
         
       rescue Timeout::Error
-        # puts "failStack : #{failStack}"
+        # puts "crawl_ppom failStack : #{failStack}"
         # puts "타임아웃 에러 발생, 크롤링 재시작"
         
         if failStack == 3
