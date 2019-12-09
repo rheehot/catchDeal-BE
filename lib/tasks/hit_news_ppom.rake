@@ -20,7 +20,7 @@ namespace :hit_news_ppom do
     
     def sub_data_find(articleId, failStack)
       begin
-        puts "articleId : #{articleId}"
+        # puts "articleId : #{articleId}"
         doc = Nokogiri::HTML(open("http://m.ppomppu.co.kr/new/bbs_view.php?id=ppomppu&no=#{articleId}"))
         
         begin
@@ -116,10 +116,10 @@ namespace :hit_news_ppom do
           
           
           ## Console 확인용
-          puts "index : #{index}"
-          puts "title : #{@title} / time : #{@time} / view : #{@view}"
-          puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
-          puts "==============================================="
+          # puts "index : #{index}"
+          # puts "title : #{@title} / time : #{@time} / view : #{@view}"
+          # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
+          # puts "==============================================="
           
           @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @time, @title, "뿜뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
           # @newHotDeal = HitProduct.create(product_id: "ppom_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "뿜뿌", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
