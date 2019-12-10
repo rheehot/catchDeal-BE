@@ -107,8 +107,12 @@ namespace :hit_news_ppom do
           @imageUrlCollect = t.find_element(css: 'img').attribute("src")
           @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
           
-          if @imageUrl == "https://static.ppomppu.co.kr/www/img/noimage/noimage_60x50.jpg" || @imageUrl == "https://m.ppomppu.co.kr/new/asset/images/no_img.gif"
+          if @imageUrl.include?("noimage") || @imageUrl.include?("no_img")
             @imageUrl = nil
+          end
+          
+          if @imageUrl.include?("https://cfile")
+            @imageUrl = @imageUrl.gsub("https:", "http:")
           end
           
           

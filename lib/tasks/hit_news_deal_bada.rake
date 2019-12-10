@@ -63,10 +63,14 @@ namespace :hit_news_deal_bada do
               @imageUrlCollect = docs.at("div#bo_v_con").at("img").attr('src')
               
               if @imageUrlCollect.include?("cdn.dealbada.com") == false
-              @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
-            elsif @imageUrlCollect.include?("cdn.dealbada.com") == true
-              @imageUrl = @imageUrlCollect.gsub("http", "https")
-            end
+                @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
+              elsif @imageUrlCollect.include?("cdn.dealbada.com") == true
+                @imageUrl = @imageUrlCollect.gsub("http", "https")
+              end
+              
+              if @imageUrl.include?("https://cfile")
+                @imageUrl = @imageUrl.gsub("https:", "http:")
+              end
             rescue
               @imageUrl = nil
             end

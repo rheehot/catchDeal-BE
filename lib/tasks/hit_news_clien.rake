@@ -54,6 +54,10 @@ namespace :hit_news_clien do
             elsif @imageUrlCollect.include?("cdn.clien.net") == true
               @imageUrl = @imageUrlCollect
             end
+            
+            if @imageUrl.include?("https://cfile")
+              @imageUrl = @imageUrl.gsub("https:", "http:")
+            end
           rescue
             @imageUrl = nil
           end

@@ -59,6 +59,10 @@ namespace :hit_news_ruliweb do
               elsif @imageUrlCollect.include?("ruliweb.com/img/") == true
                 @imageUrl = "https:" + "#{@imageUrlCollect}"
               end
+              
+              if @imageUrl.include?("https://cfile")
+                @imageUrl = @imageUrl.gsub("https:", "http:")
+              end
             rescue
               @imageUrl = nil
             end
