@@ -18,29 +18,6 @@ namespace :hit_news_ppom do
     options.add_argument('--headless') # 크롬 헤드리스 모드 사용 위해 headless setting
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
-    # def sub_data_find(articleId, failStack)
-    #   begin
-    #     # puts "articleId : #{articleId}"
-    #     doc = Nokogiri::HTML(open("http://m.ppomppu.co.kr/new/bbs_view.php?id=ppomppu&no=#{articleId}"))
-        
-    #     begin
-    #       @time = doc.css("span.hi").text.split("|")[1].to_time - 9.hours
-    #     rescue
-    #       @time = Time.now.strftime('%Y-%m-%d %H:%M')
-    #     end
-        
-    #     return 1
-    #   rescue Timeout::Error
-    #     # puts "sub_data_find failStack : #{failStack}"
-    #     # puts "타임아웃 에러 발생, 크롤링 재시작"
-    #     if failStack == 1
-    #       return 0
-    #     else
-    #       return sub_data_find(articleId, failStack+1)
-    #     end
-    #   end
-    # end
-    
     def data_write(dataArray)
       dataArray.each do |currentData|
         puts "[뽐뿌] Process : Data Writing..."
@@ -68,14 +45,7 @@ namespace :hit_news_ppom do
           @previousProduct.update(is_sold_out: true)
         end
         
-        doc = Nokogiri::HTML(open("http://m.ppomppu.co.kr/new/bbs_view.php?id=ppomppu&no=#{currentData[11]}"))
-        begin
-          @time = doc.css("span.hi").text.split("|")[1].to_time - 9.hours
-        rescue
-          @time = Time.now.strftime('%Y-%m-%d %H:%M')
-        end
-        
-        HitProduct.create(product_id: currentData[0], date: @time, title: currentData[1], website: currentData[2], is_sold_out: currentData[3], view: currentData[4], comment: currentData[5], like: currentData[6], score: currentData[77], url: currentData[8], image_url: currentData[9])
+        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])
       end
     end
     
@@ -97,7 +67,20 @@ namespace :hit_news_ppom do
           @title = t.find_element(css: 'span.title').text
           
           # @brand = @title[/\[(.*?)\]/, 1]
-          @view = t.find_element(css: "span.info").text.split("|")[1].split(" ")[1].strip.to_i
+          @info = t.find_element(css: "span.info").text.split("|")
+          @view = @info[1].split(" ")[1].strip.to_i
+          
+          @time = @info[0].strip
+          if @time.include?(":")
+            @time = Time.zone.now.strftime('%Y-%m-%d') + " #{@time}"
+            @time = @time
+          elsif @time.include?("-")
+            @time
+          elsif @time.nil?
+            @time = Time.zone.now.strftime('%Y-%m-%d %H:%M')
+          end
+          @time = @time.to_time - 9.hours
+          
           @comment = t.find_element(css: 'div.com_line > span:nth-child(1)').text.to_i rescue @comment = 0
           @like = t.find_element(css: 'span.recom').text.to_i
           @score = @view/2 * @like*1.5 + @comment
@@ -132,7 +115,7 @@ namespace :hit_news_ppom do
           puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
           puts "==============================================="
           
-          @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @title, "뽐뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl, @urlPostNo])
+          @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @time, @title, "뽐뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
           # @newHotDeal = HitProduct.create(product_id: "ppom_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "뿜뿌", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
         end
         
