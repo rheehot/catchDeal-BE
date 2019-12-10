@@ -55,7 +55,7 @@ namespace :hit_news_clien do
               @imageUrl = @imageUrlCollect
             end
             
-            if @imageUrl.include?("https://cfile")
+            if @imageUrl != nil && @imageUrl.include?("https://cfile")
               @imageUrl = @imageUrl.gsub("https:", "http:")
             end
           rescue

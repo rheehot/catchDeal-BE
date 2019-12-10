@@ -68,7 +68,7 @@ namespace :hit_news_deal_bada do
                 @imageUrl = @imageUrlCollect.gsub("http", "https")
               end
               
-              if @imageUrl.include?("https://cfile")
+              if @imageUrl != nil && @imageUrl.include?("https://cfile")
                 @imageUrl = @imageUrl.gsub("https:", "http:")
               end
             rescue

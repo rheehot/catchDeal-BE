@@ -33,8 +33,11 @@ namespace :hit_news_ppom do
       rescue Timeout::Error
         # puts "sub_data_find failStack : #{failStack}"
         # puts "타임아웃 에러 발생, 크롤링 재시작"
-        
-        return sub_data_find(articleId, failStack+1)
+        if failStack == 1
+          return 0
+        else
+          return sub_data_find(articleId, failStack+1)
+        end
       end
     end
     
@@ -111,7 +114,7 @@ namespace :hit_news_ppom do
             @imageUrl = nil
           end
           
-          if @imageUrl.include?("https://cfile")
+          if @imageUrl != nil && @imageUrl.include?("https://cfile")
             @imageUrl = @imageUrl.gsub("https:", "http:")
           end
           
@@ -120,10 +123,10 @@ namespace :hit_news_ppom do
           
           
           ## Console 확인용
-          # puts "index : #{index}"
-          # puts "title : #{@title} / time : #{@time} / view : #{@view}"
-          # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
-          # puts "==============================================="
+          puts "index : #{index}"
+          puts "title : #{@title} / time : #{@time} / view : #{@view}"
+          puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
+          puts "==============================================="
           
           @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @time, @title, "뽐뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
           # @newHotDeal = HitProduct.create(product_id: "ppom_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "뿜뿌", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
@@ -136,7 +139,7 @@ namespace :hit_news_ppom do
         # puts "crawl_ppom failStack : #{failStack}"
         # puts "타임아웃 에러 발생, 크롤링 재시작"
         
-        if failStack == 3
+        if failStack == 1
           return 0
         else
           return crawl_ppom(index, url, failStack+1)
