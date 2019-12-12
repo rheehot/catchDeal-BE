@@ -101,13 +101,13 @@ namespace :hit_news_ruliweb do
         
         ## score 변경 체크
         @previousProduct = HitProduct.find_by(title: @title, website: currentData[3])
-        if (@previousProduct != nil && @score > @previousProduct.score)
+        if (@previousProduct != nil && currentData[8] > @previousProduct.score)
           @previousProduct.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
         end
         
         ## 판매상태 체크
-        @previousProduct = HitProduct.find_by(title: @title, website: currentData[3], is_sold_out: false)
-        if (@previousProduct != nil && @sailStatus == true)
+        @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3], is_sold_out: false)
+        if (@previousProduct != nil && currentData[4] == true)
           @previousProduct.update(is_sold_out: true)
         end
         

@@ -34,14 +34,14 @@ namespace :hit_news_ppom do
         end
         
         ## score 변경 체크
-        @previousProduct = HitProduct.find_by(title: @title, website: currentData[3])
-        if (@previousProduct != nil && @score > @previousProduct.score)
+        @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3])
+        if (@previousProduct != nil && currentData[8] > @previousProduct.score)
           @previousProduct.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
         end
         
         ## 판매상태 체크
-        @previousProduct = HitProduct.find_by(title: @title, website: currentData[3], is_sold_out: false)
-        if (@previousProduct != nil && @sailStatus == true)
+        @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3], is_sold_out: false)
+        if (@previousProduct != nil && currentData[4] == true)
           @previousProduct.update(is_sold_out: true)
         end
         
@@ -87,7 +87,7 @@ namespace :hit_news_ppom do
           
           @sailStatus = t.find_element(tag_name: "span.title > span").attribute("style") rescue @sailStatus = false
           
-          if not (@sailStatus == false)
+          if @sailStatus != false
             @sailStatus = true
           end
           
@@ -110,10 +110,10 @@ namespace :hit_news_ppom do
           
           
           ## Console 확인용
-          puts "index : #{index}"
-          puts "title : #{@title} / time : #{@time} / view : #{@view}"
-          puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
-          puts "==============================================="
+          # puts "index : #{index}"
+          # puts "title : #{@title} / time : #{@time} / view : #{@view}"
+          # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
+          # puts "==============================================="
           
           @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @time, @title, "뽐뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
           # @newHotDeal = HitProduct.create(product_id: "ppom_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "뿜뿌", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
