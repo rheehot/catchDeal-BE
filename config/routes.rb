@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+Rails.application.routes.draw do  
   root 'hit_products#index'
   
   get 'hit_products/index'
@@ -14,9 +14,11 @@ Rails.application.routes.draw do
   resources :notices
   get '/notice.json' => 'notices#index_json'
 	
-  # devise_for :users
   devise_for :users
-               
+  post 'auth_user' => 'authentication#authenticate_user'
+  get 'apis/test'
+  get 'apis/book_mark'
+	
   authenticate :user, lambda { |u| u.admin? } do
     begin
       get '/welcome' => 'homes#index'

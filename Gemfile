@@ -91,3 +91,5 @@ gem 'rolify'
 gem 'pagy'
 
 ## JWT 설치
+# https://www.sitepoint.com/introduction-to-using-jwt-in-rails/
+gem 'jwt'

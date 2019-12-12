@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  has_many :book_marks
+  has_many :hit_products, through: :likes
+	
   rolify
   after_create :assign_default_role
   # Include default devise modules. Others available are:
