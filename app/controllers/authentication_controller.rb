@@ -5,6 +5,7 @@ class AuthenticationController < ApplicationController
 	if user.nil?
 		render json: {errors: ['Invalid Username/Password']}, status: :unauthorized
 	else
+		user.update(last_token: Time.zone.now)
 		render json: payload(user)
 	end
   end
