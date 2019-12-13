@@ -38,9 +38,8 @@ namespace :hit_news_ppom do
   		
           
           ## score 변경 체크
-          @previousData = HitProduct.find_by(title: @title, website: currentData[3])
           if (currentData[8] > @previousData.score)
-            @previousData.update(score: currentData[8])
+            @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
           end
   		
           
