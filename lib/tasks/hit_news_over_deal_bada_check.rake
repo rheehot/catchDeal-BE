@@ -96,22 +96,22 @@ namespace :hit_news_over_deal_bada_check do
         
         if @previousData != nil
           ## 제목 변경 체크
-          if (@previousData != nil && currentData[2] != @previousData.title)
+          if (currentData[2] != @previousData.title)
             @previousData.update(title: currentData[2])
           end
           
           ## 이미지 변경 체크
-          if (@previousData != nil && currentData[10] != @previousData.image_url)
+          if (currentData[10] != @previousData.image_url)
             @previousData.update(image_url: currentData[10])
           end
           
           ## score 변경 체크
-          if (@previousData != nil && currentData[8] > @previousData.score)
+          if (currentData[8] > @previousData.score)
             @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
           end
           
           ## 판매상태 체크
-          if (@previousData != nil && currentData[4] == true)
+          if (@previousData.is_sold_out == false && currentData[4] == true)
             @previousData.update(is_sold_out: true)
           end
         end

@@ -40,7 +40,7 @@ namespace :hit_news_over_ppom_check do
           end
           
           ## 판매상태 체크
-          if (currentData[4] == true)
+          if (@previousData.is_sold_out == false && currentData[4] == true)
             @previousData.update(is_sold_out: true)
           end
           
