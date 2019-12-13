@@ -1,7 +1,7 @@
-## rake hit_news_ruliweb:auto_collect
+## rake hit_news_over_ruliweb_check:auto_collect
 ## 루리웹
 
-namespace :hit_news_ruliweb do
+namespace :hit_news_over_ruliweb_check do
   desc "TODO"
   task auto_collect: :environment do
     
@@ -19,9 +19,9 @@ namespace :hit_news_ruliweb do
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     ### 루리웹 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
-    2.step(1, -1) do |i|
+    for i in 3..6 do
       begin
-        puts "[루리웹 #{i}] 크롤링 시작!"
+        puts "[루리웹(목록 초과) #{i}] 검사 시작!"
         @dataArray = Array.new
         
         # @current_page = @page.page_stack
@@ -76,7 +76,6 @@ namespace :hit_news_ruliweb do
            
             # puts "Process : Pushing..."
             @dataArray.push(["ruliweb_#{SecureRandom.hex(6)}", @time, @title, "루리웹", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
-            # HitProduct.create(product_id: "ruliweb_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "루리웹", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
           else
             next
           end
@@ -86,27 +85,27 @@ namespace :hit_news_ruliweb do
       end
       
       @dataArray.each do |currentData|
-        puts "[루리웹] Process : Data Writing..."
+        puts "[루리웹 Over Check] Process : Data Modify..."
+        @previousData = HitProduct.find_by(url: currentData[9])
         
-        ## 제목 변경 체크
-        @previousUrl = HitProduct.find_by(url: currentData[9], website: currentData[3])
-        if (@previousUrl != nil && currentData[2] != @previousUrl.title)
-          @previousUrl.update(title: currentData[2])
+        if @previousData != nil
+          ## 제목 변경 체크
+          if (currentData[2] != @previousData.title)
+            @previousData.update(title: currentData[2])
+          end
+          
+          ## 이미지 변경 체크
+          if (currentData[10] != @previousData.image_url)
+            @previousData.update(image_url: currentData[10])
+          end
+          
+          ## score 변경 체크
+          if (currentData[8] > @previousData.score)
+            @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
+          end
+        else
+          next
         end
-		
-        
-        ## 이미지 변경 체크
-        if (@previousUrl != nil && currentData[10] != @previousUrl.image_url)
-          @previousUrl.update(image_url: currentData[10])
-        end
-        
-        ## score 변경 체크
-        @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3])
-        if (@previousProduct != nil && currentData[8] > @previousProduct.score)
-          @previousProduct.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
-        end
-        
-        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])
       end
       
     end

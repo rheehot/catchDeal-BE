@@ -1,0 +1,146 @@
+## rake hit_news_over_ppom_check:auto_collect
+## 뽐뿌
+
+namespace :hit_news_over_ppom_check do
+  desc "TODO"
+  task auto_collect: :environment do
+    
+    require 'selenium-webdriver'
+    if Rails.env.development?
+      # Selenium::WebDriver::Chrome.driver_path = `which chromedriver-helper`.chomp
+    else
+      Selenium::WebDriver::Chrome.driver_path = `which chromedriver-helper`.chomp
+    end
+    
+    ## 헤드리스 개념 : https://beomi.github.io/2017/09/28/HowToMakeWebCrawler-Headless-Chrome/
+    options = Selenium::WebDriver::Chrome::Options.new # 크롬 헤드리스 모드 위해 옵션 설정
+    options.add_argument('--disable-gpu') # 크롬 헤드리스 모드 사용 위해 disable-gpu setting
+    options.add_argument('--headless') # 크롬 헤드리스 모드 사용 위해 headless setting
+    @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
+    
+    def data_modify(dataArray)
+      dataArray.each do |currentData|
+        puts "[뽐뿌 Over Check] Process : Data Modify..."
+        @previousData = HitProduct.find_by(url: currentData[9])
+        
+        if @previousData != nil
+          ## 제목 변경 체크
+          if (currentData[2] != @previousData.title)
+            @previousData.update(title: currentData[2])
+          end
+          
+          ## 이미지 변경 체크
+          if (currentData[10] != @previousData.image_url)
+            @previousData.update(image_url: currentData[10])
+          end
+          
+          ## score 변경 체크
+          if (currentData[8] > @previousData.score)
+            @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
+          end
+          
+          ## 판매상태 체크
+          if (currentData[4] == true)
+            @previousData.update(is_sold_out: true)
+          end
+          
+        else
+          next
+        end
+      end
+    end
+    
+    def crawl_ppom(index, url, failStack)
+      
+      begin
+        puts "[뿜뿌(목록 초과) #{index}] 검사 시작!"
+        @dataArray = Array.new
+        
+        @browser.navigate().to "http://m.ppomppu.co.kr/new/bbs_list.php?id=ppomppu&page=#{index}"
+        
+        ## find_element랑 find_elements의 차이
+        @content = @browser.find_elements(css: 'li.none-border')
+        
+        @content.each_with_index do |t, w|
+          if (index == 1 && w >= 15)
+            next
+          end
+          @title = t.find_element(css: 'span.title').text
+          
+          # @brand = @title[/\[(.*?)\]/, 1]
+          @info = t.find_element(css: "span.info").text.split("|")
+          @view = @info[1].split(" ")[1].strip.to_i
+          
+          @time = @info[0].strip
+          if @time.include?(":")
+            @time = Time.zone.now.strftime('%Y-%m-%d') + " #{@time}"
+            @time = @time
+          elsif @time.include?("-")
+            @time
+          elsif @time.nil?
+            @time = Time.zone.now.strftime('%Y-%m-%d %H:%M')
+          end
+          @time = @time.to_time - 9.hours
+          
+          @comment = t.find_element(css: 'div.com_line > span:nth-child(1)').text.to_i rescue @comment = 0
+          @like = t.find_element(css: 'span.recom').text.to_i
+          @score = @view/2 + @like*150 + @comment*30
+          
+          @sailStatus = t.find_element(tag_name: "span.title > span").attribute("style") rescue @sailStatus = false
+          
+          if @sailStatus != false
+            @sailStatus = true
+          end
+          
+          @urlMobile = t.find_element(tag_name: "a").attribute("href")
+          @urlExtract = CGI::parse(@urlMobile)
+          @urlPostNo = @urlExtract['no'].to_a[0]
+          @url = "https://www.ppomppu.co.kr/zboard/view.php?id=ppomppu&no=" + @urlPostNo
+          
+          
+          @imageUrlCollect = t.find_element(css: 'img').attribute("src")
+          @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
+          
+          if @imageUrl.include?("noimage") || @imageUrl.include?("no_img")
+            @imageUrl = nil
+          end
+          
+          if @imageUrl != nil && @imageUrl.include?("https://cfile")
+            @imageUrl = @imageUrl.gsub("https:", "http:")
+          end
+          
+          
+          ## Console 확인용
+          # puts "index : #{index}"
+          # puts "title : #{@title} / time : #{@time} / view : #{@view}"
+          # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
+          # puts "==============================================="
+          
+          @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @time, @title, "뽐뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
+        end
+        
+        data_modify(@dataArray)
+        return 1
+        
+      rescue Timeout::Error
+        # puts "crawl_ppom failStack : #{failStack}"
+        # puts "타임아웃 에러 발생, 크롤링 재시작"
+        
+        if failStack == 1
+          return 0
+        else
+          return crawl_ppom(index, url, failStack+1)
+        end
+      end
+    end
+    
+    ### 뿜뿌 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
+    for index in 3..5
+      @result = crawl_ppom(index, "http://m.ppomppu.co.kr/new/bbs_list.php?id=ppomppu&page=#{index}", 0)
+      # puts "@result : #{@result}"
+    end
+    
+    @browser.quit
+    
+  end
+end
