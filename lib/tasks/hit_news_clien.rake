@@ -84,17 +84,20 @@ namespace :hit_news_clien do
         if (@previousUrl != nil && currentData[2] != @previousUrl.title)
           @previousUrl.update(title: currentData[2])
         end
+		
         
         ## 이미지 변경 체크
         if (@previousUrl != nil && currentData[10] != @previousUrl.image_url)
           @previousUrl.update(image_url: currentData[10])
         end
+		
         
         ## score 변경 체크
         @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3])
         if (@previousProduct != nil && currentData[8] > @previousProduct.score)
-          @previousProduct.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
+          @previousProduct.update(score: currentData[8])
         end
+		
         
         ## 판매상태 체크
         @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3], is_sold_out: false)

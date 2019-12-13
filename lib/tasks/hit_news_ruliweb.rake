@@ -100,10 +100,11 @@ namespace :hit_news_ruliweb do
           @previousUrl.update(image_url: currentData[10])
         end
         
+		
         ## score 변경 체크
         @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3])
         if (@previousProduct != nil && currentData[8] > @previousProduct.score)
-          @previousProduct.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
+          @previousProduct.update(score: currentData[8])
         end
         
         HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])
