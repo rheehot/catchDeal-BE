@@ -34,9 +34,9 @@ namespace :alive_check do
       @result = articleCheck(pageCheck.id, pageCheck.url)
     end
 	
-	sleep(120)
+	  sleep(120)
 	
-	HitProduct.all.each do |pageCheck|
+	  HitProduct.all.each do |pageCheck|
       # puts "** [Job count : 2] 페이지 체크 시작"
       @result = articleCheck(pageCheck.id, pageCheck.url)
     end
