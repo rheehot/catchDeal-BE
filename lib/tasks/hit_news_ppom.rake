@@ -83,7 +83,7 @@ namespace :hit_news_ppom do
           
           @comment = t.find_element(css: 'div.com_line > span:nth-child(1)').text.to_i rescue @comment = 0
           @like = t.find_element(css: 'span.recom').text.to_i
-          @score = @view/2 * @like*1.5 + @comment
+          @score = @view/2 + @like*150 + @comment*30
           
           @sailStatus = t.find_element(tag_name: "span.title > span").attribute("style") rescue @sailStatus = false
           
@@ -143,5 +143,4 @@ namespace :hit_news_ppom do
     @browser.quit
     
   end
-
 end

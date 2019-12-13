@@ -35,7 +35,7 @@ namespace :hit_news_clien do
           @view = t.find_element(css: 'span.hit').text.to_i
           @comment = t.find_element(css: "div.list_title > a > span").text.to_i rescue @comment = 0
           @like = t.find_element(css: 'span.list_votes').text.to_i
-          @score = @view/3 * @comment*2 + @like*50
+          @score = @view/1.5 + @like*250 + @comment*70
           @url = t.find_element(tag_name: "a").attribute("href")
   
           @sailStatus = t.find_element(css: "span.icon_info") rescue @sailStatus = false
@@ -91,7 +91,7 @@ namespace :hit_news_clien do
         end
         
         ## score 변경 체크
-        @previousProduct = HitProduct.find_by(title: @title, website: currentData[3])
+        @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3])
         if (@previousProduct != nil && currentData[8] > @previousProduct.score)
           @previousProduct.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
         end

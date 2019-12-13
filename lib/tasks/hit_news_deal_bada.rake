@@ -19,7 +19,7 @@ namespace :hit_news_deal_bada do
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     ### 딜바다 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
-    2.step(1, -1) do |i|
+    3.step(1, -1) do |i|
       begin
         puts "[딜바다 #{i}] 크롤링 시작!"
         @dataArray = Array.new
@@ -46,7 +46,7 @@ namespace :hit_news_deal_bada do
             @view = t.find_element(css: 'td:nth-child(7)').text.to_i
             @comment = @titleContent.split("\n")[1].to_i rescue @comment = 0
             @like = t.find_element(css: 'td.td_num_g > span:nth-child(1)').text.to_i
-            @score = @view/7 * @like/2 + @comment
+            @score = @view/2 + @like*30 + @comment*10
             @url = t.find_element(tag_name: "td.td_subject > a").attribute("href")
     
             @sailCheck = t.find_element(css: "td.td_subject > a > img") rescue @sailCheck = false
