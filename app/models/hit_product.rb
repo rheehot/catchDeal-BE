@@ -3,5 +3,5 @@ class HitProduct < ApplicationRecord
     validates_uniqueness_of :url, :scope => :title
 	
 	has_many :book_marks
-    has_many :users, through: :likes
+    has_many :app_users, through: :book_marks
 end
