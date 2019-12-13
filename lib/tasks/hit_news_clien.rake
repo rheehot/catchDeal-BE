@@ -19,13 +19,13 @@ namespace :hit_news_clien do
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     ### 클리앙 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
-    1.step(0, -1) do |i|
+    3.step(0, -1) do |index|
       begin
-        puts "[클리앙 #{i}] 크롤링 시작!"
+        puts "[클리앙 #{index}] 크롤링 시작!"
         @dataArray = Array.new
         
         # @current_page = @page.page_stack
-        @browser.navigate().to "https://www.clien.net/service/board/jirum?po=#{i}"
+        @browser.navigate().to "https://www.clien.net/service/board/jirum?po=#{index}"
         
         ## find_element랑 find_elements의 차이
         @content = @browser.find_elements(css: 'div.list_item.symph_row')
@@ -36,7 +36,8 @@ namespace :hit_news_clien do
           @comment = t.find_element(css: "div.list_title > a > span").text.to_i rescue @comment = 0
           @like = t.find_element(css: 'span.list_votes').text.to_i
           @score = @view/1.5 + @like*250 + @comment*70
-          @url = t.find_element(tag_name: "a").attribute("href")
+          @urlId = t.find_element(tag_name: "a").attribute("href").split("/").last.split("?").first
+          @url = "https://www.clien.net/service/board/jirum/#{@urlId}"
   
           @sailStatus = t.find_element(css: "span.icon_info") rescue @sailStatus = false
           if @sailStatus != false
@@ -63,7 +64,7 @@ namespace :hit_news_clien do
           end
           
           ## Console 확인용
-          # puts "i : #{i}"
+          # puts "i : #{index}"
           # puts "title : #{@title}"
           # puts "title : #{@title} / time : #{@time} / view : #{@view}"
           # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
@@ -77,32 +78,34 @@ namespace :hit_news_clien do
       end
       
       @dataArray.each do |currentData|
+        @previousData = HitProduct.find_by(url: currentData[9])
         puts "[클리앙] Process : Data Writing..."
         
-        ## 제목 변경 체크
-        @previousUrl = HitProduct.find_by(url: currentData[9], website: currentData[3])
-        if (@previousUrl != nil && currentData[2] != @previousUrl.title)
-          @previousUrl.update(title: currentData[2])
-        end
-		
+        if @previousData != nil
         
-        ## 이미지 변경 체크
-        if (@previousUrl != nil && currentData[10] != @previousUrl.image_url)
-          @previousUrl.update(image_url: currentData[10])
-        end
-		
-        
-        ## score 변경 체크
-        @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3])
-        if (@previousProduct != nil && currentData[8] > @previousProduct.score)
-          @previousProduct.update(score: currentData[8])
-        end
-		
-        
-        ## 판매상태 체크
-        @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3], is_sold_out: false)
-        if (@previousProduct != nil && currentData[4] == true)
-          @previousProduct.update(is_sold_out: true)
+          ## 제목 변경 체크
+          if (currentData[2] != @previousData.title)
+            @previousData.update(title: currentData[2])
+          end
+  		
+          
+          ## 이미지 변경 체크
+          if (currentData[10] != @previousData.image_url)
+            @previousData.update(image_url: currentData[10])
+          end
+  		
+          
+          ## score 변경 체크
+          if (currentData[8] > @previousData.score)
+            @previousData.update(score: currentData[8])
+          end
+  		
+          
+          ## 판매상태 체크
+          if (@previousData.is_sold_out == false && currentData[4] == true)
+            @previousData.update(is_sold_out: true)
+          end
+          
         end
         
         HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])

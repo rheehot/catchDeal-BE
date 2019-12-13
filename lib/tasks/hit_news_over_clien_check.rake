@@ -36,7 +36,8 @@ namespace :hit_news_over_clien_check do
           @comment = t.find_element(css: "div.list_title > a > span").text.to_i rescue @comment = 0
           @like = t.find_element(css: 'span.list_votes').text.to_i
           @score = @view/1.5 + @like*250 + @comment*70
-          @url = t.find_element(tag_name: "a").attribute("href")
+          @urlId = t.find_element(tag_name: "a").attribute("href").split("/").last.split("?").first
+          @url = "https://www.clien.net/service/board/jirum/#{@urlId}"
   
           @sailStatus = t.find_element(css: "span.icon_info") rescue @sailStatus = false
           if @sailStatus != false
@@ -75,8 +76,8 @@ namespace :hit_news_over_clien_check do
       end
       
       @dataArray.each do |currentData|
-        puts "[클리앙 Over Check] Process : Data Modify..."
-        @previousData = HitProduct.find_by(url: currentData[9])
+        @previousData = HitProduct.find_by("url LIKE ?", "%#{currentData[9]}%")
+        puts "[클리앙 Over Check] Process : Data Data Modify..."
         
         if @previousData != nil
           ## 제목 변경 체크

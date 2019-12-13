@@ -19,12 +19,12 @@ namespace :hit_news_deal_bada do
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     ### 딜바다 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
-    3.step(1, -1) do |i|
+    3.step(1, -1) do |index|
       begin
-        puts "[딜바다 #{i}] 크롤링 시작!"
+        puts "[딜바다 #{index}] 크롤링 시작!"
         @dataArray = Array.new
         
-        @browser.navigate().to "http://www.dealbada.com/bbs/board.php?bo_table=deal_domestic&page=#{i}"
+        @browser.navigate().to "http://www.dealbada.com/bbs/board.php?bo_table=deal_domestic&page=#{index}"
         
         ## find_element랑 find_elements의 차이
         @content = @browser.find_elements(css: 'table.hoverTable > tbody > tr')
@@ -33,9 +33,9 @@ namespace :hit_news_deal_bada do
           @titleContent = t.find_element(css: "td.td_subject > a").text.strip
           @noticeCheck = t.find_element(css: "a.bo_cate_link").text.strip
           
-          @previousProduct = HitProduct.find_by(title: @title, website: "딜바다")
-          if (@previousProduct != nil && @titleContent.split("\n")[0].include?("블라인드 처리된 게시물입니다."))
-            @previousProduct.destroy
+          @previousData = HitProduct.find_by(title: @title, website: "딜바다")
+          if (@previousData != nil && @titleContent.split("\n")[0].include?("블라인드 처리된 게시물입니다."))
+            @previousData.destroy
           end
           
           if (not @titleContent.split("\n")[0].include?("블라인드 처리") || @noticeCheck == "공지" || @titleContent.split("\n")[0].include?("확인 가능합니다."))
@@ -47,7 +47,7 @@ namespace :hit_news_deal_bada do
             @comment = @titleContent.split("\n")[1].to_i rescue @comment = 0
             @like = t.find_element(css: 'td.td_num_g > span:nth-child(1)').text.to_i
             @score = @view/2 + @like*30 + @comment*10
-            @url = t.find_element(tag_name: "td.td_subject > a").attribute("href")
+            @url = t.find_element(tag_name: "td.td_subject > a").attribute("href").gsub("&page=#{index}", "")
     
             @sailCheck = t.find_element(css: "td.td_subject > a > img") rescue @sailCheck = false
             
@@ -75,7 +75,7 @@ namespace :hit_news_deal_bada do
             end
             
             ## Console 확인용
-            # puts "i : #{i}"
+            # puts "i : #{index}"
             # puts "title : #{@title} / time : #{@time} / view : #{@view}"
             # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / sailStatus : #{@sailStatus} / url : #{@url}"
             # puts "==============================================="
@@ -92,31 +92,33 @@ namespace :hit_news_deal_bada do
       
       @dataArray.each do |currentData|
         puts "[딜바다] Process : Data Writing..."
+        @previousData = HitProduct.find_by(url: currentData[9])
         
-        ## 제목 변경 체크
-        @previousUrl = HitProduct.find_by(url: currentData[9], website: currentData[3])
-        if (@previousUrl != nil && currentData[2] != @previousUrl.title)
-          @previousUrl.update(title: currentData[2])
-        end
-		
-        
-        ## 이미지 변경 체크
-        if (@previousUrl != nil && currentData[10] != @previousUrl.image_url)
-          @previousUrl.update(image_url: currentData[10])
-        end
-        
-		
-        ## score 변경 체크
-        @previousProduct = HitProduct.find_by(title: @title, website: currentData[3])
-        if (@previousProduct != nil && currentData[8] > @previousProduct.score)
-          @previousProduct.update(score: currentData[8])
-        end
-		
-        
-        ## 판매상태 체크
-        @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3], is_sold_out: false)
-        if (@previousProduct != nil && currentData[4] == true)
-          @previousProduct.update(is_sold_out: true)
+        if @previousData != nil
+          
+          ## 제목 변경 체크
+          if (currentData[2] != @previousData.title)
+            @previousData.update(title: currentData[2])
+          end
+  		
+          
+          ## 이미지 변경 체크
+          if (currentData[10] != @previousData.image_url)
+            @previousData.update(image_url: currentData[10])
+          end
+          
+  		
+          ## score 변경 체크
+          if (currentData[8] > @previousData.score)
+            @previousData.update(score: currentData[8])
+          end
+  		
+          
+          ## 판매상태 체크
+          if (@previousData.is_sold_out == false && currentData[4] == true)
+            @previousData.update(is_sold_out: true)
+          end
+          
         end
         
         HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])

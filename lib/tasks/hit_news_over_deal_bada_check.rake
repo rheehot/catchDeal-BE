@@ -19,12 +19,12 @@ namespace :hit_news_over_deal_bada_check do
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     ### 딜바다 핫딜 게시글 크롤링 (목차탐색 : 3 ~ 4)
-    for i in 3..4
+    for index in 3..4
       begin
-        puts "[딜바다(목록 초과) #{i}] 검사 시작!"
+        puts "[딜바다(목록 초과) #{index}] 검사 시작!"
         @dataArray = Array.new
         
-        @browser.navigate().to "http://www.dealbada.com/bbs/board.php?bo_table=deal_domestic&page=#{i}"
+        @browser.navigate().to "http://www.dealbada.com/bbs/board.php?bo_table=deal_domestic&page=#{index}"
         
         ## find_element랑 find_elements의 차이
         @content = @browser.find_elements(css: 'table.hoverTable > tbody > tr')
@@ -47,7 +47,7 @@ namespace :hit_news_over_deal_bada_check do
             @comment = @titleContent.split("\n")[1].to_i rescue @comment = 0
             @like = t.find_element(css: 'td.td_num_g > span:nth-child(1)').text.to_i
             @score = @view/2 + @like*30 + @comment*10
-            @url = t.find_element(tag_name: "td.td_subject > a").attribute("href")
+            @url = t.find_element(tag_name: "td.td_subject > a").attribute("href").gsub("&page=#{index}", "")
     
             @sailCheck = t.find_element(css: "td.td_subject > a > img") rescue @sailCheck = false
             
@@ -75,7 +75,7 @@ namespace :hit_news_over_deal_bada_check do
             end
             
             ## Console 확인용
-            # puts "i : #{i}"
+            # puts "i : #{index}"
             # puts "title : #{@title} / time : #{@time} / view : #{@view}"
             # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / sailStatus : #{@sailStatus} / url : #{@url}"
             # puts "==============================================="

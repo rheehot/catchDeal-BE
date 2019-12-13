@@ -19,13 +19,13 @@ namespace :hit_news_over_ruliweb_check do
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     ### 루리웹 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
-    for i in 3..6 do
+    for index in 3..6 do
       begin
-        puts "[루리웹(목록 초과) #{i}] 검사 시작!"
+        puts "[루리웹(목록 초과) #{index}] 검사 시작!"
         @dataArray = Array.new
         
         # @current_page = @page.page_stack
-        @browser.navigate().to "https://bbs.ruliweb.com/market/board/1020?page=#{i}"
+        @browser.navigate().to "https://bbs.ruliweb.com/market/board/1020?page=#{index}"
         
         ## find_element랑 find_elements의 차이
         @content = @browser.find_elements(css: '#board_list > div > div.board_main.theme_default.theme_white > table > tbody > tr')
@@ -42,7 +42,7 @@ namespace :hit_news_over_ruliweb_check do
             @like = t.find_element(css: 'td.recomd > span').text.to_i rescue @like = 0
             @score = @view/2 + @like*150 + @comment*30
             @url = t.find_element(tag_name: "a.deco").attribute("href")
-            @url = @url.gsub("https://bbs.ruliweb.com", "https://m.ruliweb.com")
+            @url = @url.gsub("https://bbs.ruliweb.com", "https://m.ruliweb.com").gsub("?page=#{index}", "")
     
             @sailStatus = false rescue @sailStatus = false
             if not (@sailStatus == false)
@@ -68,7 +68,7 @@ namespace :hit_news_over_ruliweb_check do
             end
             
             ## Console 확인용
-            # puts "i : #{i}"
+            # puts "i : #{index}"
             # puts "title : #{@title} / time : #{@time} / view : #{@view}"
             # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
             # puts "@imageUrl : #{@imageUrl}"

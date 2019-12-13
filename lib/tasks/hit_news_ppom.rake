@@ -21,31 +21,34 @@ namespace :hit_news_ppom do
     def data_write(dataArray)
       dataArray.each do |currentData|
         puts "[뽐뿌] Process : Data Writing..."
+        @previousData = HitProduct.find_by(url: currentData[9])
         
-        ## 제목 변경 체크
-        @previousUrl = HitProduct.find_by(url: currentData[9], website: currentData[3])
-        if (@previousUrl != nil && currentData[2] != @previousUrl.title)
-          @previousUrl.update(title: currentData[2])
-        end
-		
+        if @previousData != nil
         
-        ## 이미지 변경 체크
-        if (@previousUrl != nil && currentData[10] != @previousUrl.image_url)
-          @previousUrl.update(image_url: currentData[10])
-        end
-		
-        
-        ## score 변경 체크
-        @previousProduct = HitProduct.find_by(title: @title, website: currentData[3])
-        if (@previousProduct != nil && currentData[8] > @previousProduct.score)
-          @previousProduct.update(score: currentData[8])
-        end
-		
-        
-        ## 판매상태 체크
-        @previousProduct = HitProduct.find_by(title: currentData[2], website: currentData[3], is_sold_out: false)
-        if (@previousProduct != nil && currentData[4] == true)
-          @previousProduct.update(is_sold_out: true)
+          ## 제목 변경 체크
+          if (currentData[2] != @previousData.title)
+            @previousData.update(title: currentData[2])
+          end
+  		
+          
+          ## 이미지 변경 체크
+          if (currentData[10] != @previousData.image_url)
+            @previousData.update(image_url: currentData[10])
+          end
+  		
+          
+          ## score 변경 체크
+          @previousData = HitProduct.find_by(title: @title, website: currentData[3])
+          if (currentData[8] > @previousData.score)
+            @previousData.update(score: currentData[8])
+          end
+  		
+          
+          ## 판매상태 체크
+          if (@previousData.is_sold_out == false && currentData[4] == true)
+            @previousData.update(is_sold_out: true)
+          end
+          
         end
         
         HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])
