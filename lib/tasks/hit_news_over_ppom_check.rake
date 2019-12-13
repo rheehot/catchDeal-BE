@@ -1,7 +1,7 @@
-## rake hit_news_ppom:auto_collect
+## rake hit_news_over_ppom_check:auto_collect
 ## 뽐뿌
 
-namespace :hit_news_ppom do
+namespace :hit_news_over_ppom_check do
   desc "TODO"
   task auto_collect: :environment do
     
@@ -18,47 +18,42 @@ namespace :hit_news_ppom do
     options.add_argument('--headless') # 크롬 헤드리스 모드 사용 위해 headless setting
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
-    def data_write(dataArray)
+    def data_modify(dataArray)
       dataArray.each do |currentData|
-        puts "[뽐뿌] Process : Data Writing..."
+        puts "[뽐뿌 Over Check] Process : Data Modify..."
         @previousData = HitProduct.find_by(url: currentData[9])
         
         if @previousData != nil
-        
           ## 제목 변경 체크
           if (currentData[2] != @previousData.title)
             @previousData.update(title: currentData[2])
           end
-  		
           
           ## 이미지 변경 체크
           if (currentData[10] != @previousData.image_url)
             @previousData.update(image_url: currentData[10])
           end
-  		
           
           ## score 변경 체크
-          @previousData = HitProduct.find_by(title: @title, website: currentData[3])
           if (currentData[8] > @previousData.score)
-            @previousData.update(score: currentData[8])
+            @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
           end
-  		
           
           ## 판매상태 체크
           if (@previousData.is_sold_out == false && currentData[4] == true)
             @previousData.update(is_sold_out: true)
           end
           
+        else
+          next
         end
-        
-        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])
       end
     end
     
     def crawl_ppom(index, url, failStack)
       
       begin
-        puts "[뽐뿌 #{index}] 크롤링 시작!"
+        puts "[뿜뿌(목록 초과) #{index}] 검사 시작!"
         @dataArray = Array.new
         
         @browser.navigate().to "http://m.ppomppu.co.kr/new/bbs_list.php?id=ppomppu&page=#{index}"
@@ -122,10 +117,9 @@ namespace :hit_news_ppom do
           # puts "==============================================="
           
           @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @time, @title, "뽐뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
-          # @newHotDeal = HitProduct.create(product_id: "ppom_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "뿜뿌", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
         end
         
-        data_write(@dataArray)
+        data_modify(@dataArray)
         return 1
         
       rescue Timeout::Error
@@ -141,7 +135,7 @@ namespace :hit_news_ppom do
     end
     
     ### 뿜뿌 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
-    for index in 1..2
+    for index in 3..5
       @result = crawl_ppom(index, "http://m.ppomppu.co.kr/new/bbs_list.php?id=ppomppu&page=#{index}", 0)
       # puts "@result : #{@result}"
     end

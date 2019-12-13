@@ -1,7 +1,7 @@
-## rake hit_news_clien:auto_collect
+## rake hit_news_over_clien_check:auto_collect
 ## 클리앙
 
-namespace :hit_news_clien do
+namespace :hit_news_over_clien_check do
   desc "TODO"
   task auto_collect: :environment do
     
@@ -18,14 +18,14 @@ namespace :hit_news_clien do
     options.add_argument('--headless') # 크롬 헤드리스 모드 사용 위해 headless setting
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
-    ### 클리앙 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
-    3.step(0, -1) do |index|
+    ### 클리앙 핫딜 게시글 크롤링 (목차탐색 : 3 ~ 4)
+    for i in 2..3
       begin
-        puts "[클리앙 #{index}] 크롤링 시작!"
+        puts "[클리앙(목록 초과) #{i}] 검사 시작!"
         @dataArray = Array.new
         
         # @current_page = @page.page_stack
-        @browser.navigate().to "https://www.clien.net/service/board/jirum?po=#{index}"
+        @browser.navigate().to "https://www.clien.net/service/board/jirum?po=#{i}"
         
         ## find_element랑 find_elements의 차이
         @content = @browser.find_elements(css: 'div.list_item.symph_row')
@@ -64,51 +64,44 @@ namespace :hit_news_clien do
           end
           
           ## Console 확인용
-          # puts "i : #{index}"
-          # puts "title : #{@title}"
+          # puts "i : #{i}"
           # puts "title : #{@title} / time : #{@time} / view : #{@view}"
           # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
           # puts "==============================================="
           
           @dataArray.push(["clien_#{SecureRandom.hex(6)}", @time, @title, "클리앙", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
-          # @newHotDeal = HitProduct.create(product_id: "clien_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "클리앙", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
         end
       rescue
         next
       end
       
       @dataArray.each do |currentData|
-        @previousData = HitProduct.find_by(url: currentData[9])
-        puts "[클리앙] Process : Data Writing..."
+        @previousData = HitProduct.find_by("url LIKE ?", "%#{currentData[9]}%")
+        puts "[클리앙 Over Check] Process : Data Data Modify..."
         
         if @previousData != nil
-        
           ## 제목 변경 체크
           if (currentData[2] != @previousData.title)
             @previousData.update(title: currentData[2])
           end
-  		
           
           ## 이미지 변경 체크
           if (currentData[10] != @previousData.image_url)
             @previousData.update(image_url: currentData[10])
           end
-  		
           
           ## score 변경 체크
           if (currentData[8] > @previousData.score)
-            @previousData.update(score: currentData[8])
+            @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
           end
-  		
           
           ## 판매상태 체크
           if (@previousData.is_sold_out == false && currentData[4] == true)
             @previousData.update(is_sold_out: true)
           end
-          
+        else
+          next
         end
-        
-        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])
       end
         
     end

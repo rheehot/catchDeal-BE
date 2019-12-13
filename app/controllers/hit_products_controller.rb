@@ -25,7 +25,7 @@ class HitProductsController < ApplicationController
   
   def search
     @word = params[:word]
-    @data = HitProduct.order("date DESC").where("title LIKE ?", "%#{@word}%")
+    @data = HitProduct.order("date DESC").where("replace(title, ' ', '') like replace(?, ' ', '')", "%#{@word}%")
     
     @startNumber = 0
     @stackNumber = @startNumber + 1

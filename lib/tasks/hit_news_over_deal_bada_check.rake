@@ -1,7 +1,7 @@
-## rake hit_news_deal_bada:auto_collect
+## rake hit_news_over_deal_bada_check:auto_collect
 ## 딜바다
 
-namespace :hit_news_deal_bada do
+namespace :hit_news_over_deal_bada_check do
   desc "TODO"
   task auto_collect: :environment do
     
@@ -18,10 +18,10 @@ namespace :hit_news_deal_bada do
     options.add_argument('--headless') # 크롬 헤드리스 모드 사용 위해 headless setting
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
-    ### 딜바다 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
-    3.step(1, -1) do |index|
+    ### 딜바다 핫딜 게시글 크롤링 (목차탐색 : 3 ~ 4)
+    for index in 3..4
       begin
-        puts "[딜바다 #{index}] 크롤링 시작!"
+        puts "[딜바다(목록 초과) #{index}] 검사 시작!"
         @dataArray = Array.new
         
         @browser.navigate().to "http://www.dealbada.com/bbs/board.php?bo_table=deal_domestic&page=#{index}"
@@ -91,37 +91,30 @@ namespace :hit_news_deal_bada do
       end
       
       @dataArray.each do |currentData|
-        puts "[딜바다] Process : Data Writing..."
+        puts "[딜바다 Over Check] Process : Data Modify..."
         @previousData = HitProduct.find_by(url: currentData[9])
         
         if @previousData != nil
-          
           ## 제목 변경 체크
           if (currentData[2] != @previousData.title)
             @previousData.update(title: currentData[2])
           end
-  		
           
           ## 이미지 변경 체크
           if (currentData[10] != @previousData.image_url)
             @previousData.update(image_url: currentData[10])
           end
           
-  		
           ## score 변경 체크
           if (currentData[8] > @previousData.score)
-            @previousData.update(score: currentData[8])
+            @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
           end
-  		
           
           ## 판매상태 체크
           if (@previousData.is_sold_out == false && currentData[4] == true)
             @previousData.update(is_sold_out: true)
           end
-          
         end
-        
-        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])
       end
       
     end
