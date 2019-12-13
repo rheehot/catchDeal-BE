@@ -20,13 +20,6 @@ ActiveRecord::Schema.define(version: 2019_12_12_181814) do
     t.datetime "last_token"
   end
 
-  create_table "book_marks", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "hit_product_id"
-    t.index ["hit_product_id"], name: "index_book_marks_on_hit_product_id"
-    t.index ["user_id"], name: "index_book_marks_on_user_id"
-  end
-
   create_table "hit_products", force: :cascade do |t|
     t.string "product_id"
     t.datetime "date"
