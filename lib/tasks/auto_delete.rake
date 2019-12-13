@@ -24,8 +24,8 @@ namespace :auto_delete do
     end
   
     @browser.quit
-    
-    HitProduct.where('created_at < ?', 3.days.ago).each do |x|
+	
+    HitProduct.where('created_at < ?', 10.days.ago).each do |x|
       x.destroy
     end
     
