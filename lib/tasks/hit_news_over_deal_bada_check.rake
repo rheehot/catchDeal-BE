@@ -49,7 +49,7 @@ namespace :hit_news_over_deal_bada_check do
             @score = @view/2 + @like*30 + @comment*10
             @url = t.find_element(tag_name: "td.td_subject > a").attribute("href").gsub("&page=#{index}", "")
     
-            @sailCheck = t.find_element(css: "td.td_subject > a > img") rescue @sailCheck = false
+            @sailStatus = t.find_element(css: "td.td_subject > a > img") rescue @sailStatus = false
             
             if @sailStatus != false
               @sailStatus = true

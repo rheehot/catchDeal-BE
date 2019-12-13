@@ -17,7 +17,8 @@ Rails.application.routes.draw do
   devise_for :users
   post 'auth_user' => 'authentication#authenticate_user'
   get 'apis/test'
-  get 'apis/book_mark'
+  post 'apis/book_mark'
+  post 'apis/book_mark_list'
 	
   authenticate :user, lambda { |u| u.admin? } do
     begin
