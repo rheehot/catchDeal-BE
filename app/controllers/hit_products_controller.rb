@@ -25,7 +25,12 @@ class HitProductsController < ApplicationController
   
   def search
     @word = params[:word]
-    @data = HitProduct.order("date DESC").where("replace(title, ' ', '') like replace(?, ' ', '')", "%#{@word}%")
+    
+    if ActiveRecord::Base.connection.adapter_name == 'SQLite'
+      @data = HitProduct.order("date DESC").where("replace(title, ' ', '') like replace(?, ' ', '')", "%#{@word}%")
+    elsif ActiveRecord::Base.connection.adapter_name == 'PostgreSQL'
+      @data = HitProduct.order("date DESC").where("replace(title, ' ', '') ilike replace(?, ' ', '')", "%#{@word}%")
+    end
     
     @startNumber = 0
     @stackNumber = @startNumber + 1
