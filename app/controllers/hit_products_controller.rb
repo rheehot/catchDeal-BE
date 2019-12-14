@@ -40,12 +40,13 @@ class HitProductsController < ApplicationController
       currentData.shortDate = currentData.date.strftime('%Y-%m-%d %H:%M:%S')
       currentData.imageUrl = currentData.image_url
       currentData.isSoldOut = currentData.is_sold_out
+      currentData.isDeleted = currentData.dead_check
       @stackNumber += 1
     end
     
     @dataResult = @data
     
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url]
+    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url]
   end
   
   def condition
@@ -72,13 +73,14 @@ class HitProductsController < ApplicationController
       currentData.shortDate = currentData.date.strftime('%Y-%m-%d %H:%M:%S')
       currentData.imageUrl = currentData.image_url
       currentData.isSoldOut = currentData.is_sold_out
+      currentData.isDeleted = currentData.dead_check
       @stackNumber += 1
     end
     
     @tree = { :pageNumber => @pageNumber, :sizeOfPage => @size, :data => @data }
     @dataResult = @tree
     
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut], :except => [:id, :created_at, :updated_at, :website, :page, :is_sold_out, :image_url]
+    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted], :except => [:id, :created_at, :updated_at, :website, :page, :is_sold_out, :image_url]
   end
   
   def web_products_list
@@ -92,12 +94,13 @@ class HitProductsController < ApplicationController
       currentData.shortDate = currentData.date.strftime('%Y-%m-%d %H:%M:%S')
       currentData.imageUrl = currentData.image_url
       currentData.isSoldOut = currentData.is_sold_out
+      currentData.isDeleted = currentData.dead_check
       @stackNumber += 1
     end
     
     @dataResult = @data
     
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url]
+    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url]
   end
   
   def rank
@@ -111,12 +114,13 @@ class HitProductsController < ApplicationController
       currentData.shortDate = currentData.date.strftime('%Y-%m-%d %H:%M:%S')
       currentData.imageUrl = currentData.image_url
       currentData.isSoldOut = currentData.is_sold_out
+      currentData.isDeleted = currentData.dead_check
       @stackNumber += 1
     end
     
     @dataResult = @data
     
     # render :layout => false
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url]
+    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url]
   end
 end
