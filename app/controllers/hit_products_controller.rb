@@ -50,13 +50,18 @@ class HitProductsController < ApplicationController
   
   def condition
     @pageNumber = params[:page].to_i
+    @size = params[:size].to_i
+    
+    if @size == 0
+      @size = 20
+    end
     
     if @pageNumber == 1
       @startNumber = 0
-      @data = HitProduct.order("date DESC").uniq.first(20)
+      @data = HitProduct.order("date DESC").uniq.first(@size)
     else
-      @startNumber = @pageNumber*10 + @pageNumber*10-20
-      @data = HitProduct.order("date DESC").uniq.drop(@startNumber).first(20)
+      @startNumber = @pageNumber * 10 + @pageNumber * (@size-10) - @size
+      @data = HitProduct.order("date DESC").uniq.drop(@startNumber).first(@size)
     end
     
     @stackNumber = 0
@@ -70,7 +75,7 @@ class HitProductsController < ApplicationController
       @stackNumber += 1
     end
     
-    @tree = { :pageNumber => @pageNumber, :data => @data }
+    @tree = { :pageNumber => @pageNumber, :sizeOfPage => @size, :data => @data }
     @dataResult = @tree
     
     render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut], :except => [:id, :created_at, :updated_at, :website, :page, :is_sold_out, :image_url]
