@@ -1,7 +1,7 @@
 class AuthenticationController < ApplicationController
 	
   def authenticate_user
-	    json_params = JSON.parse(request.body.read)
+    json_params = JSON.parse(request.body.read)
 	  
 		user = AppUser.find_or_create_by(app_player: ["app_player_id"])
 		if user.nil?

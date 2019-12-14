@@ -10,7 +10,7 @@ class ApisController < ApplicationController
   end
 	
   def book_mark_combine
-	    json_params = JSON.parse(request.body.read)
+    json_params = JSON.parse(request.body.read)
 		product = HitProduct.find_by(product_id: json_params["product_id"])
 	  
     if product.nil?
@@ -34,7 +34,7 @@ class ApisController < ApplicationController
   end
 
   def book_mark_create
-	    json_params = JSON.parse(request.body.read)
+    json_params = JSON.parse(request.body.read)
 		product = HitProduct.find_by(product_id: json_params["product_id"])
 	  
     if product.nil?
