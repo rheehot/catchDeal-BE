@@ -8,9 +8,10 @@ class ApisController < ApplicationController
 		@dataJson = { :message => "[Test] Token 인증 되었습니다! :D", :user => current_user }
 		render :json => @dataJson, :except => [:id, :created_at, :updated_at, :category]
   end
-
-  def book_mark
-		product = HitProduct.find_by(product_id: params[:product_id])
+	
+  def book_mark_combine
+	    json_params = JSON.parse(request.body.read)
+		product = HitProduct.find_by(product_id: json_params["product_id"])
 	  
     if product.nil?
 			render json: { errors: ['유효하지 않는 product_id'] }, status: :unauthorized
@@ -28,6 +29,48 @@ class ApisController < ApplicationController
 			else
 				@bookMark.destroy
 				render :json => { :message => "북마크가 삭제되었습니다." }
+			end
+		end
+  end
+
+  def book_mark_create
+	    json_params = JSON.parse(request.body.read)
+		product = HitProduct.find_by(product_id: json_params["product_id"])
+	  
+    if product.nil?
+			render json: { errors: ['유효하지 않는 product_id'] }, status: :unauthorized
+		
+		elsif product != nil	  
+			@bookMark = BookMark.find_by(app_user_id: current_user.id, hit_product_id: product.id)
+
+			if @bookMark.nil?
+				@bookMarkResult = BookMark.create(app_user_id: current_user.id, hit_product_id: product.id)
+				@dataJson = { :message => "북마크가 생성되었습니다.", :book_mark => { :app_user_id => current_user.app_player,
+																																							:hit_product_title => BookMark.eager_load(:hit_product).find(@bookMarkResult.id).hit_product.title }
+										}
+
+				render :json => @dataJson, :except => [:id, :created_at, :updated_at]
+			else
+				render json: { errors: ['이미 북마크가 존재합니다.'] }, status: :forbidden
+			end
+		end
+  end
+	
+  def book_mark_destroy
+		json_params = JSON.parse(request.body.read)
+		product = HitProduct.find_by(product_id: json_params["product_id"])
+	  
+    if product.nil?
+			render json: { errors: ['유효하지 않는 product_id'] }, status: :unauthorized
+		
+		elsif product != nil
+			@bookMark = BookMark.find_by(app_user_id: current_user.id, hit_product_id: product.id)
+
+			if @bookMark != nil
+				@bookMark.destroy
+				render :json => { :message => "북마크가 삭제되었습니다." }
+			elsif @bookMark.nil?
+				render json: { errors: ['북마크가 존재하지 않습니다.'] }, status: :forbidden
 			end
 		end
   end

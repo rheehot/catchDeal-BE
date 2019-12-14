@@ -1,7 +1,9 @@
 class AuthenticationController < ApplicationController
 	
   def authenticate_user
-		user = AppUser.find_or_create_by(app_player: params[:app_player_id])
+	    json_params = JSON.parse(request.body.read)
+	  
+		user = AppUser.find_or_create_by(app_player: ["app_player_id"])
 		if user.nil?
 			render json: {errors: ['Invalid Username/Password']}, status: :unauthorized
 		else
