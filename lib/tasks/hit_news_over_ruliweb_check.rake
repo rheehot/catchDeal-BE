@@ -100,7 +100,7 @@ namespace :hit_news_over_ruliweb_check do
           end
           
           ## score 변경 체크
-          if (currentData[8] > @previousData.score)
+          if (currentData[8].to_s > @previousData.score.to_s)
             @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
           end
         else

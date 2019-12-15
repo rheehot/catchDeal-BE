@@ -109,7 +109,7 @@ namespace :hit_news_deal_bada do
           
   		
           ## score 변경 체크
-          if (currentData[8] > @previousData.score)
+          if (currentData[8].to_s > @previousData.score.to_s)
             @previousData.update(score: currentData[8])
           end
   		
