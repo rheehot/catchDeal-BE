@@ -96,3 +96,6 @@ gem 'jwt'
 
 ## bit.ly
 gem 'bitly'
+
+## Nokogiri + 세션유지 크롤링
+gem 'mechanize'

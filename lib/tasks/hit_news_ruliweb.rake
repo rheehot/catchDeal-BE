@@ -51,31 +51,36 @@ namespace :hit_news_ruliweb do
             
             begin
               docs = Nokogiri::HTML(open(@url))
-              @time = docs.css("span.regdate").text.gsub(/\(|\)/, "").to_time - 9.hours
-              @imageUrlCollect = docs.at("div.view_content").at("img").attr('src')
-              
-              if @imageUrlCollect.include?("ruliweb.com/img/") == false
-                @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
-              elsif @imageUrlCollect.include?("ruliweb.com/img/") == true
-                @imageUrl = "https:" + "#{@imageUrlCollect}"
+              redirectUrl = docs.css("div.source_url").text.split("|")[1].gsub(" ", "")
+              if redirectUrl.nil? || redirectUrl.empty?
+                redirectUrl = ""
               end
               
-              if @imageUrl != nil && @imageUrl.include?("https://cfile")
-                @imageUrl = @imageUrl.gsub("https:", "http:")
+              time = docs.css("span.regdate").text.gsub(/\(|\)/, "").to_time - 9.hours
+              imageUrlCollect = docs.at("div.view_content").at("img").attr('src')
+              
+              if imageUrlCollect.include?("ruliweb.com/img/") == false
+                imageUrl = "#{imageUrlCollect.gsub("http", "https")}"
+              elsif imageUrlCollect.include?("ruliweb.com/img/") == true
+                imageUrl = "https:" + "#{imageUrlCollect}"
+              end
+              
+              if imageUrl != nil && imageUrl.include?("https://cfile")
+                imageUrl = imageUrl.gsub("https:", "http:")
               end
             rescue
-              @imageUrl = nil
+              imageUrl = nil
             end
             
             ## Console 확인용
             # puts "i : #{index}"
             # puts "title : #{@title} / time : #{@time} / view : #{@view}"
             # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
-            # puts "@imageUrl : #{@imageUrl}"
+            # puts "@imageUrl : #{imageUrl}"
             # puts "==============================================="
            
             # puts "Process : Pushing..."
-            @dataArray.push(["ruliweb_#{SecureRandom.hex(6)}", @time, @title, "루리웹", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
+            @dataArray.push(["ruliweb_#{SecureRandom.hex(6)}", time, @title, "루리웹", @sailStatus, @view, @comment, @like, @score, @url, imageUrl, redirectUrl])
             # HitProduct.create(product_id: "ruliweb_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "루리웹", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
           else
             next
@@ -108,9 +113,15 @@ namespace :hit_news_ruliweb do
             @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
           end
           
+          
+          ## RedirectUrl 변경 체크
+          if (currentData[11].to_s != @previousData.redirect_url.to_s)
+            @previousData.update(redirect_url: currentData[11].to_s)
+          end
+          
         end
         
-        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])
+        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10], redirect_url: currentData[11])
       end
       
     end

@@ -47,20 +47,36 @@ namespace :hit_news_clien do
           # ## 클리앙 같은 경우, 외부 이미지 URL은 수집 못합니다.
           begin
             docs = Nokogiri::HTML(open(@url))
-            @time = docs.at("#div_content > div.post_view > div.post_author > span:nth-child(1)").text.to_time - 9.hours
-            @imageUrlCollect = docs.at("img.fr-dib").attr('src')
-            
-            if @imageUrlCollect.include?("cdn.clien.net") == false
-              @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
-            elsif @imageUrlCollect.include?("cdn.clien.net") == true
-              @imageUrl = @imageUrlCollect
+            begin
+              redirectUrl = docs.at("a.url").attr("href")
+            rescue
+              redirectUrl = ""
+            end
+            if redirectUrl.nil? || redirectUrl.empty?
+              begin
+                redirectUrl = docs.at("div.attached_link").text.split(" ")[1]
+              rescue
+                redirectUrl = nil
+              end
+              if redirectUrl.nil? || redirectUrl.empty?
+                redirectUrl = nil
+              end
             end
             
-            if @imageUrl != nil && @imageUrl.include?("https://cfile")
-              @imageUrl = @imageUrl.gsub("https:", "http:")
+            time = docs.at("#div_content > div.post_view > div.post_author > span:nth-child(1)").text.to_time - 9.hours
+            imageUrlCollect = docs.at("img.fr-dib").attr('src')
+            
+            if imageUrlCollect.include?("cdn.clien.net") == false
+              imageUrl = "#{imageUrlCollect.gsub("http", "https")}"
+            elsif imageUrlCollect.include?("cdn.clien.net") == true
+              imageUrl = imageUrlCollect
+            end
+            
+            if imageUrl != nil && imageUrl.include?("https://cfile")
+              imageUrl = imageUrl.gsub("https:", "http:")
             end
           rescue
-            @imageUrl = nil
+            imageUrl = nil
           end
           
           ## Console 확인용
@@ -70,7 +86,7 @@ namespace :hit_news_clien do
           # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
           # puts "==============================================="
           
-          @dataArray.push(["clien_#{SecureRandom.hex(6)}", @time, @title, "클리앙", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
+          @dataArray.push(["clien_#{SecureRandom.hex(6)}", time, @title, "클리앙", @sailStatus, @view, @comment, @like, @score, @url, imageUrl, redirectUrl])
           # @newHotDeal = HitProduct.create(product_id: "clien_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "클리앙", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
         end
       rescue
@@ -106,9 +122,15 @@ namespace :hit_news_clien do
             @previousData.update(is_sold_out: true)
           end
           
+          
+          ## RedirectUrl 변경 체크
+          if (currentData[11].to_s != @previousData.redirect_url.to_s)
+            @previousData.update(redirect_url: currentData[11].to_s)
+          end
+          
         end
         
-        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])
+        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10], redirect_url: currentData[11])
       end
         
     end

@@ -51,20 +51,20 @@ namespace :hit_news_over_ruliweb_check do
             
             begin
               docs = Nokogiri::HTML(open(@url))
-              @time = docs.css("span.regdate").text.gsub(/\(|\)/, "").to_time - 9.hours
-              @imageUrlCollect = docs.at("div.view_content").at("img").attr('src')
+              time = docs.css("span.regdate").text.gsub(/\(|\)/, "").to_time - 9.hours
+              imageUrlCollect = docs.at("div.view_content").at("img").attr('src')
               
-              if @imageUrlCollect.include?("ruliweb.com/img/") == false
-                @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
-              elsif @imageUrlCollect.include?("ruliweb.com/img/") == true
-                @imageUrl = "https:" + "#{@imageUrlCollect}"
+              if imageUrlCollect.include?("ruliweb.com/img/") == false
+                imageUrl = "#{imageUrlCollect.gsub("http", "https")}"
+              elsif imageUrlCollect.include?("ruliweb.com/img/") == true
+                imageUrl = "https:" + "#{imageUrlCollect}"
               end
               
-              if @imageUrl != nil && @imageUrl.include?("https://cfile")
-                @imageUrl = @imageUrl.gsub("https:", "http:")
+              if imageUrl != nil && imageUrl.include?("https://cfile")
+                imageUrl = imageUrl.gsub("https:", "http:")
               end
             rescue
-              @imageUrl = nil
+              imageUrl = nil
             end
             
             ## Console 확인용
@@ -75,7 +75,7 @@ namespace :hit_news_over_ruliweb_check do
             # puts "==============================================="
            
             # puts "Process : Pushing..."
-            @dataArray.push(["ruliweb_#{SecureRandom.hex(6)}", @time, @title, "루리웹", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
+            @dataArray.push(["ruliweb_#{SecureRandom.hex(6)}", time, @title, "루리웹", @sailStatus, @view, @comment, @like, @score, @url, imageUrl, redirectUrl])
           else
             next
           end
@@ -94,14 +94,22 @@ namespace :hit_news_over_ruliweb_check do
             @previousData.update(title: currentData[2])
           end
           
+          
           ## 이미지 변경 체크
           if (currentData[10] != @previousData.image_url)
             @previousData.update(image_url: currentData[10])
           end
           
+          
           ## score 변경 체크
           if (currentData[8].to_s > @previousData.score.to_s)
             @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
+          end
+          
+          
+          ## RedirectUrl 변경 체크
+          if (currentData[11].to_s != @previousData.redirect_url.to_s)
+            @previousData.update(redirect_url: currentData[11].to_s)
           end
         else
           next
