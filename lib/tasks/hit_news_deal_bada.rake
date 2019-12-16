@@ -57,21 +57,38 @@ namespace :hit_news_deal_bada do
             
             begin
               docs = Nokogiri::HTML(open(@url))
-              @time = docs.at("#bo_v_info > div:nth-child(2) > span:nth-child(8)").text.to_time - 9.hours
               
-              @imageUrlCollect = docs.at("div#bo_v_con").at("img").attr('src')
-              
-              if @imageUrlCollect.include?("cdn.dealbada.com") == false
-                @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
-              elsif @imageUrlCollect.include?("cdn.dealbada.com") == true
-                @imageUrl = @imageUrlCollect.gsub("http", "https")
+              begin
+                redirectUrl = docs.at("ul > li > span > a").attr("href")
+              rescue
+                redirectUrl = nil
               end
               
-              if @imageUrl != nil && @imageUrl.include?("https://cfile")
-                @imageUrl = @imageUrl.gsub("https:", "http:")
+              begin
+                time = docs.at("#bo_v_info > div:nth-child(2) > span:nth-child(8)").text.to_time - 9.hours
+              rescue
+                time = Time.zone.now.strftime('%Y-%m-%d %H:%M')
+              end
+              
+              begin
+                imageUrlCollect = docs.at("div#bo_v_con").at("img").attr('src')
+              rescue
+                imageUrl = nil
+              end
+              
+              if imageUrlCollect.include?("cdn.dealbada.com") == false
+                imageUrl = "#{imageUrlCollect.gsub("http", "https")}"
+              elsif imageUrlCollect.include?("cdn.dealbada.com") == true
+                imageUrl = imageUrlCollect.gsub("http", "https")
+              end
+              
+              if imageUrl != nil && imageUrl.include?("https://cfile")
+                imageUrl = imageUrl.gsub("https:", "http:")
               end
             rescue
-              @imageUrl = nil
+              redirectUrl = nil
+              imageUrl = nil
+              time = Time.zone.now.strftime('%Y-%m-%d %H:%M')
             end
             
             ## Console 확인용
@@ -80,7 +97,7 @@ namespace :hit_news_deal_bada do
             # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / sailStatus : #{@sailStatus} / url : #{@url}"
             # puts "==============================================="
             
-            @dataArray.push(["dealBaDa_#{SecureRandom.hex(6)}", @time, @title, "딜바다", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
+            @dataArray.push(["dealBaDa_#{SecureRandom.hex(6)}", time, @title, "딜바다", @sailStatus, @view, @comment, @like, @score, @url, imageUrl, redirectUrl])
             # @newHotDeal = HitProduct.create(product_id: "dealBaDa_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "딜바다", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
           else
             next
@@ -119,9 +136,15 @@ namespace :hit_news_deal_bada do
             @previousData.update(is_sold_out: true)
           end
           
+          
+          ## RedirectUrl 변경 체크
+          if (currentData[11].to_s != @previousData.redirect_url.to_s)
+            @previousData.update(redirect_url: currentData[11].to_s)
+          end
+          
         end
         
-        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10])
+        HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10], redirect_url: currentData[11])
       end
       
     end

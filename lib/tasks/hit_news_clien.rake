@@ -52,6 +52,7 @@ namespace :hit_news_clien do
             rescue
               redirectUrl = ""
             end
+            
             if redirectUrl.nil? || redirectUrl.empty?
               begin
                 redirectUrl = docs.at("div.attached_link").text.split(" ")[1]

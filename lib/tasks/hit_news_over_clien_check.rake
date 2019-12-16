@@ -19,13 +19,13 @@ namespace :hit_news_over_clien_check do
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     ### 클리앙 핫딜 게시글 크롤링 (목차탐색 : 3 ~ 4)
-    for i in 2..3
+    for index in 2..3
       begin
-        puts "[클리앙(목록 초과) #{i}] 검사 시작!"
+        puts "[클리앙(목록 초과) #{index}] 검사 시작!"
         @dataArray = Array.new
         
         # @current_page = @page.page_stack
-        @browser.navigate().to "https://www.clien.net/service/board/jirum?po=#{i}"
+        @browser.navigate().to "https://www.clien.net/service/board/jirum?po=#{index}"
         
         ## find_element랑 find_elements의 차이
         @content = @browser.find_elements(css: 'div.list_item.symph_row')
@@ -52,20 +52,21 @@ namespace :hit_news_over_clien_check do
             rescue
               redirectUrl = ""
             end
+            
             if redirectUrl.nil? || redirectUrl.empty?
               begin
                 redirectUrl = docs.at("div.attached_link").text.split(" ")[1]
               rescue
-                redirectUrl = ""
+                redirectUrl = nil
               end
               if redirectUrl.nil? || redirectUrl.empty?
-                redirectUrl = ""
+                redirectUrl = nil
               end
             end
             
             time = docs.at("#div_content > div.post_view > div.post_author > span:nth-child(1)").text.to_time - 9.hours
-            imageUrlCollect = docs.at("img.fr-dib").attr('src')
             
+            imageUrlCollect = docs.at("img.fr-dib").attr('src')
             if imageUrlCollect.include?("cdn.clien.net") == false
               imageUrl = "#{imageUrlCollect.gsub("http", "https")}"
             elsif imageUrlCollect.include?("cdn.clien.net") == true
@@ -80,8 +81,8 @@ namespace :hit_news_over_clien_check do
           end
           
           ## Console 확인용
-          # puts "i : #{i}"
-          # puts "title : #{@title} / time : #{@time} / view : #{@view}"
+          # puts "index : #{index}"
+          # puts "title : #{@title} / time : #{time} / view : #{@view}"
           # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
           # puts "==============================================="
           

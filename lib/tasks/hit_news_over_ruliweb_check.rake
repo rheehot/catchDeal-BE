@@ -51,6 +51,11 @@ namespace :hit_news_over_ruliweb_check do
             
             begin
               docs = Nokogiri::HTML(open(@url))
+              redirectUrl = docs.css("div.source_url").text.split("|")[1].gsub(" ", "")
+              if redirectUrl.nil? || redirectUrl.empty?
+                redirectUrl = ""
+              end
+              
               time = docs.css("span.regdate").text.gsub(/\(|\)/, "").to_time - 9.hours
               imageUrlCollect = docs.at("div.view_content").at("img").attr('src')
               
