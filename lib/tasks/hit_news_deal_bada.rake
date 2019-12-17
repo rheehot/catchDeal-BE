@@ -65,9 +65,17 @@ namespace :hit_news_deal_bada do
               end
               
               begin
-                time = docs.at("#bo_v_info > div:nth-child(2) > span:nth-child(8)").text.to_time - 9.hours
+                for i in 7..9
+                  compareCase = docs.at("#bo_v_info > div:nth-child(2) > span:nth-child(#{i})")
+                  if compareCase.nil? == false && compareCase.text.include?("-")
+                    time = compareCase.text
+                  end
+                end
+                
               rescue
-                time = Time.zone.now.strftime('%Y-%m-%d %H:%M')
+                if (time.nil?)
+                  time = Time.zone.now.strftime('%Y-%m-%d %H:%M')
+                end
               end
               
               begin
@@ -88,7 +96,6 @@ namespace :hit_news_deal_bada do
             rescue
               redirectUrl = nil
               imageUrl = nil
-              time = Time.zone.now.strftime('%Y-%m-%d %H:%M')
             end
             
             ## Console 확인용
