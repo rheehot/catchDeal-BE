@@ -23,14 +23,14 @@ class HitProductsController < ApplicationController
       currentData.imageUrl = currentData.image_url
       currentData.isSoldOut = currentData.is_sold_out
       currentData.isDeleted = currentData.dead_check
-      currentData.redirectUrl = currentData.redirect_url
+      currentData.shortUrl = currentData.redirect_url
       @stackNumber += 1
     end
     
     @dataResult = @data
     
     # render :json => { :latestedData => @dataResult.first.product_id, :data => @dataResult }, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :redirectUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :dead_check, :redirect_url]
-    render :json => { :data => @dataResult }, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :redirectUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :dead_check, :redirect_url]
+    render :json => { :data => @dataResult }, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :shortUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :dead_check, :redirect_url]
   end
   
   def search
@@ -51,13 +51,13 @@ class HitProductsController < ApplicationController
       currentData.imageUrl = currentData.image_url
       currentData.isSoldOut = currentData.is_sold_out
       currentData.isDeleted = currentData.dead_check
-      currentData.redirectUrl = currentData.redirect_url
+      currentData.shortUrl = currentData.redirect_url
       @stackNumber += 1
     end
     
     @dataResult = @data
     
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :redirectUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :redirect_url]
+    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :shortUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :redirect_url]
   end
   
   def condition
@@ -94,14 +94,14 @@ class HitProductsController < ApplicationController
       currentData.imageUrl = currentData.image_url
       currentData.isSoldOut = currentData.is_sold_out
       currentData.isDeleted = currentData.dead_check
-      currentData.redirectUrl = currentData.redirect_url
+      currentData.shortUrl = currentData.redirect_url
       @stackNumber += 1
     end
     
     @tree = { :pageNumber => @pageNumber, :sizeOfPage => @size, :data => @data }
     @dataResult = @tree
     
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :redirectUrl], :except => [:id, :created_at, :updated_at, :website, :page, :is_sold_out, :image_url, :redirect_url]
+    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :shortUrl], :except => [:id, :created_at, :updated_at, :website, :page, :is_sold_out, :image_url, :redirect_url]
   end
   
   def web_products_list
@@ -116,13 +116,13 @@ class HitProductsController < ApplicationController
       currentData.imageUrl = currentData.image_url
       currentData.isSoldOut = currentData.is_sold_out
       currentData.isDeleted = currentData.dead_check
-      currentData.redirectUrl = currentData.redirect_url
+      currentData.shortUrl = currentData.redirect_url
       @stackNumber += 1
     end
     
     @dataResult = @data
     
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :redirectUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :redirect_url]
+    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :shortUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :redirect_url]
   end
   
   def rank
@@ -137,13 +137,13 @@ class HitProductsController < ApplicationController
       currentData.imageUrl = currentData.image_url
       currentData.isSoldOut = currentData.is_sold_out
       currentData.isDeleted = currentData.dead_check
-      currentData.redirectUrl = currentData.redirect_url
+      currentData.shortUrl = currentData.redirect_url
       @stackNumber += 1
     end
     
     @dataResult = @data
     
     # render :layout => false
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :redirectUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :redirect_url]
+    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :shortUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :redirect_url]
   end
 end
