@@ -7,12 +7,12 @@ class HitProductsController < ApplicationController
     @currentTime = params[:time]
     
     if @currentTime.nil?
-      @currentTime = Time.zone.now + 9.hours
+      @currentTime = Time.zone.now
     else
-      @currentTime = @currentTime.to_time
+      @currentTime = @currentTime.to_time - 9.hours
     end
     
-    @data = HitProduct.where( 'created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC")
+    @data = HitProduct.where('created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC")
     
     @startNumber = 0
     @stackNumber = @startNumber + 1
@@ -70,19 +70,19 @@ class HitProductsController < ApplicationController
     end
     
     if @currentTime.nil?
-      @currentTime = Time.zone.now + 9.hours
+      @currentTime = Time.zone.now
     else
-      @currentTime = @currentTime.to_time
+      @currentTime = @currentTime.to_time - 9.hours
     end
     
     if @pageNumber == 1
       @startNumber = 0
       # @data = HitProduct.order("date DESC").uniq.first(@size)
-      @data = HitProduct.where( 'created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC").uniq.first(@size)
+      @data = HitProduct.where('created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC").uniq.first(@size)
     else
       @startNumber = @pageNumber * 10 + @pageNumber * (@size-10) - @size
       # @data = HitProduct.order("date DESC").uniq.drop(@startNumber).first(@size)
-      @data = HitProduct.where( 'created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC").uniq.drop(@startNumber).first(@size)
+      @data = HitProduct.where('created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC").uniq.drop(@startNumber).first(@size)
     end
     
     @stackNumber = 0
