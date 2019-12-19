@@ -4,7 +4,15 @@ class HitProductsController < ApplicationController
   include ActionView::Helpers::DateHelper
 
   def index
-    @data = HitProduct.order("date DESC")
+    @currentTime = params[:time]
+    
+    if @currentTime.nil?
+      @currentTime = Time.zone.now + 9.hours
+    else
+      @currentTime = @currentTime.to_time
+    end
+    
+    @data = HitProduct.where( 'created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC")
     
     @startNumber = 0
     @stackNumber = @startNumber + 1
@@ -21,7 +29,8 @@ class HitProductsController < ApplicationController
     
     @dataResult = @data
     
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :redirectUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :dead_check, :redirect_url]
+    # render :json => { :latestedData => @dataResult.first.product_id, :data => @dataResult }, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :redirectUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :dead_check, :redirect_url]
+    render :json => { :data => @dataResult }, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :redirectUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :dead_check, :redirect_url]
   end
   
   def search
@@ -54,17 +63,26 @@ class HitProductsController < ApplicationController
   def condition
     @pageNumber = params[:page].to_i
     @size = params[:size].to_i
+    @currentTime = params[:time]
     
     if @size == 0
       @size = 20
     end
     
+    if @currentTime.nil?
+      @currentTime = Time.zone.now + 9.hours
+    else
+      @currentTime = @currentTime.to_time
+    end
+    
     if @pageNumber == 1
       @startNumber = 0
-      @data = HitProduct.order("date DESC").uniq.first(@size)
+      # @data = HitProduct.order("date DESC").uniq.first(@size)
+      @data = HitProduct.where( 'created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC").uniq.first(@size)
     else
       @startNumber = @pageNumber * 10 + @pageNumber * (@size-10) - @size
-      @data = HitProduct.order("date DESC").uniq.drop(@startNumber).first(@size)
+      # @data = HitProduct.order("date DESC").uniq.drop(@startNumber).first(@size)
+      @data = HitProduct.where( 'created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC").uniq.drop(@startNumber).first(@size)
     end
     
     @stackNumber = 0
