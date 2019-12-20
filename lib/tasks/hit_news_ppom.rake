@@ -99,7 +99,7 @@ namespace :hit_news_ppom do
           @urlMobile = t.find_element(tag_name: "a").attribute("href")
           @urlExtract = CGI::parse(@urlMobile)
           @urlPostNo = @urlExtract['no'].to_a[0]
-          @url = "https://www.ppomppu.co.kr/zboard/view.php?id=ppomppu&no=" + @urlPostNo
+          @url = "http://www.ppomppu.co.kr/zboard/view.php?id=ppomppu&no=" + @urlPostNo
           
           
           @imageUrlCollect = t.find_element(css: 'img').attribute("src")
