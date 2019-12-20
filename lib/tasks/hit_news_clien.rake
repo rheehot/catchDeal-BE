@@ -23,11 +23,14 @@ namespace :hit_news_clien do
       @browser2.navigate().to "https://www.clien.net/service/board/jirum/#{urlId}"
       begin
         time = @browser2.find_element(css: "#div_content > div.post_view > div.post_author > span:nth-child(1)").text
+        # puts "time : #{time}"
       rescue
-        if failStack == 3
+        if failStack == 4
+          # puts "실패"
           return 0
         else
-          collect_last_data(urlId, failStack+1)
+          # puts "재시도..."
+          return collect_last_data(urlId, failStack+1)
         end
       end
       
