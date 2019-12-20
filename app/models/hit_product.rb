@@ -1,5 +1,5 @@
 class HitProduct < ApplicationRecord
-    attr_accessor :dateAgo, :shortDate, :uid, :isSoldOut, :imageUrl, :isDeleted, :shortUrl
+    attr_accessor :dateAgo, :shortDate, :uid, :isSoldOut, :imageUrl, :isDeleted, :shortUrl, :isTitleChanged
     validates_uniqueness_of :url, :scope => :title
 	
 	has_many :book_marks

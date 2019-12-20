@@ -121,7 +121,7 @@ namespace :hit_news_over_deal_bada_check do
         if @previousData != nil
           ## 제목 변경 체크
           if (currentData[2] != @previousData.title)
-            @previousData.update(title: currentData[2])
+            @previousData.update(title: currentData[2], is_title_changed: true)
           end
           
           

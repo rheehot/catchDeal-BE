@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_16_061645) do
+ActiveRecord::Schema.define(version: 2019_12_20_104630) do
 
   create_table "app_users", force: :cascade do |t|
     t.string "app_player", null: false
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2019_12_16_061645) do
     t.datetime "updated_at", null: false
     t.boolean "dead_check", default: false
     t.string "redirect_url"
+    t.boolean "is_title_changed", default: false
   end
 
   create_table "notices", force: :cascade do |t|

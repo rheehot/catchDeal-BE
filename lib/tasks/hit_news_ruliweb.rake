@@ -98,7 +98,7 @@ namespace :hit_news_ruliweb do
           
           ## 제목 변경 체크
           if (currentData[2] != @previousData.title)
-            @previousData.update(title: currentData[2])
+            @previousData.update(title: currentData[2], is_title_changed: true)
           end
   		
           
