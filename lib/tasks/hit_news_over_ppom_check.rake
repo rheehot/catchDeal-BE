@@ -56,7 +56,7 @@ namespace :hit_news_over_ppom_check do
         puts "[뿜뿌(목록 초과) #{index}] 검사 시작!"
         @dataArray = Array.new
         
-        @browser.navigate().to "http://m.ppomppu.co.kr/new/bbs_list.php?id=ppomppu&page=#{index}"
+        @browser.navigate().to "#{url}"
         
         ## find_element랑 find_elements의 차이
         @content = @browser.find_elements(css: 'li.none-border')
@@ -65,13 +65,13 @@ namespace :hit_news_over_ppom_check do
           if (index == 1 && w >= 15)
             next
           end
-          @title = t.find_element(css: 'span.title').text
+          @title = t.find_element(css: 'span.cont').text
           
           # @brand = @title[/\[(.*?)\]/, 1]
-          @info = t.find_element(css: "span.info").text.split("|")
-          @view = @info[1].split(" ")[1].strip.to_i
+          @info = t.find_element(css: "li.exp > span:nth-child(4)").text.gsub("[", "").gsub("]", "").split("/")
+          @view = @info[0].gsub(" ", "").to_i
           
-          @time = @info[0].strip
+          @time = t.find_element(css: "li.exp > time").text
           if @time.include?(":")
             @time = Time.zone.now.strftime('%Y-%m-%d') + " #{@time}"
             @time = @time
@@ -82,8 +82,8 @@ namespace :hit_news_over_ppom_check do
           end
           @time = @time.to_time - 9.hours
           
-          @comment = t.find_element(css: 'div.com_line > span:nth-child(1)').text.to_i rescue @comment = 0
-          @like = t.find_element(css: 'span.recom').text.to_i
+          @comment = t.find_element(css: 'span.rp').text.to_i rescue @comment = 0
+          @like = @info[1].gsub(" ", "").to_i
           @score = @view/2 + @like*150 + @comment*30
           
           @sailStatus = t.find_element(tag_name: "span.title > span").attribute("style") rescue @sailStatus = false
