@@ -110,10 +110,10 @@ namespace :hit_news_over_ppom_check do
           
           
           ## Console 확인용
-          puts "index : #{index}"
-          puts "title : #{@title} / time : #{@time} / view : #{@view}"
-          puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
-          puts "==============================================="
+          # puts "index : #{index}"
+          # puts "title : #{@title} / time : #{@time} / view : #{@view}"
+          # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
+          # puts "==============================================="
           
           @dataArray.push(["ppom_#{SecureRandom.hex(6)}", @time, @title, "뽐뿌", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
         end
