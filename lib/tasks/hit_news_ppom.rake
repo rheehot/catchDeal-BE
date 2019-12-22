@@ -89,7 +89,7 @@ namespace :hit_news_ppom do
           @like = @info[1].gsub(" ", "").to_i
           @score = @view/2 + @like*300 + @comment*30
           
-          @sailStatus = t.find_element(tag_name: "span.title > span").attribute("style") rescue @sailStatus = false
+          @sailStatus = t.find_element(tag_name: "span.cont > span").attribute("style") rescue @sailStatus = false
           
           if @sailStatus != false
             @sailStatus = true

@@ -34,6 +34,7 @@ namespace :alive_check do
       @result = articleCheck(pageCheck.id, pageCheck.url)
     end
 	
+	  puts "[Dead Check] sleep.."
 	  sleep(120)
 	
 	  HitProduct.all.each do |pageCheck|

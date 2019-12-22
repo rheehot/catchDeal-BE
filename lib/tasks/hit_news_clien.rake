@@ -143,7 +143,7 @@ namespace :hit_news_clien do
           
           ## Console 확인용
           # puts "i : #{index}"
-          # puts "title : #{@title}"
+          # puts "title : #{@title} / sailStatus : #{@sailStatus}"
           # puts "title : #{@title} / time : #{time} / view : #{@view}"
           # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / url : #{@url}"
           # puts "==============================================="
