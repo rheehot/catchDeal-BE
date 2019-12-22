@@ -29,7 +29,7 @@ namespace :alive_check do
       
     end
     
-    HitProduct.all.each do |pageCheck|
+    HitProduct.order("date DESC").each do |pageCheck|
       # puts "**[Job count : 1]  페이지 체크 시작"
       @result = articleCheck(pageCheck.id, pageCheck.url)
     end
@@ -37,7 +37,7 @@ namespace :alive_check do
 	  puts "[Dead Check] sleep.."
 	  sleep(120)
 	
-	  HitProduct.all.each do |pageCheck|
+	  HitProduct.order("date DESC").each do |pageCheck|
       # puts "** [Job count : 2] 페이지 체크 시작"
       @result = articleCheck(pageCheck.id, pageCheck.url)
     end
