@@ -96,7 +96,7 @@ namespace :hit_news_clien do
           @view = t.find_element(css: 'span.hit').text.to_i
           @comment = t.find_element(css: "div.list_title > a > span").text.to_i rescue @comment = 0
           @like = t.find_element(css: 'span.list_votes').text.to_i
-          @score = @view/1.5 + @like*250 + @comment*70
+          @score = @view/1.5 + @like*400 + @comment*30
           @urlId = t.find_element(tag_name: "a").attribute("href").split("/").last.split("?").first
           @url = "https://www.clien.net/service/board/jirum/#{@urlId}"
   

@@ -46,7 +46,7 @@ namespace :hit_news_deal_bada do
             @view = t.find_element(css: 'td:nth-child(7)').text.to_i
             @comment = @titleContent.split("\n")[1].to_i rescue @comment = 0
             @like = t.find_element(css: 'td.td_num_g > span:nth-child(1)').text.to_i
-            @score = @view/2 + @like*30 + @comment*10
+            @score = @view/1.5 + @like*250 + @comment*10
             @url = t.find_element(tag_name: "td.td_subject > a").attribute("href").gsub("&page=#{index}", "")
     
             @sailStatus = t.find_element(css: "td.td_subject > a > img") rescue @sailStatus = false

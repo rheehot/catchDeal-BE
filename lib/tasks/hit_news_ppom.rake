@@ -87,7 +87,7 @@ namespace :hit_news_ppom do
           
           @comment = t.find_element(css: 'span.rp').text.to_i rescue @comment = 0
           @like = @info[1].gsub(" ", "").to_i
-          @score = @view/2 + @like*300 + @comment*30
+          @score = @view/1.5 + @like*300 + @comment*30
           
           @sailStatus = t.find_element(tag_name: "span.cont > span").attribute("style") rescue @sailStatus = false
           

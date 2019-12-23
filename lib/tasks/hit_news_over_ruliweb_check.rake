@@ -40,7 +40,7 @@ namespace :hit_news_over_ruliweb_check do
             @view = t.find_element(css: 'td.hit').text.to_i
             @comment = t.find_element(css: "td.subject > div.relative > span.num_reply > span.num").text.to_i rescue @comment = 0
             @like = t.find_element(css: 'td.recomd > span').text.to_i rescue @like = 0
-            @score = @view/2 + @like*150 + @comment*30
+            @score = @view/1.5 + @like*400 + @comment*30
             @url = t.find_element(tag_name: "a.deco").attribute("href")
             @url = @url.gsub("https://bbs.ruliweb.com", "https://m.ruliweb.com").gsub("?page=#{index}", "")
     
