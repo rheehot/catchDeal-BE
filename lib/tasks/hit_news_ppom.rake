@@ -27,7 +27,7 @@ namespace :hit_news_ppom do
         
           ## 제목 변경 체크
           if (currentData[2] != @previousData.title)
-            @previousData.update(title: currentData[2])
+            @previousData.update(title: currentData[2], is_title_changed: true)
           end
   		
           
@@ -38,9 +38,8 @@ namespace :hit_news_ppom do
   		
           
           ## score 변경 체크
-          @previousData = HitProduct.find_by(title: @title, website: currentData[3])
           if (currentData[8] > @previousData.score)
-            @previousData.update(score: currentData[8])
+            @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
           end
   		
           
@@ -61,7 +60,7 @@ namespace :hit_news_ppom do
         puts "[뽐뿌 #{index}] 크롤링 시작!"
         @dataArray = Array.new
         
-        @browser.navigate().to "http://m.ppomppu.co.kr/new/bbs_list.php?id=ppomppu&page=#{index}"
+        @browser.navigate().to "#{url}"
         
         ## find_element랑 find_elements의 차이
         @content = @browser.find_elements(css: 'li.none-border')
@@ -70,28 +69,27 @@ namespace :hit_news_ppom do
           if (index == 1 && w >= 15)
             next
           end
-          @title = t.find_element(css: 'span.title').text
+          @title = t.find_element(css: 'span.cont').text
           
           # @brand = @title[/\[(.*?)\]/, 1]
-          @info = t.find_element(css: "span.info").text.split("|")
-          @view = @info[1].split(" ")[1].strip.to_i
+          @info = t.find_element(css: "li.exp > span:nth-child(4)").text.gsub("[", "").gsub("]", "").split("/")
+          @view = @info[0].gsub(" ", "").to_i
           
-          @time = @info[0].strip
+          @time = t.find_element(css: "li.exp > time").text
           if @time.include?(":")
             @time = Time.zone.now.strftime('%Y-%m-%d') + " #{@time}"
-            @time = @time
           elsif @time.include?("-")
-            @time
+            @time = "20" + @time
           elsif @time.nil?
             @time = Time.zone.now.strftime('%Y-%m-%d %H:%M')
           end
           @time = @time.to_time - 9.hours
           
-          @comment = t.find_element(css: 'div.com_line > span:nth-child(1)').text.to_i rescue @comment = 0
-          @like = t.find_element(css: 'span.recom').text.to_i
-          @score = @view/2 + @like*150 + @comment*30
+          @comment = t.find_element(css: 'span.rp').text.to_i rescue @comment = 0
+          @like = @info[1].gsub(" ", "").to_i
+          @score = @view/1.5 + @like*300 + @comment*30
           
-          @sailStatus = t.find_element(tag_name: "span.title > span").attribute("style") rescue @sailStatus = false
+          @sailStatus = t.find_element(tag_name: "span.cont > span").attribute("style") rescue @sailStatus = false
           
           if @sailStatus != false
             @sailStatus = true
@@ -100,7 +98,7 @@ namespace :hit_news_ppom do
           @urlMobile = t.find_element(tag_name: "a").attribute("href")
           @urlExtract = CGI::parse(@urlMobile)
           @urlPostNo = @urlExtract['no'].to_a[0]
-          @url = "https://www.ppomppu.co.kr/zboard/view.php?id=ppomppu&no=" + @urlPostNo
+          @url = "http://www.ppomppu.co.kr/zboard/view.php?id=ppomppu&no=" + @urlPostNo
           
           
           @imageUrlCollect = t.find_element(css: 'img').attribute("src")

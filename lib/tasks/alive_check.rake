@@ -23,14 +23,22 @@ namespace :alive_check do
         HitProduct.find(id).update(dead_check: true)
         return 1
       rescue Timeout::Error
-        # puts "타임아웃"
+        puts "타임아웃"
         return 0
       end
       
     end
     
-    HitProduct.all.each do |pageCheck|
-      # puts "** 페이지 체크 시작"
+    HitProduct.order("date DESC").each do |pageCheck|
+      # puts "**[Job count : 1]  페이지 체크 시작"
+      @result = articleCheck(pageCheck.id, pageCheck.url)
+    end
+	
+	  puts "[Dead Check] sleep.."
+	  sleep(120)
+	
+	  HitProduct.order("date DESC").each do |pageCheck|
+      # puts "** [Job count : 2] 페이지 체크 시작"
       @result = articleCheck(pageCheck.id, pageCheck.url)
     end
     

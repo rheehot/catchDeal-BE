@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_12_181814) do
+ActiveRecord::Schema.define(version: 2019_12_20_104630) do
 
   create_table "app_users", force: :cascade do |t|
     t.string "app_player", null: false
@@ -21,10 +21,12 @@ ActiveRecord::Schema.define(version: 2019_12_12_181814) do
   end
 
   create_table "book_marks", force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "app_user_id"
     t.integer "hit_product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["app_user_id"], name: "index_book_marks_on_app_user_id"
     t.index ["hit_product_id"], name: "index_book_marks_on_hit_product_id"
-    t.index ["user_id"], name: "index_book_marks_on_user_id"
   end
 
   create_table "hit_products", force: :cascade do |t|
@@ -42,6 +44,8 @@ ActiveRecord::Schema.define(version: 2019_12_12_181814) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "dead_check", default: false
+    t.string "redirect_url"
+    t.boolean "is_title_changed", default: false
   end
 
   create_table "notices", force: :cascade do |t|

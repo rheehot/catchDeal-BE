@@ -20,7 +20,16 @@ module Hs
     config.action_mailer.mailgun_settings = {
       api_key: ENV['MAILGUN_API'],
       domain: ENV['MAILGUN_DOMAIN']
-    }    
+    }
+    
+    ## bit.ly 설정
+    Bitly.use_api_version_3
+    
+    Bitly.configure do |config|
+      config.api_version = 3
+      config.access_token = ENV["BITLY_API"]
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading

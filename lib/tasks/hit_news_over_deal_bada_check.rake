@@ -46,10 +46,10 @@ namespace :hit_news_over_deal_bada_check do
             @view = t.find_element(css: 'td:nth-child(7)').text.to_i
             @comment = @titleContent.split("\n")[1].to_i rescue @comment = 0
             @like = t.find_element(css: 'td.td_num_g > span:nth-child(1)').text.to_i
-            @score = @view/2 + @like*30 + @comment*10
+            @score = @view/1.5 + @like*250 + @comment*10
             @url = t.find_element(tag_name: "td.td_subject > a").attribute("href").gsub("&page=#{index}", "")
     
-            @sailCheck = t.find_element(css: "td.td_subject > a > img") rescue @sailCheck = false
+            @sailStatus = t.find_element(css: "td.td_subject > a > img") rescue @sailStatus = false
             
             if @sailStatus != false
               @sailStatus = true
@@ -57,21 +57,45 @@ namespace :hit_news_over_deal_bada_check do
             
             begin
               docs = Nokogiri::HTML(open(@url))
-              @time = docs.at("#bo_v_info > div:nth-child(2) > span:nth-child(8)").text.to_time - 9.hours
               
-              @imageUrlCollect = docs.at("div#bo_v_con").at("img").attr('src')
-              
-              if @imageUrlCollect.include?("cdn.dealbada.com") == false
-                @imageUrl = "#{@imageUrlCollect.gsub("http", "https")}"
-              elsif @imageUrlCollect.include?("cdn.dealbada.com") == true
-                @imageUrl = @imageUrlCollect.gsub("http", "https")
+              begin
+                redirectUrl = docs.at("ul > li > span > a").attr("href")
+              rescue
+                redirectUrl = nil
               end
               
-              if @imageUrl != nil && @imageUrl.include?("https://cfile")
-                @imageUrl = @imageUrl.gsub("https:", "http:")
+              begin
+                for i in 7..9
+                  compareCase = docs.at("#bo_v_info > div:nth-child(2) > span:nth-child(#{i})")
+                  if compareCase.nil? == false && compareCase.text.include?("-")
+                    time = compareCase.text
+                  end
+                end
+                
+              rescue
+                if (time.nil?)
+                  time = Time.zone.now.strftime('%Y-%m-%d %H:%M')
+                end
+              end
+              
+              begin
+                imageUrlCollect = docs.at("div#bo_v_con").at("img").attr('src')
+              rescue
+                imageUrl = nil
+              end
+              
+              if imageUrlCollect.include?("cdn.dealbada.com") == false
+                imageUrl = "#{imageUrlCollect.gsub("http", "https")}"
+              elsif imageUrlCollect.include?("cdn.dealbada.com") == true
+                imageUrl = imageUrlCollect.gsub("http", "https")
+              end
+              
+              if imageUrl != nil && imageUrl.include?("https://cfile")
+                imageUrl = imageUrl.gsub("https:", "http:")
               end
             rescue
-              @imageUrl = nil
+              redirectUrl = nil
+              imageUrl = nil
             end
             
             ## Console 확인용
@@ -80,7 +104,7 @@ namespace :hit_news_over_deal_bada_check do
             # puts "comment : #{@comment} / like : #{@like} / score : #{@score} / sailStatus : #{@sailStatus} / url : #{@url}"
             # puts "==============================================="
             
-            @dataArray.push(["dealBaDa_#{SecureRandom.hex(6)}", @time, @title, "딜바다", @sailStatus, @view, @comment, @like, @score, @url, @imageUrl])
+            @dataArray.push(["dealBaDa_#{SecureRandom.hex(6)}", time, @title, "딜바다", @sailStatus, @view, @comment, @like, @score, @url, imageUrl, redirectUrl])
             # @newHotDeal = HitProduct.create(product_id: "dealBaDa_#{SecureRandom.hex(6)}", date: @time, title: @title, website: "딜바다", is_sold_out: @sailStatus, view: @view, comment: @comment, like: @like, score: @score, url: @url, image_url: @imageUrl)
           else
             next
@@ -97,23 +121,33 @@ namespace :hit_news_over_deal_bada_check do
         if @previousData != nil
           ## 제목 변경 체크
           if (currentData[2] != @previousData.title)
-            @previousData.update(title: currentData[2])
+            @previousData.update(title: currentData[2], is_title_changed: true)
           end
+          
           
           ## 이미지 변경 체크
           if (currentData[10] != @previousData.image_url)
             @previousData.update(image_url: currentData[10])
           end
           
+          
           ## score 변경 체크
-          if (currentData[8] > @previousData.score)
+          if (currentData[8].to_s > @previousData.score.to_s)
             @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
           end
+          
           
           ## 판매상태 체크
           if (@previousData.is_sold_out == false && currentData[4] == true)
             @previousData.update(is_sold_out: true)
           end
+          
+          
+          ## RedirectUrl 변경 체크
+          if (currentData[11].to_s != @previousData.redirect_url.to_s)
+            @previousData.update(redirect_url: currentData[11].to_s)
+          end
+          
         end
       end
       

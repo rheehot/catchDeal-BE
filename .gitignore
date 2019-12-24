@@ -48,3 +48,5 @@ dump.rdb
 
 /config/application.yml
 .c9
+
+test.py

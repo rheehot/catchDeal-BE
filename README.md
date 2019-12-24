@@ -25,17 +25,38 @@
 2. 앱과의 통신 때 있어 json 방식으로 데이터 통신이 이루어지게 한다.
     * 결국 모든 데이터 자료는 앱이 아닌 해당 프로젝트로 구축된 사이트가 관리하게 된다.
 
+## 5. 프로젝트 작동 Process
+1. 앱 ↔ 웹 기본 통신
+<img src="/public/img/process_connect.png" width="100%">
+<br/><br/>
 
-## 5. 핵심 코드파일
+2. 웹 내 크롤링 스케쥴러 작동 원리
+<img src="/public/img/process_scheduler.png" width="100%">
+<br/><br/>
+
+3. 새로운 JWT 토큰 생성
+<img src="/public/img/process_new_token.png" width="100%">
+<br/><br/>
+
+4. JWT 토큰 검증 및 작업
+<img src="/public/img/process_validate_jwt.png" width="100%">
+
+
+## 6. 핵심 코드파일
 1. ```lib/tasks/hit_news_clien.rake``` [[hitNewsClienRake]]  클리앙 사이트 크롤링 트리거 (Background Job + CronJob)
 2.  ```lib/tasks/hit_news_ruliweb.rake``` [[hitNewsRuliwebRake]]  루리웹 사이트 크롤링 트리거 (Background Job + CronJob)
 3. ```lib/tasks/hit_news_ppom.rake``` [[hitNewsPpomRake]] 뿜뿌 사이트 크롤링 트리거 (Background Job + CronJob)
 4. ```lib/tasks/hit_news_deal_bada.rake``` [[hitNewsDealBadaRake]] 딜바다 사이트 크롤링 트리거 (Background Job + CronJob)
 5. ```lib/tasks/auto_delete.rake``` [[autoDelete]] 게시글 삭제 트리거 (Background Job + CronJob)
 6. ```lib/tasks/alive_check.rake``` [[aliveCheck]] 원본 게시글이 삭제되었는지 체크 (Background Job + Enque Background)
+7. ```lib/tasks/hit_news_over_clien_check.rake``` [[overClienCheck]] 원본 게시글이 삭제되었는지 체크 (Background Job + Enque Background)
+8. ```lib/json_web_token.rb``` [[jwtDecode]] JWT 토큰을 Decode화 합니다.
+9. ```app/controllers/authentication_controller.rb``` [[jwtEncode]] Body Params로 넘어온 데이터를 참조하여 JWT 토큰을 생성합니다.
+10. ```app/controllers/application_controller.rb``` [[applicationController]] Header를 통해 요청받은 JWT 토큰에 대해 유효 검증을 합니다.
+11. ```app/controllers/apis_controller.rb``` [[apiController]] API 통신에 있어 데이터를 처리 및 Response를 합니다.
+ 
 
-
-## 6. M : 모델 설명
+## 7. M : 모델 설명
 * HitProduct : 특가 정보에 대한 데이터를 담아놓는다.
 * Notice : 공지사항에 대한 데이터를 담아놓는다.
 
@@ -49,3 +70,7 @@
 [hitProductController]: /app/controllers/hit_products_controller.rb
 [crawlClienJob]: /app/jobs/crawl_clien_job.rb
 [crawlautoDeleteJob]: /app/jobs/crawl_auto_delete_job.rb
+[overClienCheck]: /lib/tasks/hit_news_over_clien_check.rake
+[jwtDecode]: /lib/json_web_token.rb
+[applicationController]: /app/controllers/application_controller.rb
+[jwtEncode]: /app/controllers/authentication_controller.rb
