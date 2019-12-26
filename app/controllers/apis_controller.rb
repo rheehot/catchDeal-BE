@@ -10,26 +10,30 @@ class ApisController < ApplicationController
   end
 	
   def book_mark_combine
-    json_params = JSON.parse(request.body.read)
-		product = HitProduct.find_by(product_id: json_params["product_id"])
-	  
-    if product.nil?
-			render json: { errors: ['유효하지 않는 product_id'] }, status: :unauthorized
-		
-		elsif product != nil	  
-			@bookMark = BookMark.find_by(app_user_id: current_user.id, hit_product_id: product.id)
-
-			if @bookMark.nil?
-				@bookMarkResult = BookMark.create(app_user_id: current_user.id, hit_product_id: product.id)
-				@dataJson = { :message => "북마크가 생성되었습니다.", :book_mark => { :app_user_id => current_user.app_player,
-																																							:hit_product_title => BookMark.eager_load(:hit_product).find(@bookMarkResult.id).hit_product.title }
-										}
-
-				render :json => @dataJson, :except => [:id, :created_at, :updated_at]
-			else
-				@bookMark.destroy
-				render :json => { :message => "북마크가 삭제되었습니다." }
+  	begin
+	    json_params = JSON.parse(request.body.read)
+			product = HitProduct.find_by(product_id: json_params["product_id"])
+		  
+	    if product.nil?
+				render json: { errors: ['유효하지 않는 product_id'] }, status: :unauthorized
+			
+			elsif product != nil	  
+				@bookMark = BookMark.find_by(app_user_id: current_user.id, hit_product_id: product.id)
+	
+				if @bookMark.nil?
+					@bookMarkResult = BookMark.create(app_user_id: current_user.id, hit_product_id: product.id)
+					@dataJson = { :message => "북마크가 생성되었습니다.", :book_mark => { :app_user_id => current_user.app_player,
+																																								:hit_product_title => BookMark.eager_load(:hit_product).find(@bookMarkResult.id).hit_product.title }
+											}
+	
+					render :json => @dataJson, :except => [:id, :created_at, :updated_at]
+				else
+					@bookMark.destroy
+					render :json => { :message => "북마크가 삭제되었습니다." }
+				end
 			end
+		rescue
+			render json: {errors: ['Invalid Body']}, status: :unauthorized
 		end
   end
 
@@ -45,8 +49,9 @@ class ApisController < ApplicationController
 
 			if @bookMark.nil?
 				@bookMarkResult = BookMark.create(app_user_id: current_user.id, hit_product_id: product.id)
-				@dataJson = { :message => "북마크가 생성되었습니다.", :book_mark => { :app_user_id => current_user.app_player,
-																																							:hit_product_title => BookMark.eager_load(:hit_product).find(@bookMarkResult.id).hit_product.title }
+				@dataJson = { :message => "북마크가 생성되었습니다.",
+											:book_mark => { :app_user_id => current_user.app_player,
+											:hit_product_title => BookMark.eager_load(:hit_product).find(@bookMarkResult.id).hit_product.title }
 										}
 
 				render :json => @dataJson, :except => [:id, :created_at, :updated_at]

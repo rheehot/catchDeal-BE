@@ -12,7 +12,12 @@ class ApplicationController < ActionController::Base
 			return
 		end
 		
-		@current_user = AppUser.find(auth_token[:app_user_id])
+		begin
+			@current_user = AppUser.find(auth_token[:app_user_id])
+		rescue
+			render json: { errors: ['Invalid token'] }, status: :unauthorized
+		end
+		
 		rescue JWT::VerificationError, JWT::DecodeError
 		render json: { errors: ['Not Authenticated'] }, status: :unauthorized
 	end
@@ -20,7 +25,7 @@ class ApplicationController < ActionController::Base
 	private
 	def http_token
 		@http_token ||= if request.headers['Authorization'].present?
-			request.headers['Authorization'].split(' ').last
+			request.headers['Authorization']
 		end
 	end
 

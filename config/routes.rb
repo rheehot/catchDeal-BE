@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   
   ## JWT 토큰 생성 및 테스트
   post 'auth_user' => 'authentication#authenticate_user'
-  get 'apis/test'
+  get 'apis/test' => "apis/test"
   
   ## 북마크
   post 'apis/book_mark_combine'
