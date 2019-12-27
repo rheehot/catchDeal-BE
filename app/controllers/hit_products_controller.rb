@@ -75,8 +75,6 @@ class HitProductsController < ApplicationController
       @currentTime = Time.zone.now.strftime('%Y-%m-%d %H:%M:%S')
     else
       @currentTime = @currentTime.to_time
-      puts "** @currentTime : #{@currentTime}"
-      puts "Time zone : #{Time.zone.now}"
     end
     
     if @pageNumber == 1
