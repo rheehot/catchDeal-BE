@@ -19,8 +19,8 @@ class AuthenticationController < ApplicationController
   private
 
   def payload(user)    
-		@token = JWT.encode({ app_user_id: user.id, exp: 6.months.from_now.to_i }, ENV["SECRET_KEY_BASE"])
-		# @token = JWT.encode({ app_user_id: user.id, exp: 1.minutes.from_now.to_i }, ENV["SECRET_KEY_BASE"])
+		# @token = JWT.encode({ app_user_id: user.id, exp: 6.months.from_now.to_i }, ENV["SECRET_KEY_BASE"])
+		@token = JWT.encode({ app_user_id: user.id, exp: 1.minutes.from_now.to_i }, ENV["SECRET_KEY_BASE"])
 		@tree = { "token" => @token } 
 		 
 		return @tree

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'hit-products/condition' => 'hit_products#condition'
   
   get 'hit_products/web_products_list' => "hit_products#web_products_list"
-  get 'hit-products/web_products-list' => "hit_products#web_products_list"
+  get 'hit-products/web-products-list' => "hit_products#web_products_list"
   
   get 'hit_products/rank' => 'hit_products#rank'
   get 'hit-products/rank' => 'hit_products#rank'
@@ -19,13 +19,22 @@ Rails.application.routes.draw do
   
   ## JWT 토큰 생성 및 테스트
   post 'auth_user' => 'authentication#authenticate_user'
+  post 'auth-user' => 'authentication#authenticate_user'
+  
   get 'apis/test' => "apis/test"
   
   ## 북마크
   post 'apis/book_mark_combine' => 'apis#book_mark_combine'
+  post 'apis/book-mark-combine' => 'apis#book_mark_combine'
+  
   post 'apis/book_mark_create' => 'apis#book_mark_create'
+  post 'apis/book-mark-create' => 'apis#book_mark_create'
+  
   delete 'apis/book_mark_destroy' => 'apis#book_mark_destroy'
+  delete 'apis/book-mark-destroy' => 'apis#book_mark_destroy'
+  
   get 'apis/book_mark_list' => 'apis#book_mark_list'
+  get 'apis/book-mark-list' => 'apis#book_mark_list'
   
   resources :notices
   get '/notice.json' => 'notices#index_json'

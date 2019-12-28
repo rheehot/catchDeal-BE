@@ -2,6 +2,7 @@ class HitProductsController < ApplicationController
   require 'action_view'
   require 'action_view/helpers'
   include ActionView::Helpers::DateHelper
+  include HitProductsHelper
 
   def index
     @currentTime = params[:time]
@@ -14,24 +15,10 @@ class HitProductsController < ApplicationController
     
     @data = HitProduct.where('created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC")
     
-    @startNumber = 0
-    @stackNumber = @startNumber + 1
-    @data.each do |currentData|
-      currentData.uid = @stackNumber
-      currentData.dateAgo = "#{time_ago_in_words(currentData.date)} 전"
-      currentData.shortDate = currentData.date.strftime('%Y-%m-%d %H:%M:%S')
-      currentData.imageUrl = currentData.image_url
-      currentData.isSoldOut = currentData.is_sold_out
-      currentData.isDeleted = currentData.dead_check
-      currentData.shortUrl = currentData.redirect_url
-      currentData.isTitleChanged = currentData.is_title_changed
-      @stackNumber += 1
-    end
+    @data = attr_refactory(@data)
+    @dataResult = product_json(@data)
     
-    @dataResult = @data
-    
-    # render :json => { :latestedData => @dataResult.first.product_id, :data => @dataResult }, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :redirectUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :dead_check, :redirect_url]
-    render :json => { :data => @dataResult }, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :isTitleChanged, :shortUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :dead_check, :redirect_url]
+    render :json => @dataResult
   end
   
   def search
@@ -43,23 +30,10 @@ class HitProductsController < ApplicationController
       @data = HitProduct.order("date DESC").where("replace(title, ' ', '') ilike replace(?, ' ', '')", "%#{@word}%")
     end
     
-    @startNumber = 0
-    @stackNumber = @startNumber + 1
-    @data.each do |currentData|
-      currentData.uid = @stackNumber
-      currentData.dateAgo = "#{time_ago_in_words(currentData.date)} 전"
-      currentData.shortDate = currentData.date.strftime('%Y-%m-%d %H:%M:%S')
-      currentData.imageUrl = currentData.image_url
-      currentData.isSoldOut = currentData.is_sold_out
-      currentData.isDeleted = currentData.dead_check
-      currentData.shortUrl = currentData.redirect_url
-      currentData.isTitleChanged = currentData.is_title_changed
-      @stackNumber += 1
-    end
+    @data = attr_refactory(@data)
+    @dataResult = product_json(@data)
     
-    @dataResult = @data
-    
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :isTitleChanged, :shortUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :redirect_url]
+    render :json => @dataResult
   end
   
   def condition
@@ -87,68 +61,30 @@ class HitProductsController < ApplicationController
       @data = HitProduct.where('created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC").uniq.drop(@startNumber).first(@size)
     end
     
-    @stackNumber = 0
-    @stackNumber = @startNumber + 1
-    @data.each do |currentData|
-      currentData.uid = @stackNumber
-      currentData.dateAgo = "#{time_ago_in_words(currentData.date)} 전"
-      currentData.shortDate = currentData.date.strftime('%Y-%m-%d %H:%M:%S')
-      currentData.imageUrl = currentData.image_url
-      currentData.isSoldOut = currentData.is_sold_out
-      currentData.isDeleted = currentData.dead_check
-      currentData.shortUrl = currentData.redirect_url
-      currentData.isTitleChanged = currentData.is_title_changed
-      @stackNumber += 1
-    end
+    @data = attr_refactory(@data)
     
-    @tree = { :pageNumber => @pageNumber, :sizeOfPage => @size, :data => @data }
-    @dataResult = @tree
+    @dataResult = { :pageNumber => @pageNumber, :sizeOfPage => @size, :data => @data }
+    @dataResult = product_json(@dataResult)
     
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :isTitleChanged, :shortUrl], :except => [:id, :created_at, :updated_at, :website, :page, :is_sold_out, :image_url, :redirect_url]
+    render :json => @dataResult
   end
   
   def web_products_list
     @params = params[:web]
     @data = HitProduct.order("date DESC").where(website: @params)
     
-    @stackNumber = 1
-    @data.each do |currentData|
-      currentData.uid = @stackNumber
-      currentData.dateAgo = "#{time_ago_in_words(currentData.date)} 전"
-      currentData.shortDate = currentData.date.strftime('%Y-%m-%d %H:%M:%S')
-      currentData.imageUrl = currentData.image_url
-      currentData.isSoldOut = currentData.is_sold_out
-      currentData.isDeleted = currentData.dead_check
-      currentData.shortUrl = currentData.redirect_url
-      currentData.isTitleChanged = currentData.is_title_changed
-      @stackNumber += 1
-    end
+    @data = attr_refactory(@data)
+    @dataResult = product_json(@data)
     
-    @dataResult = @data
-    
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :isTitleChanged, :shortUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :redirect_url]
+    render :json => @dataResult
   end
   
   def rank
-    @data = HitProduct.order("score DESC").limit(200)
+    @data = HitProduct.order("score DESC").limit(100)
     
-    @startNumber = 0
-    @stackNumber = @startNumber + 1
-    @data.each do |currentData|
-      currentData.uid = @stackNumber
-      currentData.dateAgo = "#{time_ago_in_words(currentData.date)} 전"
-      currentData.shortDate = currentData.date.strftime('%Y-%m-%d %H:%M:%S')
-      currentData.imageUrl = currentData.image_url
-      currentData.isSoldOut = currentData.is_sold_out
-      currentData.isDeleted = currentData.dead_check
-      currentData.shortUrl = currentData.redirect_url
-      currentData.isTitleChanged = currentData.is_title_changed
-      @stackNumber += 1
-    end
+    @data = attr_refactory(@data)
+    @dataResult = product_json(@data)
     
-    @dataResult = @data
-    
-    # render :layout => false
-    render :json => @dataResult, :methods => [:dateAgo, :shortDate, :uid, :imageUrl, :isSoldOut, :isDeleted, :isTitleChanged, :shortUrl], :except => [:id, :created_at, :updated_at, :website, :is_sold_out, :image_url, :redirect_url]
+    render :json => @dataResult
   end
 end
