@@ -5,11 +5,11 @@ class ApisController < ApplicationController
   before_action :jwt_authenticate_request!
 
   def test
-		@dataJson = { :message => "[Test] Token 인증 되었습니다! :D", :user => current_user }
+		@dataJson = { :message => "[Test] Token 인증 되었습니다! :D", :user => { :appPlayerId => current_user.id, :appPlayer => current_user.app_player, :lastTokenGetDate => current_user.last_token } }
 		render :json => @dataJson, :except => [:id, :created_at, :updated_at, :category]
   end
 	
-  def book_mark_combine
+  def bookmark_combine
   	begin
 	    json_params = JSON.parse(request.body.read)
 			product = HitProduct.find_by(product_id: json_params["product"]["id"])
@@ -23,9 +23,9 @@ class ApisController < ApplicationController
 				if @bookMark.nil?
 					@bookMarkResult = BookMark.create(app_user_id: current_user.id, hit_product_id: product.id)
 					@dataJson = { :message => "북마크가 생성되었습니다.",
-												:book_mark => {
-													:user_id => current_user.id,
-													:hit_product_title => BookMark.eager_load(:hit_product).find(@bookMarkResult.id).hit_product.title
+												:bookMark => {
+													:userId => current_user.id,
+													:hitProductTitle => BookMark.eager_load(:hit_product).find(@bookMarkResult.id).hit_product.title
 												}
 											}
 	
@@ -40,7 +40,7 @@ class ApisController < ApplicationController
 		end
   end
 
-  def book_mark_create
+  def bookmark_create
     json_params = JSON.parse(request.body.read)
 		product = HitProduct.find_by(product_id: json_params["product"]["id"])
 	  
@@ -53,8 +53,8 @@ class ApisController < ApplicationController
 			if @bookMark.nil?
 				@bookMarkResult = BookMark.create(app_user_id: current_user.id, hit_product_id: product.id)
 				@dataJson = { :message => "북마크가 생성되었습니다.",
-											:book_mark => { :user_id => current_user.id,
-											:hit_product_title => BookMark.eager_load(:hit_product).find(@bookMarkResult.id).hit_product.title }
+											:bookMark => { :userId => current_user.id,
+											:hitProductTitle => BookMark.eager_load(:hit_product).find(@bookMarkResult.id).hit_product.title }
 										}
 
 				render :json => @dataJson, :except => [:id, :created_at, :updated_at]
@@ -64,7 +64,7 @@ class ApisController < ApplicationController
 		end
   end
 	
-  def book_mark_destroy
+  def bookmark_destroy
 		json_params = JSON.parse(request.body.read)
 		product = HitProduct.find_by(product_id: json_params["product"]["id"])
 	  
@@ -83,7 +83,7 @@ class ApisController < ApplicationController
 		end
   end
   
-  def book_mark_list
+  def bookmark_list
 		arr = Array.new
 		
 		orderStack = 1
@@ -94,9 +94,9 @@ class ApisController < ApplicationController
 
 		@result = Array.new
 		arr.each do |t|
-			@result.push(:product_id => t[0], :title => t[1], :view => t[3], :comment => t[4], :like => t[5],:score => t[6], :url => t[7], :order => t[8], :dataAgo => "#{time_ago_in_words(t[2])} 전", :imageUrl => t[9], :isSoldOut => t[10], :isDeleted => t[11], :isTitleChanged => t[12], :shortUrl => t[13])
+			@result.push(:product_id => t[0], :productId => t[0], :title => t[1], :view => t[3], :comment => t[4], :like => t[5],:score => t[6], :url => t[7], :order => t[8], :dataAgo => "#{time_ago_in_words(t[2])} 전", :imageUrl => t[9], :isSoldOut => t[10], :isDeleted => t[11], :isTitleChanged => t[12], :shortUrl => t[13])
 		end
 		
-		render :json => { :user_id => current_user.id, :book_mark => @result }
+		render :json => { :userId => current_user.id, :bookMark => @result }
   end
 end

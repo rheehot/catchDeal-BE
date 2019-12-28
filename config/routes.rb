@@ -24,17 +24,17 @@ Rails.application.routes.draw do
   get 'apis/test' => "apis/test"
   
   ## 북마크
-  post 'book_mark_combine' => 'apis#book_mark_combine'
-  post 'book-mark-combine' => 'apis#book_mark_combine'
+  post 'book_mark_combine' => 'apis#bookmark_combine'
+  post 'bookmark-combine' => 'apis#bookmark_combine'
   
-  post 'book_mark_create' => 'apis#book_mark_create'
-  post 'book-mark-create' => 'apis#book_mark_create'
+  post 'book_mark_create' => 'apis#bookmark_create'
+  post 'bookmark-create' => 'apis#bookmark_create'
   
-  delete 'book_mark_destroy' => 'apis#book_mark_destroy'
-  delete 'book-mark-destroy' => 'apis#book_mark_destroy'
+  delete 'book_mark_destroy' => 'apis#bookmark_destroy'
+  delete 'bookmark-destroy' => 'apis#bookmark_destroy'
   
-  get 'book_mark_list' => 'apis#book_mark_list'
-  get 'book-mark-list' => 'apis#book_mark_list'
+  get 'book_mark_list' => 'apis#bookmark_list'
+  get 'bookmark-list' => 'apis#bookmark_list'
   
   resources :notices
   get '/notice.json' => 'notices#index_json'
