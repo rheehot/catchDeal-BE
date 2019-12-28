@@ -1,12 +1,16 @@
 <div>
     <div align="center" style="width: 50%; padding: 10px 50px 10px 50px; border-width: 3px; border-style: solid; border-image: linear-gradient( to right, #fb3030, #a719ff ) 100% 1%">
-        <div style="color: #ff9898;font-size: 30px;font-weight: bold;">팝스타 모미</div>
-        <div style="text-align: left; margin: 20px 10px 0px 0px;"><span style="color: red; font-weight: bold;">경고!</span> 홈페이지 크롤링(Selenium) 작동 문제 발생했습니다.</div>
+        <div style="color: #ff9898;font-size: 30px;font-weight: bold;">캐치딜</div>
+        <div style="text-align: left; margin: 20px 0px 0px 0px;"><span style="color: red; font-weight: bold;">경고!</span> 홈페이지 크롤링(Selenium) 작동 문제가 발생했습니다.</div>
+        <div style="text-align: left;">슬프지만... 누군가 서버개발자를 깨워주세요 ㅠㅠ</div>
+        <div style="text-align: left; margin: 10px 10px 0px 0px;">
+            <%= content_tag(:span, "서버 개발자 연락처", style: "padding: 3px 10px 3px 10px; background-color: #a23bff; color: white; margin-right: 10px; border-radius: 5px; font-weight: bold") %> <%= content_tag(:span, ENV['SERVER_DEV_NAME'], style: "font-weight: bold") %> <%= link_to ENV['SERVER_DEV_PHONE_NUMBER'], "tel:#{ENV['SERVER_DEV_PHONE_NUMBER']}" %> 
+        </div>
         <div style="text-align: left; margin-top: 20px; margin-bottom: 10px; padding: 10px 0px 10px 10px; background-color: #e8e8e8;">
-            <div><span style="padding: 3px 10px 3px 10px; background-color: #2ea2f5; color: white; margin-right: 10px; border-radius: 5px; font-weight: bold">ERROR LOG</span><br/><br/></div>
+            <div><%= content_tag(:span, "Error Log", style: "padding: 3px 10px 3px 10px; background-color: #2ea2f5; color: white; margin-right: 10px; border-radius: 5px; font-weight: bold") %><br/><br/></div>
             <%= content_tag(:div, @errorMessage, style: "white-space: pre-wrap;") %>
         </div>
-        <div style="margin-top: 50px; margin-bottom: 5px; color: #868686">인기있는 글들은 다 알고있는 관심종자 팝스타 모미!</div>
+        <div style="margin-top: 50px; margin-bottom: 5px; color: #868686">캐치 : 쉴 새 없이 맛있는 것만 가져와요!</div>
         <div align="center" style="margin-bottom: 20px;"><a href="//popstar-momi.herokuapp.com" target="_blank" style="text-decoration: none; color: #868686">https://popstar-momi.herokuapp.com</a></div>
     </div>
 </div>

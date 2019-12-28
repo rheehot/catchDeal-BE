@@ -18,6 +18,8 @@ namespace :chrome_check do
 		options.add_argument('--headless') # 크롬 헤드리스 모드 사용 위해 headless setting
 		begin
 		  @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
+		  #@errorMessage = $!
+		  #SendmailMailer.email_notification(@errorMessage).deliver_now
 		rescue 
 		  puts "에러 발생! 관리자에게 메일이 발송됩니다.." 
 		  @errorMessage = $!
