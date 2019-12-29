@@ -109,7 +109,7 @@ namespace :hit_news_ruliweb do
           
   		
           ## score 변경 체크
-          if (currentData[8].to_i > @previousData.score.to_i)
+          if (currentData[8].to_s > @previousData.score.to_s)
             @previousData.update(view: currentData[5].to_i, comment: currentData[6].to_i, like: currentData[7].to_i, score: currentData[8].to_i)
           end
           

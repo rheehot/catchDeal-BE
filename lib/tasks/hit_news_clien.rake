@@ -45,20 +45,20 @@ namespace :hit_news_clien do
         if @previousData != nil
         
           ## 제목 변경 체크
-          if (currentData[2] != @previousData.title)
-            @previousData.update(title: currentData[2], is_title_changed: true)
+          if (currentData[2].to_s != @previousData.title.to_s)
+            @previousData.update(title: currentData[2].to_s, is_title_changed: true)
           end
   		
           
           ## 이미지 변경 체크
-          if (currentData[10] != @previousData.image_url)
-            @previousData.update(image_url: currentData[10])
+          if (currentData[10].to_s != @previousData.image_url.to_s)
+            @previousData.update(image_url: currentData[10].to_s)
           end
   		
           
           ## score 변경 체크
-          if (currentData[8].to_s > @previousData.score.to_s)
-            @previousData.update(view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8])
+          if (currentData[8].to_i > @previousData.score.to_i)
+            @previousData.update(view: currentData[5].to_i, comment: currentData[6].to_i, like: currentData[7].to_i, score: currentData[8].to_i)
           end
   		
           
