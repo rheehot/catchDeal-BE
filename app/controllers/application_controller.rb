@@ -7,14 +7,16 @@ class ApplicationController < ActionController::Base
 	protected
 	
 	def jwt_authenticate_request!
-		unless user_id_in_token?
-			if JWT::ExpiredSignature
-				render json: { errors: ['Token Expired'] }, status: :unauthorized
-				return
-			else
+		
+		begin
+			JWT.decode(request.headers['Authorization'], ENV["SECRET_KEY_BASE"])
+			unless user_id_in_token?
 				render json: { errors: ['Not Authenticated'] }, status: :unauthorized
 				return
 			end
+		rescue JWT::ExpiredSignature
+			render json: { errors: ['Token Expired'] }, status: :unauthorized
+			return
 		end
 		
 		begin
