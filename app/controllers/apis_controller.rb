@@ -97,6 +97,6 @@ class ApisController < ApplicationController
 			@result.push(:product_id => t[0], :productId => t[0], :title => t[1], :view => t[3], :comment => t[4], :like => t[5],:score => t[6], :url => t[7], :order => t[8], :dataAgo => "#{time_ago_in_words(t[2])} 전", :imageUrl => t[9], :isSoldOut => t[10], :isDeleted => t[11], :isTitleChanged => t[12], :shortUrl => t[13])
 		end
 		
-		render :json => { :userId => current_user.id, :bookMark => @result }
+		render :json => { :userId => current_user.id, :bookmark => @result }
   end
 end

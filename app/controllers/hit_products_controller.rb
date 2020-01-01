@@ -15,9 +15,17 @@ class HitProductsController < ApplicationController
     
     @data = HitProduct.where('created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC")
     
-    @data = attr_refactory(@data)
-    @dataResult = product_json(@data)
+    @user = auth_user_check(request.headers['Authorization'])
+    @data = attr_refactory(@data, @user)
     
+    if @user == false
+      @userTokenBoolean = false
+    else
+      @userTokenBoolean = true
+    end
+    
+    @dataResult = { :isLogin => @userTokenBoolean, :data => @data }
+    @dataResult = product_json(@dataResult)
     render :json => @dataResult
   end
   
@@ -30,9 +38,17 @@ class HitProductsController < ApplicationController
       @data = HitProduct.order("date DESC").where("replace(title, ' ', '') ilike replace(?, ' ', '')", "%#{@word}%")
     end
     
-    @data = attr_refactory(@data)
-    @dataResult = product_json(@data)
+    @user = auth_user_check(request.headers['Authorization'])
+    @data = attr_refactory(@data, @user)
     
+    if @user == false
+      @userTokenBoolean = false
+    else
+      @userTokenBoolean = true
+    end
+    
+    @dataResult = { :isLogin => @userTokenBoolean, :data => @data }
+    @dataResult = product_json(@dataResult)
     render :json => @dataResult
   end
   
@@ -61,9 +77,16 @@ class HitProductsController < ApplicationController
       @data = HitProduct.where('created_at <= :currnet_time', :currnet_time => @currentTime ).order("date DESC").uniq.drop(@startNumber).first(@size)
     end
     
-    @data = attr_refactory(@data)
+    @user = auth_user_check(request.headers['Authorization'])
+    @data = attr_refactory(@data, @user)
     
-    @dataResult = { :pageNumber => @pageNumber, :sizeOfPage => @size, :data => @data }
+    if @user == false
+      @userTokenBoolean = false
+    else
+      @userTokenBoolean = true
+    end
+    
+    @dataResult = { :pageNumber => @pageNumber, :sizeOfPage => @size, :isLogin => @userTokenBoolean, :data => @data }
     @dataResult = product_json(@dataResult)
     
     render :json => @dataResult
@@ -73,18 +96,34 @@ class HitProductsController < ApplicationController
     @params = params[:web]
     @data = HitProduct.order("date DESC").where(website: @params)
     
-    @data = attr_refactory(@data)
-    @dataResult = product_json(@data)
+    @user = auth_user_check(request.headers['Authorization'])
+    @data = attr_refactory(@data, @user)
     
+    if @user == false
+      @userTokenBoolean = false
+    else
+      @userTokenBoolean = true
+    end
+    
+    @dataResult = { :isLogin => @userTokenBoolean, :data => @data }
+    @dataResult = product_json(@dataResult)
     render :json => @dataResult
   end
   
   def rank
     @data = HitProduct.order("score DESC").limit(100)
     
-    @data = attr_refactory(@data)
-    @dataResult = product_json(@data)
+    @user = auth_user_check(request.headers['Authorization'])
+    @data = attr_refactory(@data, @user)
     
+    if @user == false
+      @userTokenBoolean = false
+    else
+      @userTokenBoolean = true
+    end
+    
+    @dataResult = { :isLogin => @userTokenBoolean, :data => @data }
+    @dataResult = product_json(@dataResult)
     render :json => @dataResult
   end
 end
