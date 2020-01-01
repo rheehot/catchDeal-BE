@@ -88,13 +88,13 @@ class ApisController < ApplicationController
 		
 		orderStack = 1
 		@bookMark = BookMark.eager_load(:hit_product).where(app_user_id: current_user.id).each do |t|
-			arr.push([t.hit_product.product_id, t.hit_product.title, t.hit_product.date, t.hit_product.view, t.hit_product.comment, t.hit_product.like, t.hit_product.score, t.hit_product.url, orderStack, t.hit_product.imageUrl, t.hit_product.is_sold_out, t.hit_product.dead_check, t.hit_product.is_title_changed, t.hit_product.redirect_url])
+			arr.push([orderStack, t.hit_product.product_id, t.hit_product.title, t.hit_product.view, t.hit_product.comment, t.hit_product.like, t.hit_product.score, "#{time_ago_in_words(t.hit_product.date)} 전", t.hit_product.imageUrl, t.hit_product.is_sold_out, t.hit_product.dead_check, t.hit_product.is_title_changed, t.hit_product.redirect_url])
 			orderStack += 1
 		end
 
 		@result = Array.new
 		arr.each do |t|
-			@result.push(:product_id => t[0], :productId => t[0], :title => t[1], :view => t[3], :comment => t[4], :like => t[5],:score => t[6], :url => t[7], :order => t[8], :dataAgo => "#{time_ago_in_words(t[2])} 전", :imageUrl => t[9], :isSoldOut => t[10], :isDeleted => t[11], :isTitleChanged => t[12], :shortUrl => t[13])
+			@result.push(:order => t[0], :productId => t[1], :title => t[2], :view => t[3], :comment => t[4], :like => t[5], :score => t[6], :dataAgo => t[7], :imageUrl => t[8], :isSoldOut => t[9], :isDeleted => t[10], :isTitleChanged => t[11], :url => t[12], :shortUrl => t[13], :isBookmark => true)
 		end
 		
 		render :json => { :userId => current_user.id, :bookmark => @result }
