@@ -24,7 +24,7 @@ class HitProductsController < ApplicationController
       @userTokenBoolean = true
     end
     
-    @dataResult = { :isLogin => @userTokenBoolean, :data => @data }
+    @dataResult = { :data => @data }
     @dataResult = product_json(@dataResult)
     render :json => @dataResult
   end
@@ -47,7 +47,7 @@ class HitProductsController < ApplicationController
       @userTokenBoolean = true
     end
     
-    @dataResult = { :isLogin => @userTokenBoolean, :data => @data }
+    @dataResult = { :data => @data }
     @dataResult = product_json(@dataResult)
     render :json => @dataResult
   end
@@ -64,7 +64,7 @@ class HitProductsController < ApplicationController
     if @currentTime.nil?
       @currentTime = Time.zone.now.strftime('%Y-%m-%d %H:%M:%S')
     else
-      @currentTime = @currentTime.to_time
+      @currentTime = @currentTime.to_time.strftime('%Y-%m-%d %H:%M:%S')
     end
     
     if @pageNumber == 1
@@ -86,7 +86,7 @@ class HitProductsController < ApplicationController
       @userTokenBoolean = true
     end
     
-    @dataResult = { :pageNumber => @pageNumber, :sizeOfPage => @size, :isLogin => @userTokenBoolean, :data => @data }
+    @dataResult = { :pageNumber => @pageNumber, :sizeOfPage => @size, :time => @currentTime, :data => @data }
     @dataResult = product_json(@dataResult)
     
     render :json => @dataResult
@@ -105,7 +105,7 @@ class HitProductsController < ApplicationController
       @userTokenBoolean = true
     end
     
-    @dataResult = { :isLogin => @userTokenBoolean, :data => @data }
+    @dataResult = { :data => @data }
     @dataResult = product_json(@dataResult)
     render :json => @dataResult
   end
@@ -122,7 +122,7 @@ class HitProductsController < ApplicationController
       @userTokenBoolean = true
     end
     
-    @dataResult = { :isLogin => @userTokenBoolean, :data => @data }
+    @dataResult = { :data => @data }
     @dataResult = product_json(@dataResult)
     render :json => @dataResult
   end
