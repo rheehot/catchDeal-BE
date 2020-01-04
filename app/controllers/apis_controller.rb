@@ -2,6 +2,7 @@ class ApisController < ApplicationController
   require 'action_view'
   require 'action_view/helpers'
   include ActionView::Helpers::DateHelper
+  include HitProductsHelper
   before_action :jwt_authenticate_request!
 
   def test
@@ -94,7 +95,7 @@ class ApisController < ApplicationController
 
 		@result = Array.new
 		arr.each do |t|
-			@result.push(:order => t[0], :productId => t[1], :title => t[2], :view => t[3], :comment => t[4], :like => t[5], :score => t[6], :dataAgo => t[7], :imageUrl => t[8], :isSoldOut => t[9], :isDeleted => t[10], :isTitleChanged => t[11], :url => t[12], :shortUrl => t[13], :isBookmark => true)
+			@result.push(dataPush(t))
 		end
 		
 		render :json => { :userId => current_user.id, :bookmark => @result }

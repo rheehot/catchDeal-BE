@@ -25,9 +25,9 @@ module HitProductsHelper
         resultArr = Array.new
 		dataArr.each do |t|
 			if user == false
-			    resultArr.push(:order => t[0], :productId => t[1], :title => t[2], :view => t[3], :comment => t[4], :like => t[5], :score => t[6], :dataAgo => t[7], :imageUrl => t[8], :isSoldOut => t[9], :isDeleted => t[10], :isTitleChanged => t[11], :url => t[12], :shortUrl => t[13], :isBookmark => nil)
+			    resultArr.push(:order => t[0], :productId => t[1], :title => t[2], :view => t[3], :comment => t[4], :like => t[5], :score => t[6], :dateAgo => t[7], :imageUrl => t[8], :isSoldOut => t[9], :isDeleted => t[10], :isTitleChanged => t[11], :url => t[12], :shortUrl => t[13], :isBookmark => nil)
 			else
-			    resultArr.push(:order => t[0], :productId => t[1], :title => t[2], :view => t[3], :comment => t[4], :like => t[5], :score => t[6], :dataAgo => t[7], :imageUrl => t[8], :isSoldOut => t[9], :isDeleted => t[10], :isTitleChanged => t[11], :url => t[12], :shortUrl => t[13], :isBookmark => false)
+			    resultArr.push(:order => t[0], :productId => t[1], :title => t[2], :view => t[3], :comment => t[4], :like => t[5], :score => t[6], :dateAgo => t[7], :imageUrl => t[8], :isSoldOut => t[9], :isDeleted => t[10], :isTitleChanged => t[11], :url => t[12], :shortUrl => t[13], :isBookmark => false)
 			end
 		end
 		
@@ -42,5 +42,11 @@ module HitProductsHelper
 		end
         
         return resultArr
+    end
+    
+    def dataPush(data)
+        jsonArr = Array.new
+        jsonArr.push(:order => data[0], :productId => data[1], :title => data[2], :view => data[3], :comment => data[4], :like => data[5], :score => data[6], :dateAgo => data[7], :imageUrl => data[8], :isSoldOut => data[9], :isDeleted => data[10], :isTitleChanged => data[11], :url => data[12], :shortUrl => data[13], :isBookmark => true)
+        return jsonArr
     end
 end
