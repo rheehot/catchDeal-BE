@@ -95,7 +95,7 @@ class ApisController < ApplicationController
 
 		@result = Array.new
 		arr.each do |t|
-			@result.push(dataPush(t))
+			@result.push(bookmark_list_data_push(t))
 		end
 		
 		render :json => { :userId => current_user.id, :bookmark => @result }

@@ -44,7 +44,7 @@ module HitProductsHelper
         return resultArr
     end
     
-    def dataPush(data)
+    def bookmark_list_data_push(data)
         jsonArr = Array.new
         jsonArr.push(:order => data[0], :productId => data[1], :title => data[2], :view => data[3], :comment => data[4], :like => data[5], :score => data[6], :dateAgo => data[7], :imageUrl => data[8], :isSoldOut => data[9], :isDeleted => data[10], :isTitleChanged => data[11], :url => data[12], :shortUrl => data[13], :isBookmark => true)
         return jsonArr
