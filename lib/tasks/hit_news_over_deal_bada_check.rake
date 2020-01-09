@@ -98,6 +98,10 @@ namespace :hit_news_over_deal_bada_check do
               imageUrl = nil
             end
             
+            if redirectUrl.nil? || redirectUrl.empty? || (not redirectUrl.include? "http") || (not redirectUrl.include? "https")
+              redirectUrl = ""
+            end
+            
             ## Console 확인용
             # puts "i : #{index}"
             # puts "title : #{@title} / time : #{@time} / view : #{@view}"

@@ -140,6 +140,10 @@ namespace :hit_news_over_clien_check do
             imageUrl = imageUrl.gsub("https:", "http:")
           end
           
+          if redirectUrl.nil? || redirectUrl.empty? || (not redirectUrl.include? "http") || (not redirectUrl.include? "https")
+            redirectUrl = ""
+          end
+          
           ## Console 확인용
           # puts "i : #{index}"
           # puts "title : #{@title}"

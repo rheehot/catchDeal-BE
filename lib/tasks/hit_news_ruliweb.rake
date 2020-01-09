@@ -52,7 +52,7 @@ namespace :hit_news_ruliweb do
             begin
               docs = Nokogiri::HTML(open(@url))
               redirectUrl = docs.css("div.source_url").text.split("|")[1].gsub(" ", "")
-              if redirectUrl.nil? || redirectUrl.empty?
+              if redirectUrl.nil? || redirectUrl.empty? || (not redirectUrl.include? "http") || (not redirectUrl.include? "https")
                 redirectUrl = ""
               end
               
