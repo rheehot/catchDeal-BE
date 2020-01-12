@@ -1,0 +1,116 @@
+<div id="fullpage" onload='init()'>
+	<div class="section" id="intro">
+		<div class="container">
+            <div class="row text-center-mobile">
+                <div class="col-md-8">
+                    <h2 class="font-main"><span id="typed" class="font-typed"></span> 쇼핑하세요?</h2>
+                    <div style="margin-top: 20px;">
+                        <span class="weight_black">캐치딜</span>은 오늘의 특가 정보를 홈페이지 플랫폼 별로 수집 후,<br/>
+                        특가 상품에 대해 알려주는 앱서비스 입니다.
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 wow fadeInUp">
+                    <img class="main-phone d-none d-md-block" src="<%= asset_path('img/app_sample.png') %>">
+                </div>
+            </div>
+            
+            <div class="justify-center-mobile" style="display: flex; margin-top: 50px">
+                <a href="https://apps.apple.com/kr/app/%EC%BA%90%EC%B9%98%EB%94%9C/id1493914556"><div class="download_apple button-size"></div></a>
+                <a href="https://play.google.com/store/apps/details?id=com.catchdeal"><div class="download_google button-size space-left"></div></a>
+            </div>
+            
+            <div class="text-center-mobile wow fadeInUp">
+                <img class="main-phone d-md-none" src="<%= asset_path('img/app_sample.png') %>">
+            </div>
+        </div>
+	</div>
+	
+	<div class="section" id="sale">
+        <div class="no-vertical_center padding-up container">
+            <div class="container">
+                <img class="bone_length" src="<%= asset_path('img/bone_empty.png') %>">
+            </div>
+		    <div class="font-subpage-title">할인을 가져올개!</div>
+		    <div class="font-subpage-subtitle">
+    	        오늘의 할인 소식이 궁금하세요?<br/>
+    	        캐치는 <span class="weight_black">뽐뿌, 클리앙, 루리웹, 딜바다</span> 플랫폼 에서 갖가지 할인 소식을 가져옵니다!<br/><br/>
+    	        이제 더이상 정가에 사지 말고, 우리 캐치가 물어오는 정보를 보고 싸게싸게 구입해봐요! 
+    	    </div>
+	    </div>
+	    
+	    <div>
+	        <div class="box fade-in-infinity three sale-text-3">30% 할인</div>
+	        <div class="box fade-in-infinity two sale-text-2">-13000원</div>
+            <div class="box fade-in-infinity one sale-text-1">- 2500원</div>
+            
+	        <img class="catch-hand-sale" src="<%= asset_path('img/catch_hand_sale.png')%>">
+        </div>
+	</div>
+	
+	<div class="section" id="bookmark">
+        <div class="no-vertical_center_no_position padding-up container">
+            <div class="container">
+                <img class="bone_length" src="<%= asset_path('img/bone_empty.png') %>">
+                <img class="bone_length" src="<%= asset_path('img/bone_empty.png') %>">
+            </div>
+		    <div class="font-subpage-title">북마크 할개!</div>
+		    <div class="font-subpage-subtitle">
+    	        '지금은 못 사지만 다음에 사자' 란 마음으로 콕 찝어둔 상품!<br/>
+    	        그 상품, 저희가 기억해낼게요!<br/><br/>
+    	    </div>
+    	    
+    	    <div class="text-center-mobile">
+    	        <img class="catch-find" src="<%= asset_path('img/catch_find.png')%>">
+            </div>
+	    </div>
+	</div>
+	
+	<div class="section" id="alarm">
+        <div class="no-vertical_center_no_position padding-up container">
+            <div class="container">
+                <img class="bone_length" src="<%= asset_path('img/bone_empty.png') %>">
+                <img class="bone_length" src="<%= asset_path('img/bone_empty.png') %>">
+                <img class="bone_length" src="<%= asset_path('img/bone_empty.png') %>">
+            </div>
+		    <div class="font-subpage-title">떳다, 알려줄개!</div>
+		    <div class="font-subpage-subtitle">
+    	        내가 원하는 키워드만 등록해놓고, 키워드에 맞는 상품이 뜨게 되면<br/>
+    	        떳다 정보를 알려주는 서비스!<br/><br/>
+    	        일상생활에 지장이 없도록 해드릴게요!<br/>
+    	        정보의 감시는 제게 맡기세요!
+    	    </div>
+	    </div>
+	    
+	    <div class="text-center-mobile">
+	        <img class="catch-alarm" src="<%= asset_path('img/catch_run.png')%>">
+        </div>
+        
+        <div style="background-color: #d6d6d6; padding: 30px; position: absolute; width: 100%; bottom: 0px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-5 col-md-2">앱 사용문의 (대표)</div>
+                    <div class="col-7 col-md-10"><%= link_to "shsdf302@gmail.com", "mailto: shsdf302@gmail.com", style: "text-decoration: none" %></div>
+                </div>
+                <div class="row" style="margin-top: 15px;">
+                    <div class="col-5 col-md-2">제작</div>
+                    <div class="col-md-10 d-none d-md-block">서현석(Front-End; React Native)<br/>김철민(Back-End; Ruby on Rails)<br/>이인하(Front-End; Designer)</div>
+                    <div class="col-7 d-md-none">서현석, 김철민, 이인하</div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+<script>
+    var myFullpage = new fullpage('#fullpage', {
+        navigation: true,
+        navigationPosition: 'right',
+        navigationTooltips: ["다운로드", "특가 정보 수집", "북마크", "키워드 알람"]
+});
+</script>
+
+<div id="promotion_list">
+    <p>정가에</p>
+    <p>할인 없이</p>
+    <p>제 값 내고</p>
+</div>

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do  
-  root 'hit_products#index'
+  root 'homes#index'
+  
+  ## 렌더 페이지
+  get 'homes/index'
   
   ## 앱 기본통신 URI
   get 'hit_products/index' => 'hit_products#index'

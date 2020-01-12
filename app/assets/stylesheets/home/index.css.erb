@@ -1,0 +1,193 @@
+.section_main {
+    background-image: url('<%= asset_path('bg/bg_gray.png') %>');
+    background-repeat: no-repeat;
+}
+.main_line {
+    margin-top: 450px;
+    position: absolute;
+}
+
+.font-typed {
+    color: #FF4848;
+    font-family: 'nexon_lv1_gothic';
+    font-weight: bold;
+}
+
+.font-subpage-subtitle {
+    font-family: 'Nanum Gothic';
+    margin-top: 50px;
+}
+
+.weight_black {
+    font-weight: bold;
+    color: black;
+}
+
+.space-left {
+    margin-left: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+    .button-size {
+        width: 170px;
+        height: 50px;
+    }
+    
+    .main-phone {
+        width: 250px;
+        margin-top: 50px;
+        z-index: 100;
+    }
+    
+    .text-center-mobile {
+        text-align: center;
+    }
+    
+    .justify-center-mobile {
+        justify-content: center;
+    }
+    
+    .font-main {
+        font-family: 'nexon_lv1_gothic';
+        color: black;
+        font-size: 30px;
+    }
+    
+    <% for i in 1..3 %>
+    .sale-text-<%=i%> {
+        position: absolute;
+        left: <%= 100 + (300*0.1*i) %>px;
+        bottom: <%= 120 + (300*0.1*i) %>px;
+        font-size: <%= 10 + (50*0.1*i) %>px;
+        color: rgb(255, <%= 100 - i*33 %>, <%= 100 - i*33 %>);
+        z-index: 100;
+    }
+    <% end %>
+    
+    .catch-hand-sale {
+        width: 400px;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+    }
+    
+    .catch-find {
+        margin-top: 30px;
+        width: 300px;
+    }
+    
+    .catch-alarm {
+        margin-top: 30px;
+        width: 300px;
+    }
+    
+    .font-subpage-title {
+        font-family: 'BRBA_B';
+        color: black;
+        font-size: 50px;
+        top: 0px;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .button-size {
+        width: 250px;
+        height: 70px;
+    }
+    
+    .main-phone {
+        width: 750px;
+        margin-top: -250px;
+        margin-left: -80px;
+        position: absolute;
+        z-index: 100;
+    }
+    
+    .font-main {
+        font-family: 'nexon_lv1_gothic';
+        color: black;
+        font-size: 50px;
+    }
+    
+    <% for i in 1..3 %>
+    .sale-text-<%=i%> {
+        position: absolute;
+        right: <%= 400 - (800*0.1*i) %>px;
+        bottom: <%= 400 + (600*0.1*i) %>px;
+        font-size: <%= 30 + (100*0.1*i) %>px;
+        color: rgb(255, <%= 100 - i*33 %>, <%= 100 - i*33 %>);
+    }
+    <% end %>
+    
+    .catch-hand-sale {
+        width: 800px;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+    }
+    
+    .catch-find {
+        width: 600px;
+        right: 150px;
+        bottom: 250px;
+        position: absolute;
+    }
+    
+    .catch-alarm {
+        width: 450px;
+        right: 150px;
+        bottom: 300px;
+        position: absolute;
+    }
+    
+    .font-subpage-title {
+        font-family: 'BRBA_B';
+        color: black;
+        font-size: 60px;
+        top: 0px;
+    }
+}
+
+.download_apple {
+    border: 1px solid black;
+    border-radius: 5px;
+    
+    background-color: black;
+    background-image: url("<%= asset_path('download/download_apple_white.png') %>");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.download_apple:hover {
+    border: 1px solid black;
+    border-radius: 5px;
+    
+    background-color: white;
+    background-image: url("<%= asset_path('download/download_apple_color.png') %>");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.download_google {
+    border: 1px solid black;
+    border-radius: 5px;
+    
+    background-color: black;
+    background-image: url("<%= asset_path('download/download_google_white.png') %>");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.download_google:hover {
+    border: 1px solid black;
+    border-radius: 5px;
+    
+    background-color: white;
+    background-image: url("<%= asset_path('download/download_google_color.png') %>");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.bone_length {
+    width: 70px;
+}
