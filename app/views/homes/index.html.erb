@@ -14,7 +14,7 @@
                 </div>
             </div>
             
-            <div class="justify-center-mobile" style="display: flex; margin-top: 50px">
+            <div class="justify-center-mobile download-collect">
                 <a href="https://apps.apple.com/kr/app/%EC%BA%90%EC%B9%98%EB%94%9C/id1493914556"><div class="download_apple button-size"></div></a>
                 <a href="https://play.google.com/store/apps/details?id=com.catchdeal"><div class="download_google button-size space-left"></div></a>
             </div>
@@ -33,7 +33,7 @@
 		    <div class="font-subpage-title">할인을 가져올개!</div>
 		    <div class="font-subpage-subtitle">
     	        오늘의 할인 소식이 궁금하세요?<br/>
-    	        캐치는 <span class="weight_black">뽐뿌, 클리앙, 루리웹, 딜바다</span> 플랫폼 에서 갖가지 할인 소식을 가져옵니다!<br/><br/>
+    	        캐치는 <span class="weight_black">뽐뿌, 클리앙, 루리웹, 딜바다</span> 플랫폼 에서 갖가지 할인 소식을 가져옵니다.<br/><br/>
     	        이제 더이상 정가에 사지 말고, 캐치가 물어오는 정보를 보고 싸게싸게 구입해봐요! 
     	    </div>
 	    </div>
@@ -53,7 +53,7 @@
             </div>
 		    <div class="font-subpage-title">북마크 할개!</div>
 		    <div class="font-subpage-subtitle">
-    	        '지금은 못 사지만 다음에 사자' 란 마음으로 콕 찝어둔 상품!<br/>
+    	        '지금은 못 사지만 다음에 사자' 란 마음으로 콕 찝어둔 상품.<br/>
     	        그 상품, 캐치가 기억해낼게요!<br/><br/>
     	    </div>
     	    
@@ -73,20 +73,45 @@
 		    <div class="font-subpage-title">떳다, 알려줄개!</div>
 		    <div class="font-subpage-subtitle">
     	        내가 원하는 키워드만 등록해놓고, 키워드에 맞는 상품이 뜨게 되면<br/>
-    	        떳다 정보를 알려주는 서비스!<br/><br/>
-    	        일상생활에 지장이 없도록 해드릴게요!<br/>
-    	        정보의 감시는 캐치에게 맡기세요!
+    	        떳다 정보를 알려주는 서비스!
     	    </div>
 	    </div>
 	    
 	    <div class="text-center-mobile">
 	        <div class="catch-alarm">
-    	        <div class="box fade-in-infinity two alarm-text-2">[신용카드] 30% Discount!</div>
-                <div class="box fade-in-infinity one alarm-text-1">위메프 [신용카드] 결제시 할인!</div>
+    	        <div class="box fade-in-infinity two alarm-text-2">[신용카드] 30% Discount</div>
+                <div class="box fade-in-infinity one alarm-text-1">위메프 [신용카드] 결제시 할인</div>
             </div>
         </div>
-        
-        <div style="background-color: #d6d6d6; padding: 30px; position: absolute; width: 100%; bottom: 0px;">
+	</div>
+	
+	<div class="section" id="bookmark">
+        <div class="no-vertical_center_no_position padding-up container">
+            <div class="container">
+                <img class="bone_length" src="<%= asset_path('img/bone_empty.png') %>">
+                <img class="bone_length" src="<%= asset_path('img/bone_empty.png') %>">
+                <img class="bone_length" src="<%= asset_path('img/bone_empty.png') %>">
+                <img class="bone_length" src="<%= asset_path('img/bone_empty.png') %>">
+            </div>
+		    <div class="font-subpage-title">핫딜 잡으러 가개</div>
+		    <div class="row">
+		        <div class="col-md-7">
+        		    <div class="font-subpage-subtitle">
+            	        지금 캐치랑 핫딜 잡으러 가보실래요?<br/>
+                        캐치는 주인님을 기다리고 있개!
+            	    </div>
+        	    </div>
+        	    
+        	    <div class="col-md-5">
+            	    <div class="text-center-mobile download-collect-ending">
+                        <a href="https://apps.apple.com/kr/app/%EC%BA%90%EC%B9%98%EB%94%9C/id1493914556"><div class="download_apple button-size"></div></a>
+                        <a href="https://play.google.com/store/apps/details?id=com.catchdeal"><div class="download_google button-size space-left"></div></a>
+                    </div>
+                </div>
+            </div>
+	    </div>
+	    
+	    <div style="background-color: #d6d6d6; padding: 30px; position: absolute; width: 100%; bottom: 0px;">
             <div class="container">
                 <div class="row">
                     <div class="col-5 col-md-2">서비스 사용문의</div>
@@ -95,13 +120,13 @@
                 <div class="row" style="margin-top: 15px;">
                     <div class="col-2 col-md-1">제작</div>
                     <div class="col-md-11 d-none d-md-block">
-                        <span>samslow(Client Developer) <%= link_to " ", "https://samslow.github.io", class: "link_gray fab fa-github", target: "_blank" %></span>
+                        <span>samslow(Client) <%= link_to " ", "https://samslow.github.io", class: "link_gray fab fa-github", target: "_blank" %></span>
                         <span style="margin-left: 10px; margin-right: 10px">|</span>
                         <span>KCM(Server Developer) <%= link_to " ", "https://kbs4674.tistory.com", class: "link_gray fab fa-blogger", target: "_blank" %> <%= link_to " ", "https://github.com/kbs4674", class: "link_gray fab fa-github", target: "_blank" %></span>
                         <span style="margin-left: 10px; margin-right: 10px">|</span>
-                        <span style="margin-left: 10px; margin-right: 10px">@inhigh(Designer) <%= link_to " ", "https://www.facebook.com/profile.php?id=100001742737747", class: "link_gray fab fa-facebook-square", target: "_blank" %></span>
+                        <span style="margin-left: 10px; margin-right: 10px">inhigh(Designer) <%= link_to " ", "https://www.facebook.com/profile.php?id=100001742737747", class: "link_gray fab fa-facebook-square", target: "_blank" %></span>
                     </div>
-                    <div class="col-10 d-md-none">samslow, @inhigh, KCM</div>
+                    <div class="col-10 d-md-none"><%= link_to "samslow", "https://samslow.github.io" %>, <%= link_to "inhigh", "https://www.facebook.com/profile.php?id=100001742737747" %>, <%= link_to "KCM", "https://kbs4674.tistory.com" %></div>
                 </div>
             </div>
         </div>
