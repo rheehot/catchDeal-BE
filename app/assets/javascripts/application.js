@@ -13,6 +13,7 @@
 //= require rails-ujs
 //= require_tree ./typed
 //= require_tree ./wow
+//= require_tree ./swipers
 //= require_tree ./full-page
 //= require_tree ./bootstrap_4.4
 //= require_tree ./limit-characters

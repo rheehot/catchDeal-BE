@@ -33,6 +33,29 @@
     margin-left: 20px;
 }
 
+.section-ex-product_img {
+    text-align: center;
+    line-height: 100px;
+}
+
+.prd_img {
+    width: 70px;
+    margin-left: 10px;
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.35);
+    border: 5px solid white;
+    border-radius: 5px;
+}
+
+.prd_time { color: gray; }
+.prd_info { margin-left: 5px; }
+.prd_center { align-items: center; }
+
+.prd_black {
+    color: black;
+    font-size: 15px;
+    font-family: 'Nanum Gothic';
+}
+
 @media only screen and (max-width: 1250px) {
     .button-size {
         width: 170px;
@@ -44,10 +67,10 @@
         height: 30px;
     }
     
-    .main-phone {
-        width: 250px;
+    .main-smartphone {
         margin-top: 50px;
-        z-index: 100;
+        width: 70%;
+        height: auto;
     }
     
     .text-center-mobile {
@@ -67,8 +90,8 @@
     <% for i in 1..3 %>
     .sale-text-<%=i%> {
         position: absolute;
-        left: <%= 100 + (300*0.1*i) %>px;
-        bottom: <%= 200 + (300*0.1*i) %>px;
+        left: <%= 30 + (300*0.1*i) %>px;
+        bottom: <%= 150 + (300*0.1*i) %>px;
         font-size: <%= 10 + (50*0.1*i) %>px;
         color: rgb(255, <%= 100 - i*33 %>, <%= 100 - i*33 %>);
         z-index: 100;
@@ -91,8 +114,12 @@
         background-repeat: no-repeat;
         background-position: right bottom;
         width: 100%;
-        min-height: 350px;
-        position: fixed;
+        min-height: 300px;
+        position: absolute;
+        z-index: -1;
+        bottom: 0px;
+        right: 0px;
+        display: block;
     }
     
     .catch-find {
@@ -130,6 +157,22 @@
         display: flex;
         margin-top: 50px;
     }
+    
+    .section-sale {
+        margin-bottom: 250px;
+    }
+    
+    .catch-hand-right {
+        background-image: url("<%= asset_path('img/catch_hand_left.png') %>");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        min-width: 50px;
+        height: 50%;
+        left: 350px;
+        top: 80px;
+        position: absolute;
+        z-index: 100;
+    }
 }
 
 @media only screen and (min-width: 1251px) {
@@ -138,12 +181,9 @@
         height: 70px;
     }
     
-    .main-phone {
-        width: 750px;
-        margin-top: -250px;
-        margin-left: -80px;
-        position: absolute;
-        z-index: 100;
+    .main-smartphone {
+        width: 100%;
+        height: auto;
     }
     
     .font-main {
@@ -166,7 +206,7 @@
     .alarm-text-<%=i%> {
         position: relative;
         left: <%= 250 + (200*0.1*i) %>px;
-        top: <%= 200 - (100*0.1*i) %>px;
+        top: <%= 150 - (100*0.1*i) %>px;
         font-size: <%= 15 + (30*0.1*i) %>px;
         color: rgb(255, <%= 100 - i*33 %>, <%= 100 - i*33 %>);
     }
@@ -176,37 +216,28 @@
         background-image: url("<%= asset_path('img/catch_hand_sale.png') %>");
         background-size: contain;
         background-repeat: no-repeat;
-        background-position: 100% 100%;
+        background-position: right bottom;
         width: 800px;
         height: 700px;
-        z-index: -1;
-        right: 0;
-        bottom: 0;
         position: absolute;
+        bottom: 0px;
+        right: 0px;
     }
     
     .catch-find {
         background-image: url("<%= asset_path('img/catch_find.png') %>");
         background-size: contain;
         background-repeat: no-repeat;
-        background-position: 100% 100%;
         width: 800px;
         height: 700px;
-        right: 5%;
-        bottom: 200px;
-        position: absolute;
     }
     
     .catch-alarm {
         background-image: url("<%= asset_path("img/catch_alarm.png") %>");
         background-size: contain;
         background-repeat: no-repeat;
-        background-position: 100% 100%;
         width: 800px;
         height: 500px;
-        right: 5%;
-        bottom: 200px;
-        position: absolute;
     }
     
     .font-subpage-title {
@@ -219,6 +250,18 @@
     .download-collect-ending {
         display: flex;
         margin-top: 50px;
+    }
+    
+    .catch-hand-left {
+        background-image: url("<%= asset_path('img/catch_hand_right.png') %>");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        min-width: 100px;
+        height: 50%;
+        left: -50px;
+        top: 90px;
+        position: absolute;
+        z-index: 100;
     }
 }
 

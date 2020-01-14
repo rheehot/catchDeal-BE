@@ -52,15 +52,18 @@ html.fp-enabled,
     width: 100%;
     height: 100%;
 }
+
 @media only screen and (max-width: 768px) {
-    .no-vertical_center { margin-top: -400px; }
-    .no-vertical_center_no_position { margin-top: -250px; }
+    .no-vertical_center { }
+    /*.no-vertical_center { padding-top: 25%; }
+    .no-vertical_center_no_position { margin-top: -250px; }*/
 }
 
 @media only screen and (min-width: 769px) {
-    .no-vertical_center { margin-top: -200px; }
-    .no-vertical_center_no_position { margin-top: -200px; }
+    .no-vertical_center { padding-top: 25%; }
+    .no-vertical_center_no_position { padding-top: 25%; }
 }
+
 .fp-slidesContainer {
     float: left;
     position: relative;
