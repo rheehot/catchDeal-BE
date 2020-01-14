@@ -9,7 +9,7 @@
                         특가 상품에 대해 알려주는 앱서비스 입니다.
                     </div>
                 </div>
-                <div class="col-12 col-md-4 wow fadeInUp">
+                <div class="col-12 col-sm-12 col-md-4 wow fadeInUp">
                     <img class="main-phone d-none d-md-block" src="<%= asset_path('img/app_sample.png') %>">
                 </div>
             </div>
@@ -34,16 +34,14 @@
 		    <div class="font-subpage-subtitle">
     	        오늘의 할인 소식이 궁금하세요?<br/>
     	        캐치는 <span class="weight_black">뽐뿌, 클리앙, 루리웹, 딜바다</span> 플랫폼 에서 갖가지 할인 소식을 가져옵니다!<br/><br/>
-    	        이제 더이상 정가에 사지 말고, 우리 캐치가 물어오는 정보를 보고 싸게싸게 구입해봐요! 
+    	        이제 더이상 정가에 사지 말고, 캐치가 물어오는 정보를 보고 싸게싸게 구입해봐요! 
     	    </div>
 	    </div>
 	    
-	    <div>
-	        <div class="box fade-in-infinity three sale-text-3">30% 할인</div>
-	        <div class="box fade-in-infinity two sale-text-2">-13000원</div>
+        <div class="catch-hand-sale">
+            <div class="box fade-in-infinity three sale-text-3">30% 할인</div>
+            <div class="box fade-in-infinity two sale-text-2">-13000원</div>
             <div class="box fade-in-infinity one sale-text-1">- 2500원</div>
-            
-	        <img class="catch-hand-sale" src="<%= asset_path('img/catch_hand_sale.png')%>">
         </div>
 	</div>
 	
@@ -56,11 +54,11 @@
 		    <div class="font-subpage-title">북마크 할개!</div>
 		    <div class="font-subpage-subtitle">
     	        '지금은 못 사지만 다음에 사자' 란 마음으로 콕 찝어둔 상품!<br/>
-    	        그 상품, 저희가 기억해낼게요!<br/><br/>
+    	        그 상품, 캐치가 기억해낼게요!<br/><br/>
     	    </div>
     	    
     	    <div class="text-center-mobile">
-    	        <img class="catch-find" src="<%= asset_path('img/catch_find.png')%>">
+    	        <div class="catch-find"></div>
             </div>
 	    </div>
 	</div>
@@ -77,24 +75,33 @@
     	        내가 원하는 키워드만 등록해놓고, 키워드에 맞는 상품이 뜨게 되면<br/>
     	        떳다 정보를 알려주는 서비스!<br/><br/>
     	        일상생활에 지장이 없도록 해드릴게요!<br/>
-    	        정보의 감시는 제게 맡기세요!
+    	        정보의 감시는 캐치에게 맡기세요!
     	    </div>
 	    </div>
 	    
 	    <div class="text-center-mobile">
-	        <img class="catch-alarm" src="<%= asset_path('img/catch_run.png')%>">
+	        <div class="catch-alarm">
+    	        <div class="box fade-in-infinity two alarm-text-2">[신용카드] 30% Discount!</div>
+                <div class="box fade-in-infinity one alarm-text-1">위메프 [신용카드] 결제시 할인!</div>
+            </div>
         </div>
         
         <div style="background-color: #d6d6d6; padding: 30px; position: absolute; width: 100%; bottom: 0px;">
             <div class="container">
                 <div class="row">
-                    <div class="col-5 col-md-2">서비스 사용문의 (대표)</div>
+                    <div class="col-5 col-md-2">서비스 사용문의</div>
                     <div class="col-7 col-md-10"><%= link_to "shsdf302@gmail.com", "mailto: shsdf302@gmail.com", style: "text-decoration: none" %></div>
                 </div>
                 <div class="row" style="margin-top: 15px;">
-                    <div class="col-5 col-md-2">제작</div>
-                    <div class="col-md-10 d-none d-md-block">서현석(Front-End; React Native)<br/>김철민(Back-End; Ruby on Rails)<br/>이인하(Front-End; Designer)</div>
-                    <div class="col-7 d-md-none">서현석, 김철민, 이인하</div>
+                    <div class="col-2 col-md-1">제작</div>
+                    <div class="col-md-11 d-none d-md-block">
+                        <span>samslow(Client Developer) <%= link_to " ", "https://samslow.github.io", class: "link_gray fab fa-github", target: "_blank" %></span>
+                        <span style="margin-left: 10px; margin-right: 10px">|</span>
+                        <span>KCM(Server Developer) <%= link_to " ", "https://kbs4674.tistory.com", class: "link_gray fab fa-blogger", target: "_blank" %> <%= link_to " ", "https://github.com/kbs4674", class: "link_gray fab fa-github", target: "_blank" %></span>
+                        <span style="margin-left: 10px; margin-right: 10px">|</span>
+                        <span style="margin-left: 10px; margin-right: 10px">@inhigh(Designer) <%= link_to " ", "https://www.facebook.com/profile.php?id=100001742737747", class: "link_gray fab fa-facebook-square", target: "_blank" %></span>
+                    </div>
+                    <div class="col-10 d-md-none">samslow, @inhigh, KCM</div>
                 </div>
             </div>
         </div>
