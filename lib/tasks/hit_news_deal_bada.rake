@@ -155,6 +155,10 @@ namespace :hit_news_deal_bada do
           
         end
         
+        if currentData[10] == ""
+          currentData[10] = nil
+        end
+        
         HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10], redirect_url: currentData[11])
       end
       

@@ -74,6 +74,10 @@ namespace :hit_news_over_clien_check do
           end
           
         end
+        
+        if currentData[10] == ""
+          currentData[10] = nil
+        end
 
       end
     end

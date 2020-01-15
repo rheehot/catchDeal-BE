@@ -121,6 +121,10 @@ namespace :hit_news_over_ruliweb_check do
         else
           next
         end
+        
+        if currentData[10] == ""
+          currentData[10] = nil
+        end
       end
       
     end

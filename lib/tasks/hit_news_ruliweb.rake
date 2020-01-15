@@ -19,7 +19,7 @@ namespace :hit_news_ruliweb do
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     ### 루리웹 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
-    2.step(1, -1) do |index|
+    2.step(9, 7) do |index|
       begin
         puts "[루리웹 #{index}] 크롤링 시작!"
         @dataArray = Array.new
@@ -118,7 +118,10 @@ namespace :hit_news_ruliweb do
           if (currentData[11].to_s != @previousData.redirect_url.to_s)
             @previousData.update(redirect_url: currentData[11].to_s)
           end
-          
+        end
+        
+        if currentData[10] == ""
+          currentData[10] = nil
         end
         
         HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10], redirect_url: currentData[11])
