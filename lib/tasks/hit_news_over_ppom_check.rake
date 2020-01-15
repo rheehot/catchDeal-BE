@@ -4,18 +4,16 @@
 namespace :hit_news_over_ppom_check do
   desc "TODO"
   task auto_collect: :environment do
-    
+
     require 'selenium-webdriver'
-    if Rails.env.development?
-      # Selenium::WebDriver::Chrome.driver_path = `which chromedriver-helper`.chomp
-    else
-      Selenium::WebDriver::Chrome.driver_path = `which chromedriver-helper`.chomp
-    end
-    
+    Selenium::WebDriver::Chrome.driver_path = `which chromedriver-helper`.chomp
+
     ## 헤드리스 개념 : https://beomi.github.io/2017/09/28/HowToMakeWebCrawler-Headless-Chrome/
     options = Selenium::WebDriver::Chrome::Options.new # 크롬 헤드리스 모드 위해 옵션 설정
-    options.add_argument('--disable-gpu') # 크롬 헤드리스 모드 사용 위해 disable-gpu setting
-    options.add_argument('--headless') # 크롬 헤드리스 모드 사용 위해 headless setting
+    options.add_argument('--disable-extensions')
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     def data_modify(dataArray)
@@ -50,10 +48,6 @@ namespace :hit_news_over_ppom_check do
           
         else
           next
-        end
-        
-        if currentData[10] == ""
-          currentData[10] = nil
         end
       end
     end

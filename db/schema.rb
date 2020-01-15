@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2019_12_20_104630) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "app_users", force: :cascade do |t|
     t.string "app_player", null: false
     t.string "category"
@@ -21,8 +24,8 @@ ActiveRecord::Schema.define(version: 2019_12_20_104630) do
   end
 
   create_table "book_marks", force: :cascade do |t|
-    t.integer "app_user_id"
-    t.integer "hit_product_id"
+    t.bigint "app_user_id"
+    t.bigint "hit_product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["app_user_id"], name: "index_book_marks_on_app_user_id"
@@ -31,7 +34,7 @@ ActiveRecord::Schema.define(version: 2019_12_20_104630) do
 
   create_table "hit_products", force: :cascade do |t|
     t.string "product_id"
-    t.datetime "date"
+    t.datetime "date", default: -> { "now()" }
     t.string "title"
     t.boolean "is_sold_out"
     t.string "website"
@@ -60,7 +63,7 @@ ActiveRecord::Schema.define(version: 2019_12_20_104630) do
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "resource_type"
-    t.integer "resource_id"
+    t.bigint "resource_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
@@ -83,11 +86,13 @@ ActiveRecord::Schema.define(version: 2019_12_20_104630) do
   end
 
   create_table "users_roles", id: false, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "role_id"
+    t.bigint "user_id"
+    t.bigint "role_id"
     t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  add_foreign_key "book_marks", "app_users"
+  add_foreign_key "book_marks", "hit_products"
 end

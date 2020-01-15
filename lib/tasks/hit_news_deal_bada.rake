@@ -4,18 +4,16 @@
 namespace :hit_news_deal_bada do
   desc "TODO"
   task auto_collect: :environment do
-    
+
     require 'selenium-webdriver'
-    if Rails.env.development?
-      # Selenium::WebDriver::Chrome.driver_path = `which chromedriver-helper`.chomp
-    else
-      Selenium::WebDriver::Chrome.driver_path = `which chromedriver-helper`.chomp
-    end
-    
+    Selenium::WebDriver::Chrome.driver_path = `which chromedriver-helper`.chomp
+
     ## 헤드리스 개념 : https://beomi.github.io/2017/09/28/HowToMakeWebCrawler-Headless-Chrome/
     options = Selenium::WebDriver::Chrome::Options.new # 크롬 헤드리스 모드 위해 옵션 설정
-    options.add_argument('--disable-gpu') # 크롬 헤드리스 모드 사용 위해 disable-gpu setting
-    options.add_argument('--headless') # 크롬 헤드리스 모드 사용 위해 headless setting
+    options.add_argument('--disable-extensions')
+    options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     ### 딜바다 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
@@ -99,7 +97,7 @@ namespace :hit_news_deal_bada do
             end
             
             if redirectUrl.nil? || redirectUrl.empty? || (not redirectUrl.include? "http") || (not redirectUrl.include? "https")
-              redirectUrl = nil
+              redirectUrl = ""
             end
             
             ## Console 확인용
@@ -153,10 +151,6 @@ namespace :hit_news_deal_bada do
             @previousData.update(redirect_url: currentData[11].to_s)
           end
           
-        end
-        
-        if currentData[10] == ""
-          currentData[10] = nil
         end
         
         HitProduct.create(product_id: currentData[0], date: currentData[1], title: currentData[2], website: currentData[3], is_sold_out: currentData[4], view: currentData[5], comment: currentData[6], like: currentData[7], score: currentData[8], url: currentData[9], image_url: currentData[10], redirect_url: currentData[11])
