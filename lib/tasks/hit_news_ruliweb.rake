@@ -19,7 +19,7 @@ namespace :hit_news_ruliweb do
     @browser = Selenium::WebDriver.for :chrome, options: options # 실레니움 + 크롬 + 헤드리스 옵션으로 브라우저 실행
     
     ### 루리웹 핫딜 게시글 크롤링 (목차탐색 : 1 ~ 2)
-    2.step(9, 7) do |index|
+    2.step(1, -1) do |index|
       begin
         puts "[루리웹 #{index}] 크롤링 시작!"
         @dataArray = Array.new
