@@ -99,7 +99,7 @@ namespace :hit_news_deal_bada do
             end
             
             if redirectUrl.nil? || redirectUrl.empty? || (not redirectUrl.include? "http") || (not redirectUrl.include? "https")
-              redirectUrl = ""
+              redirectUrl = nil
             end
             
             ## Console 확인용

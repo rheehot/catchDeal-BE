@@ -109,7 +109,7 @@ namespace :hit_news_over_clien_check do
           begin
             redirectUrl = @browser2.find_element(css: "a.url").attribute("href")
           rescue
-            redirectUrl = ""
+            redirectUrl = nil
           end
           
           if redirectUrl.nil? || redirectUrl.empty?
@@ -141,7 +141,7 @@ namespace :hit_news_over_clien_check do
           end
           
           if redirectUrl.nil? || redirectUrl.empty? || (not redirectUrl.include? "http") || (not redirectUrl.include? "https")
-            redirectUrl = ""
+            redirectUrl = nil
           end
           
           ## Console 확인용
