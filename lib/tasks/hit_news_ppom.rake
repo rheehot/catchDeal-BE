@@ -107,7 +107,7 @@ namespace :hit_news_ppom do
           end
           
           if @imageUrl != nil && @imageUrl.include?("https://cfile")
-            @imageUrl = @imageUrl.gsub("https:", "http:")
+            @imageUrl = @imageUrl.gsub("https:", "http:")-
           end
           
           
