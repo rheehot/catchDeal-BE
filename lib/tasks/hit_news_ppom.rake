@@ -4,10 +4,10 @@
 namespace :hit_news_ppom do
   desc "TODO"
   task auto_collect: :environment do
-    
+
     require 'selenium-webdriver'
     Selenium::WebDriver::Chrome.driver_path = `which chromedriver-helper`.chomp
-    
+
     ## 헤드리스 개념 : https://beomi.github.io/2017/09/28/HowToMakeWebCrawler-Headless-Chrome/
     options = Selenium::WebDriver::Chrome::Options.new # 크롬 헤드리스 모드 위해 옵션 설정
     options.add_argument('--disable-extensions')
