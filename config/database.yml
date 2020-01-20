@@ -22,10 +22,5 @@ test:
   database: <%= ENV["DB_NAME"] %>_test
 
 production:
-  adapter: postgresql
-  host: localhost
-  encoding: utf8
-  username: <%= ENV["USER_NAME"] %>
-  password: <%= ENV["USER_PASSWD"] %>
-  pool: 5
+  <<: *default
   database: <%= ENV["DB_NAME"] %>_prd
