@@ -102,6 +102,3 @@ gem 'mechanize'
 
 ## 스케쥴러
 gem 'whenever'
-gem 'sidekiq'
-gem 'connection_pool'
-gem 'redis-objects'
