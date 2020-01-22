@@ -19,7 +19,13 @@
 								<div class="swiper-slide">
 									<%= link_to item.url, style: "text-decoration: none", target: "_blank" do %>
 										<div class="row prd_center">
-											<div class="col-md-2 section-ex-product_img"><img class="prd_img" src="<%= item.image_url %>"></div>
+											<div class="col-md-2 section-ex-product_img">
+												<% if item.image_url.nil? || item.image_url.empty? %>
+													<img class="prd_img" src="<%= asset_path("img/noImage.png") %>">
+												<% else %>
+													<img class="prd_img" src="<%= item.image_url %>">
+												<% end %>
+											</div>
 											<div class="col-md-10 prd_black">
 												<div class="col-md-12"><%= item.title %></div>
 												<div class="col-md-12 prd_time"><%= time_ago_in_words(item.date) %> 전</div>
