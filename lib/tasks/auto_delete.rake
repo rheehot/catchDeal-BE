@@ -9,6 +9,8 @@ namespace :auto_delete do
 				x.destroy
 			end
 		end
+
+		main_auto_delete
     
   end
 end

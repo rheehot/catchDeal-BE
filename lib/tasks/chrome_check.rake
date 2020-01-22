@@ -38,5 +38,4 @@ namespace :chrome_check do
 		main_chromium_check_chrome
     
   end
-
 end
