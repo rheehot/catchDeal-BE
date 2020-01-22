@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2019_12_20_104630) do
 
   create_table "hit_products", force: :cascade do |t|
     t.string "product_id"
-    t.datetime "date", default: -> { "now()" }
+    t.datetime "date", default: -> { "CURRENT_TIMESTAMP" }
     t.string "title"
     t.boolean "is_sold_out"
     t.string "website"
