@@ -23,23 +23,23 @@ module HitProductsHelper
         end
         
         resultArr = Array.new
-		dataArr.each do |t|
-			if user == false
-			    resultArr.push(:order => t[0], :productId => t[1], :title => t[2], :view => t[3], :comment => t[4], :like => t[5], :score => t[6], :dateAgo => t[7], :imageUrl => t[8], :isSoldOut => t[9], :isDeleted => t[10], :isTitleChanged => t[11], :url => t[12], :shortUrl => t[13], :isBookmark => nil)
-			else
-			    resultArr.push(:order => t[0], :productId => t[1], :title => t[2], :view => t[3], :comment => t[4], :like => t[5], :score => t[6], :dateAgo => t[7], :imageUrl => t[8], :isSoldOut => t[9], :isDeleted => t[10], :isTitleChanged => t[11], :url => t[12], :shortUrl => t[13], :isBookmark => false)
-			end
-		end
-		
-		if user != false
-    		BookMark.eager_load(:hit_product).where(app_user: user).each do |t|
+        dataArr.each do |t|
+          if user == false
+              resultArr.push(:order => t[0], :productId => t[1], :title => t[2], :view => t[3], :comment => t[4], :like => t[5], :score => t[6], :dateAgo => t[7], :imageUrl => t[8], :isSoldOut => t[9], :isDeleted => t[10], :isTitleChanged => t[11], :url => t[12], :shortUrl => t[13], :isBookmark => nil)
+          else
+              resultArr.push(:order => t[0], :productId => t[1], :title => t[2], :view => t[3], :comment => t[4], :like => t[5], :score => t[6], :dateAgo => t[7], :imageUrl => t[8], :isSoldOut => t[9], :isDeleted => t[10], :isTitleChanged => t[11], :url => t[12], :shortUrl => t[13], :isBookmark => false)
+          end
+        end
 
-    		  bookmarkedData = resultArr.select {|data| data[:productId] == t.hit_product.product_id }.first
-    		  if bookmarkedData != nil
-    		    bookmarkedData[:isBookmark] = true
-    		  end
-    		end
-		end
+        if user != false
+            BookMark.eager_load(:hit_product).where(app_user: user).each do |t|
+
+              bookmarkedData = resultArr.select {|data| data[:productId] == t.hit_product.product_id }.first
+              if bookmarkedData != nil
+                bookmarkedData[:isBookmark] = true
+              end
+            end
+        end
         
         return resultArr
     end

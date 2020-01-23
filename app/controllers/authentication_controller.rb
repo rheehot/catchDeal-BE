@@ -3,7 +3,7 @@ class AuthenticationController < ApplicationController
   def authenticate_user
     begin
     	json_params = JSON.parse(request.body.read)
-    	
+
     	user = AppUser.find_or_create_by(app_player: json_params["auth"]["appPlayerId"])
 			if user.nil?
 				render json: {errors: ['Invalid Player Id']}, status: :unauthorized
@@ -12,7 +12,7 @@ class AuthenticationController < ApplicationController
 				render json: payload(user)
 			end
 	  rescue
-	  	render json: {errors: ['Invalid Player Id']}, status: :unauthorized
+	  	render json: {errors: ['Invalid Player Id22']}, status: :unauthorized
 	  end
   end
 
