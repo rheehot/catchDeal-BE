@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_20_104630) do
+ActiveRecord::Schema.define(version: 2020_01_25_092558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2019_12_20_104630) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "last_token"
+    t.boolean "alarm_status", default: false, null: false
+    t.integer "max_push_count", default: 5, null: false
   end
 
   create_table "book_marks", force: :cascade do |t|
@@ -49,6 +51,14 @@ ActiveRecord::Schema.define(version: 2019_12_20_104630) do
     t.boolean "dead_check", default: false
     t.string "redirect_url"
     t.boolean "is_title_changed", default: false
+  end
+
+  create_table "keyword_alarms", force: :cascade do |t|
+    t.bigint "app_user_id"
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["app_user_id"], name: "index_keyword_alarms_on_app_user_id"
   end
 
   create_table "notices", force: :cascade do |t|
@@ -95,4 +105,5 @@ ActiveRecord::Schema.define(version: 2019_12_20_104630) do
 
   add_foreign_key "book_marks", "app_users"
   add_foreign_key "book_marks", "hit_products"
+  add_foreign_key "keyword_alarms", "app_users"
 end

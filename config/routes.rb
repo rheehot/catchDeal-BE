@@ -38,7 +38,15 @@ Rails.application.routes.draw do
 
   get 'book_mark_list' => 'apis#bookmark_list'
   get 'bookmark-list' => 'apis#bookmark_list'
-
+  
+  ## 키워드 알람
+  patch 'keyword-config' => 'apis#keyword_config'
+  get 'keyword-user-status' => 'apis#keyword_user_status'
+  post 'keyword-combine' => 'apis#keyword_combine'
+  post 'keyword-create' => 'apis#keyword_create'
+  delete 'keyword-destroy' => 'apis#keyword_destroy'
+  
+  ## 공지사항
   resources :notices
   get '/notice.json' => 'notices#index_json'
 

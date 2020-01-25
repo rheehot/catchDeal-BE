@@ -12,7 +12,7 @@ class AuthenticationController < ApplicationController
 				render json: payload(user)
 			end
 	  rescue
-	  	render json: {errors: ['Invalid Player Id22']}, status: :unauthorized
+	  	render json: {errors: ['Invalid Player Id']}, status: :unauthorized
 	  end
   end
 
