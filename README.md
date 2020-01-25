@@ -40,13 +40,11 @@
 
 
 ## 6. 핵심 코드파일
-1. ```lib/tasks/auto_delete.rake``` [[autoDelete]] 게시글 삭제 트리거 (Background Job + CronJob)
-2. ```lib/tasks/alive_check.rake``` [[aliveCheck]] 원본 게시글이 삭제되었는지 체크 (Background Job + Enque Background)
-3. ```lib/tasks/hit_news_over_clien_check.rake``` [[overClienCheck]] 원본 게시글이 삭제되었는지 체크 (Background Job + Enque Background)
-4. ```lib/json_web_token.rb``` [[jwtDecode]] JWT 토큰을 Decode화 합니다.
-5. ```app/controllers/authentication_controller.rb``` [[jwtEncode]] Body Params로 넘어온 데이터를 참조하여 JWT 토큰을 생성합니다.
-6. ```app/controllers/application_controller.rb``` [[applicationController]] Header를 통해 요청받은 JWT 토큰에 대해 유효 검증을 합니다.
-7. ```app/controllers/apis_controller.rb``` [[apiController]] API 통신에 있어 데이터를 처리 및 Response를 합니다.
+1. ```app/controllers/application_controller.rb``` [[applicationController]] Header를 통해 요청받은 JWT 토큰에 대해 유효 검증을 합니다.
+2. ```lib/json_web_token.rb``` [[jwtDecode]] JWT 토큰을 Decode화 합니다.
+3. ```app/controllers/authentication_controller.rb``` [[jwtEncode]] Body Params로 넘어온 데이터를 참조하여 JWT 토큰을 생성합니다.
+4. ```app/controllers/apis_controller.rb``` [[apiController]] API 통신에 있어 JWT 토큰을 기반으로 유저 구분 및 유저에 따라 데이터를 처리 및 Response를 합니다.
+5. ```app/controllers/hit_products_controller.rb``` [[hitProductController]] API 통신에 있어 핫딜 상품 조회, 검색, 1주간 Top 100 순위 상품 조회를 합니다. 
  
 
 ## 7. M : 모델 설명
@@ -54,12 +52,8 @@
 * Notice : 공지사항에 대한 데이터를 담아놓는다.
 
 
-[autoDelete]: /lib/tasks/auto_delete.rake
-[aliveCheck]: /lib/tasks/alive_check.rake
-[hitProductController]: /app/controllers/hit_products_controller.rb
-[crawlClienJob]: /app/jobs/crawl_clien_job.rb
-[crawlautoDeleteJob]: /app/jobs/crawl_auto_delete_job.rb
-[overClienCheck]: /lib/tasks/hit_news_over_clien_check.rake
-[jwtDecode]: /lib/json_web_token.rb
 [applicationController]: /app/controllers/application_controller.rb
+[jwtDecode]: /lib/json_web_token.rb
 [jwtEncode]: /app/controllers/authentication_controller.rb
+[apiController]: /app/controllers/apis_controller.rb
+[hitProductController]: /app/controllers/hit_products_controller.rb
