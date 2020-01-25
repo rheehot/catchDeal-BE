@@ -111,7 +111,7 @@ class HitProductsController < ApplicationController
   end
   
   def rank
-    @data = HitProduct.where(:created_at => Time.now.in_time_zone("Asia/Seoul")-1.week...Time.now.in_time_zone("Asia/Seoul")).order("score DESC").limit(100)
+    @data = HitProduct.where(:date => Time.now.in_time_zone("Asia/Seoul")-1.week...Time.now.in_time_zone("Asia/Seoul")).order("score DESC").limit(100)
     
     @user = auth_user_check(request.headers['Authorization'])
     @data = attr_refactory(@data, @user)
