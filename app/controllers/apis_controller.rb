@@ -157,35 +157,43 @@ class ApisController < ApplicationController
   end
   
   def keyword_create
-  	json_params = JSON.parse(request.body.read)
-		keyword = KeywordAlarm.find_by(app_user_id: current_user.id, title: json_params["alarm"]["keywordTitle"])
-	  
-    if keyword.nil?
-			@keywordResult = KeywordAlarm.create(app_user_id: current_user.id, title: json_params["alarm"]["keywordTitle"])
-			@dataJson = { :message => "'#{@keywordResult.title}' 키워드가 생성되었습니다.",
-										:keyword => {
-																	:userId => current_user.id,
-																	:keywordTitle => @keywordResult.title
-																}
-									}
-
-			render :json => @dataJson, :except => [:id, :created_at, :updated_at]
-		
-		else
-			render json: { errors: ['이미 키워드가 존재합니다.'] }, status: :forbidden
+  	begin
+	  	json_params = JSON.parse(request.body.read)
+			keyword = KeywordAlarm.find_by(app_user_id: current_user.id, title: json_params["alarm"]["keywordTitle"])
+		  
+	    if keyword.nil?
+				@keywordResult = KeywordAlarm.create(app_user_id: current_user.id, title: json_params["alarm"]["keywordTitle"])
+				@dataJson = { :message => "'#{@keywordResult.title}' 키워드가 생성되었습니다.",
+											:keyword => {
+																		:userId => current_user.id,
+																		:keywordTitle => @keywordResult.title
+																	}
+										}
+	
+				render :json => @dataJson, :except => [:id, :created_at, :updated_at]
+			
+			else
+				render json: { errors: ['이미 키워드가 존재합니다.'] }, status: :forbidden
+			end
+		rescue
+			render json: {errors: ['Invalid Body']}, :status => :bad_request
 		end
   end
   
   def keyword_destroy
-  	json_params = JSON.parse(request.body.read)
-		keyword = KeywordAlarm.find_by(app_user_id: current_user.id, title: json_params["alarm"]["keywordTitle"])
-	  
-    if keyword.nil?
-			render json: { errors: ['북마크가 존재하지 않습니다.'] }, :status => :bad_request
-		
-		elsif keyword != nil
-			keyword.destroy
-			render :json => { :message => "북마크가 삭제되었습니다." }
+  	begin
+	  	json_params = JSON.parse(request.body.read)
+			keyword = KeywordAlarm.find_by(app_user_id: current_user.id, title: json_params["alarm"]["keywordTitle"])
+		  
+	    if keyword.nil?
+				render json: { errors: ['북마크가 존재하지 않습니다.'] }, status: :forbidden
+			
+			elsif keyword != nil
+				keyword.destroy
+				render :json => { :message => "북마크가 삭제되었습니다." }
+			end
+		rescue
+			render json: {errors: ['Invalid Body']}, :status => :bad_request
 		end
   end
 end
