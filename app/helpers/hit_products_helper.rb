@@ -50,13 +50,29 @@ module HitProductsHelper
         return jsonArr
     end
     
+    def bookmark_product_list_data_push(data, userId)
+        jsonArr = Array.new
+        
+        data.each_with_index do |t, i|
+            if BookMark.find_by(app_user_id: userId, hit_product_id: data[i][14]).nil?
+                jsonArr.push(:order => data[i][0], :productId => data[i][1], :title => data[i][2], :view => data[i][3], :comment => data[i][4], :like => data[i][5], :score => data[i][6], :dateAgo => data[i][7], :imageUrl => data[i][8], :isSoldOut => data[i][9], :isDeleted => data[i][10], :isTitleChanged => data[i][11], :url => data[i][12], :shortUrl => data[i][13], :isBookmark => false)
+            else
+                jsonArr.push(:order => data[i][0], :productId => data[i][1], :title => data[i][2], :view => data[i][3], :comment => data[i][4], :like => data[i][5], :score => data[i][6], :dateAgo => data[i][7], :imageUrl => data[i][8], :isSoldOut => data[i][9], :isDeleted => data[i][10], :isTitleChanged => data[i][11], :url => data[i][12], :shortUrl => data[i][13], :isBookmark => true)
+            end
+        end
+        
+        return jsonArr
+    end
+    
     def keyword_pushalarm_list_data_push(data, userId)
         jsonArr = Array.new
         
-        if BookMark.find_by(app_user_id: userId, hit_product_id: data[14]).nil?
-            jsonArr.push(:order => data[0], :productId => data[1], :title => data[2], :view => data[3], :comment => data[4], :like => data[5], :score => data[6], :dateAgo => data[7], :imageUrl => data[8], :isSoldOut => data[9], :isDeleted => data[10], :isTitleChanged => data[11], :url => data[12], :shortUrl => data[13], :isBookmark => false)
-        else
-            jsonArr.push(:order => data[0], :productId => data[1], :title => data[2], :view => data[3], :comment => data[4], :like => data[5], :score => data[6], :dateAgo => data[7], :imageUrl => data[8], :isSoldOut => data[9], :isDeleted => data[10], :isTitleChanged => data[11], :url => data[12], :shortUrl => data[13], :isBookmark => true)
+        data.each_with_index do |t, i|
+            if BookMark.find_by(app_user_id: userId, hit_product_id: data[i][15]).nil?
+                jsonArr.push(:order => data[i][0], :keywordTitle => data[i][1], :productId => data[i][2], :title => data[i][3], :view => data[i][4], :comment => data[i][5], :like => data[i][6], :score => data[i][7], :dateAgo => data[i][8], :imageUrl => data[i][9], :isSoldOut => data[i][10], :isDeleted => data[i][11], :isTitleChanged => data[i][12], :url => data[i][13], :shortUrl => data[i][14], :isBookmark => false)
+            else
+                jsonArr.push(:order => data[i][0], :keywordTitle => data[i][1], :productId => data[i][2], :title => data[i][3], :view => data[i][4], :comment => data[i][5], :like => data[i][6], :score => data[i][7], :dateAgo => data[i][8], :imageUrl => data[i][9], :isSoldOut => data[i][10], :isDeleted => data[i][11], :isTitleChanged => data[i][12], :url => data[i][13], :shortUrl => data[i][14], :isBookmark => true)
+            end
         end
         
         return jsonArr

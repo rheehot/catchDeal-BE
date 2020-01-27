@@ -39,6 +39,8 @@ Rails.application.routes.draw do
   get 'book_mark_list' => 'apis#bookmark_list'
   get 'bookmark-list' => 'apis#bookmark_list'
   
+  get 'bookmark-product-list' => 'apis#bookmark_product_list'
+  
   ## 키워드 알람
   patch 'keyword-config' => 'apis#keyword_config'
   get 'keyword-user-status' => 'apis#keyword_user_status'

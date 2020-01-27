@@ -92,11 +92,25 @@ class ApisController < ApplicationController
 			arr.push([orderStack, t.hit_product.product_id, t.hit_product.title, t.hit_product.view, t.hit_product.comment, t.hit_product.like, t.hit_product.score, "#{time_ago_in_words(t.hit_product.date)} 전", t.hit_product.image_url, t.hit_product.is_sold_out, t.hit_product.dead_check, t.hit_product.is_title_changed, t.hit_product.url, t.hit_product.redirect_url])
 			orderStack += 1
 		end
-
+		
 		@result = Array.new
 		arr.each do |t|
 			@result.push(bookmark_list_data_push(t))
 		end
+		
+		render :json => { :userId => current_user.id, :bookmark => @result }
+  end
+  
+  def bookmark_product_list
+		arr = Array.new
+		
+		orderStack = 1
+		BookMark.eager_load(:hit_product).where(app_user_id: current_user.id).each do |t|
+			arr.push([orderStack, t.hit_product.product_id, t.hit_product.title, t.hit_product.view, t.hit_product.comment, t.hit_product.like, t.hit_product.score, "#{time_ago_in_words(t.hit_product.date)} 전", t.hit_product.image_url, t.hit_product.is_sold_out, t.hit_product.dead_check, t.hit_product.is_title_changed, t.hit_product.url, t.hit_product.redirect_url, t.hit_product.id])
+			orderStack += 1
+		end
+		
+		@result = bookmark_product_list_data_push(arr, current_user.id)
 		
 		render :json => { :userId => current_user.id, :bookmark => @result }
   end
@@ -202,14 +216,11 @@ class ApisController < ApplicationController
 		
 	orderStack = 1
 	KeywordPushalarmList.eager_load(:hit_product).where(app_user_id: current_user.id).each do |t|
-		arr.push([orderStack, t.hit_product.product_id, t.hit_product.title, t.hit_product.view, t.hit_product.comment, t.hit_product.like, t.hit_product.score, "#{time_ago_in_words(t.hit_product.date)} 전", t.hit_product.image_url, t.hit_product.is_sold_out, t.hit_product.dead_check, t.hit_product.is_title_changed, t.hit_product.url, t.hit_product.redirect_url, t.hit_product.id])
+		arr.push([orderStack, t.keyword_title, t.hit_product.product_id, t.hit_product.title, t.hit_product.view, t.hit_product.comment, t.hit_product.like, t.hit_product.score, "#{time_ago_in_words(t.hit_product.date)} 전", t.hit_product.image_url, t.hit_product.is_sold_out, t.hit_product.dead_check, t.hit_product.is_title_changed, t.hit_product.url, t.hit_product.redirect_url, t.hit_product.id])
 		orderStack += 1
 	end
-
-	@result = Array.new
-	arr.each do |t|
-		@result.push(keyword_pushalarm_list_data_push(t, current_user.id))
-	end
+	
+	@result = keyword_pushalarm_list_data_push(arr, current_user.id)
 	
 	render :json => { :userId => current_user.id, :pushList => @result }
   end

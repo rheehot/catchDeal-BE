@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(version: 2020_01_27_070750) do
   end
 
   create_table "book_marks", force: :cascade do |t|
-    t.bigint "app_user_id"
-    t.bigint "hit_product_id"
+    t.bigint "app_user_id", null: false
+    t.bigint "hit_product_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["app_user_id"], name: "index_book_marks_on_app_user_id"
@@ -62,8 +62,9 @@ ActiveRecord::Schema.define(version: 2020_01_27_070750) do
   end
 
   create_table "keyword_pushalarm_lists", force: :cascade do |t|
-    t.bigint "app_user_id"
-    t.bigint "hit_product_id"
+    t.bigint "app_user_id", null: false
+    t.string "keyword_title", null: false
+    t.bigint "hit_product_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["app_user_id"], name: "index_keyword_pushalarm_lists_on_app_user_id"
