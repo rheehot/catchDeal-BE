@@ -202,13 +202,13 @@ class ApisController < ApplicationController
 		
 	orderStack = 1
 	KeywordPushalarmList.eager_load(:hit_product).where(app_user_id: current_user.id).each do |t|
-		arr.push([orderStack, t.hit_product.product_id, t.hit_product.title, t.hit_product.view, t.hit_product.comment, t.hit_product.like, t.hit_product.score, "#{time_ago_in_words(t.hit_product.date)} 전", t.hit_product.image_url, t.hit_product.is_sold_out, t.hit_product.dead_check, t.hit_product.is_title_changed, t.hit_product.url, t.hit_product.redirect_url])
+		arr.push([orderStack, t.hit_product.product_id, t.hit_product.title, t.hit_product.view, t.hit_product.comment, t.hit_product.like, t.hit_product.score, "#{time_ago_in_words(t.hit_product.date)} 전", t.hit_product.image_url, t.hit_product.is_sold_out, t.hit_product.dead_check, t.hit_product.is_title_changed, t.hit_product.url, t.hit_product.redirect_url, t.hit_product.id])
 		orderStack += 1
 	end
 
 	@result = Array.new
 	arr.each do |t|
-		@result.push(bookmark_list_data_push(t))
+		@result.push(keyword_pushalarm_list_data_push(t, current_user.id))
 	end
 	
 	render :json => { :userId => current_user.id, :pushList => @result }
