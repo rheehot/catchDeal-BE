@@ -4,4 +4,7 @@ class HitProduct < ApplicationRecord
 	
 	has_many :book_marks
     has_many :app_users, through: :book_marks
+    
+    has_many :keyword_pushalarm_lists
+    has_many :app_users, through: :keyword_pushalarm_lists
 end

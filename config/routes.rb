@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   post 'keyword-combine' => 'apis#keyword_combine'
   post 'keyword-create' => 'apis#keyword_create'
   delete 'keyword-destroy' => 'apis#keyword_destroy'
+  get 'keyword-pushalarm-list' => 'keyword_pushalarm_list'
   
   ## 공지사항
   resources :notices

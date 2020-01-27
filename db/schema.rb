@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_25_092558) do
+ActiveRecord::Schema.define(version: 2020_01_27_070750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2020_01_25_092558) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "last_token"
-    t.boolean "alarm_status", default: false, null: false
+    t.boolean "alarm_status", default: true, null: false
     t.integer "max_push_count", default: 5, null: false
   end
 
@@ -59,6 +59,15 @@ ActiveRecord::Schema.define(version: 2020_01_25_092558) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["app_user_id"], name: "index_keyword_alarms_on_app_user_id"
+  end
+
+  create_table "keyword_pushalarm_lists", force: :cascade do |t|
+    t.bigint "app_user_id"
+    t.bigint "hit_product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["app_user_id"], name: "index_keyword_pushalarm_lists_on_app_user_id"
+    t.index ["hit_product_id"], name: "index_keyword_pushalarm_lists_on_hit_product_id"
   end
 
   create_table "notices", force: :cascade do |t|
@@ -103,7 +112,5 @@ ActiveRecord::Schema.define(version: 2020_01_25_092558) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
-  add_foreign_key "book_marks", "app_users"
   add_foreign_key "book_marks", "hit_products"
-  add_foreign_key "keyword_alarms", "app_users"
 end
