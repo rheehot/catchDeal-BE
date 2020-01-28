@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2020_01_27_070750) do
     t.datetime "updated_at", null: false
     t.datetime "last_token"
     t.boolean "alarm_status", default: true, null: false
-    t.integer "max_push_count", default: 5, null: false
+    t.integer "max_push_count", default: 1, null: false
   end
 
   create_table "book_marks", force: :cascade do |t|
