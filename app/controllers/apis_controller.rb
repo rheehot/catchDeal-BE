@@ -140,7 +140,7 @@ class ApisController < ApplicationController
 		end
 		
 		if arr.empty?
-			arr = nil
+			arr = []
 		end
 		
   	render :json => { :userId => current_user.id, :userInfo => { :alarmStatus=> current_user.alarm_status, :maxPushCount => current_user.max_push_count, :keywordList => arr } }
