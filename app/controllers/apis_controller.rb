@@ -9,11 +9,37 @@ class ApisController < ApplicationController
 		@dataJson = { :message => "[Test] Token 인증 되었습니다! :D", :user => { :appPlayerId => current_user.id, :appPlayer => current_user.app_player, :lastTokenGetDate => current_user.last_token } }
 		render :json => @dataJson, :except => [:id, :created_at, :updated_at, :category]
   end
+  
+  def send_pushalarm
+  	json_params = JSON.parse(request.body.read)
+  	
+  	if ENV["PUSHALARM_PASSWORD"] == json_params["alarm"]["password"]
+  		
+  		params = {"app_id" => ENV["ONESIGNAL_APP_ID"], 
+                "headings" => {"en" => json_params["alarm"]["headings"]},
+                "contents" => {"en" => json_params["alarm"]["contents"]},
+                "included_segments" => ["All"]}
+      
+	    uri = URI.parse('https://onesignal.com/api/v1/notifications')
+	    http = Net::HTTP.new(uri.host, uri.port)
+	    http.use_ssl = true
+	    
+	    request = Net::HTTP::Post.new(uri.path,
+	                                  'Content-Type'  => 'application/json;charset=utf-8',
+	                                  'Authorization' => ENV["ONESIGNAL_API_KEY"])
+	    request.body = params.as_json.to_json
+	    response = http.request(request)
+  		
+  		render :json => { message: "모든 유저에게 푸쉬알람 전송 성공", :pushalarm => { :headings => json_params["alarm"]["headings"], :contents => json_params["alarm"]["contents"] } }
+	else
+		render json: { errors: ['유효하지 않는 password 혹은 body'] }, status: :unauthorized
+	end
+  end
 	
   def bookmark_combine
   	begin
 	    json_params = JSON.parse(request.body.read)
-			product = HitProduct.find_by(product_id: json_params["product"]["id"])
+		product = HitProduct.find_by(product_id: json_params["product"]["id"])
 		  
 	    if product.nil?
 				render json: { errors: ['유효하지 않는 product_id'] }, status: :unauthorized

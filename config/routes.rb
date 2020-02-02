@@ -24,7 +24,11 @@ Rails.application.routes.draw do
   post 'auth_user' => 'authentication#authenticate_user'
   post 'auth-user' => 'authentication#authenticate_user'
 
+  ## 통신 테스트
   get 'apis/test' => "apis/test"
+  
+  ## 푸쉬알람
+  post 'send-pushalarm' => "apis#send_pushalarm"
 
   ## 북마크
   post 'book_mark_combine' => 'apis#bookmark_combine'
