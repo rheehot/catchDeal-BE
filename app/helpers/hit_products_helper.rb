@@ -68,11 +68,7 @@ module HitProductsHelper
         jsonArr = Array.new
         
         data.each_with_index do |t, i|
-            if BookMark.find_by(app_user_id: userId, hit_product_id: data[i][15]).nil?
-                jsonArr.push(:order => data[i][0], :keywordTitle => data[i][1], :productId => data[i][2], :title => data[i][3], :view => data[i][4], :comment => data[i][5], :like => data[i][6], :score => data[i][7], :dateAgo => data[i][8], :imageUrl => data[i][9], :isSoldOut => data[i][10], :isDeleted => data[i][11], :isTitleChanged => data[i][12], :url => data[i][13], :shortUrl => data[i][14], :isBookmark => false)
-            else
-                jsonArr.push(:order => data[i][0], :keywordTitle => data[i][1], :productId => data[i][2], :title => data[i][3], :view => data[i][4], :comment => data[i][5], :like => data[i][6], :score => data[i][7], :dateAgo => data[i][8], :imageUrl => data[i][9], :isSoldOut => data[i][10], :isDeleted => data[i][11], :isTitleChanged => data[i][12], :url => data[i][13], :shortUrl => data[i][14], :isBookmark => true)
-            end
+            jsonArr.push(:order => data[i][0], :keywordTitle => data[i][1], :productId => data[i][2], :title => data[i][3], :view => data[i][4], :comment => data[i][5], :like => data[i][6], :score => data[i][7], :dateAgo => data[i][8], :imageUrl => data[i][9], :isSoldOut => data[i][10], :isDeleted => data[i][11], :isTitleChanged => data[i][12], :url => data[i][13], :shortUrl => data[i][14], :isBookmark => data[i][15])
         end
         
         return jsonArr
