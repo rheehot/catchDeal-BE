@@ -238,16 +238,23 @@ class ApisController < ApplicationController
   end
   
   def keyword_pushalarm_list
-	arr = Array.new
-		
-	orderStack = 1
-	KeywordPushalarmList.eager_load(:hit_product).where(app_user_id: current_user.id).each do |t|
-		arr.push([orderStack, t.keyword_title, t.hit_product.product_id, t.hit_product.title, t.hit_product.view, t.hit_product.comment, t.hit_product.like, t.hit_product.score, "#{time_ago_in_words(t.hit_product.date)} 전", t.hit_product.image_url, t.hit_product.is_sold_out, t.hit_product.dead_check, t.hit_product.is_title_changed, t.hit_product.url, t.hit_product.redirect_url, t.hit_product.id])
-		orderStack += 1
-	end
-	
-	@result = keyword_pushalarm_list_data_push(arr, current_user.id)
-	
-	render :json => { :userId => current_user.id, :pushList => @result }
+  	sql = "
+  		SELECT DISTINCT *, CASE WHEN book_marks IS NULL THEN 'false' ELSE 'true' END AS is_bookmark FROM hit_products
+  			LEFT JOIN book_marks ON book_marks.hit_product_id = hit_products.id
+  			LEFT JOIN keyword_pushalarm_lists ON keyword_pushalarm_lists.hit_product_id = hit_products.id
+  		WHERE keyword_pushalarm_lists.app_user_id = #{current_user.id};
+  	"
+  	@productData = ActiveRecord::Base.connection.execute(sql)
+  	
+  	arr = Array.new
+  	
+  	orderStack = 1
+  	@productData.each do |data|
+  		arr.push([orderStack, data["keyword_title"], data["product_id"], data["title"], data["view"], data["comment"], data["like"], data["score"], "#{time_ago_in_words(data["date"])} 전", data["image_url"], data["is_sold_out"], data["dead_check"], data["is_title_changed"], data["url"], data["redirect_url"], data["is_bookmark"]])
+  		orderStack += 1
+  	end
+  	
+  	@result = keyword_pushalarm_list_data_push(arr, current_user.id)
+  	render :json => { :userId => current_user.id, :pushList => @result }
   end
 end
