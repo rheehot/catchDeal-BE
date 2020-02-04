@@ -239,7 +239,7 @@ class ApisController < ApplicationController
   
   def keyword_pushalarm_list
   	sql = "
-  		SELECT DISTINCT *, CASE WHEN book_marks IS NULL THEN 'false' ELSE 'true' END AS isBookmark FROM hit_products
+  		SELECT DISTINCT *, CASE WHEN book_marks IS NULL THEN 'false' ELSE 'true' END AS is_bookmark FROM hit_products
   			LEFT JOIN book_marks ON book_marks.hit_product_id = hit_products.id
   			LEFT JOIN keyword_pushalarm_lists ON keyword_pushalarm_lists.hit_product_id = hit_products.id
   		WHERE keyword_pushalarm_lists.app_user_id = #{current_user.id};
@@ -250,7 +250,7 @@ class ApisController < ApplicationController
   	
   	orderStack = 1
   	@productData.each do |data|
-  		arr.push([orderStack, data["keyword_title"], data["product_id"], data["title"], data["view"], data["comment"], data["like"], data["score"], "#{time_ago_in_words(data["date"])} 전", data["image_url"], data["is_sold_out"], data["dead_check"], data["is_title_changed"], data["url"], data["redirect_url"], data["hit_product"]])
+  		arr.push([orderStack, data["keyword_title"], data["product_id"], data["title"], data["view"], data["comment"], data["like"], data["score"], "#{time_ago_in_words(data["date"])} 전", data["image_url"], data["is_sold_out"], data["dead_check"], data["is_title_changed"], data["url"], data["redirect_url"], data["is_bookmark"]])
   		orderStack += 1
   	end
   	
