@@ -250,6 +250,12 @@ class ApisController < ApplicationController
   	
   	orderStack = 1
   	@productData.each do |data|
+  		if data["is_bookmark"] == "true"
+  			data["is_bookmark"] = true
+			else
+				data["is_bookmark"] = false
+			end
+			
   		arr.push([orderStack, data["keyword_title"], data["product_id"], data["title"], data["view"], data["comment"], data["like"], data["score"], "#{time_ago_in_words(data["date"])} 전", data["image_url"], data["is_sold_out"], data["dead_check"], data["is_title_changed"], data["url"], data["redirect_url"], data["is_bookmark"]])
   		orderStack += 1
   	end
