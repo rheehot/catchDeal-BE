@@ -242,7 +242,8 @@ class ApisController < ApplicationController
   		SELECT DISTINCT *, CASE WHEN book_marks IS NULL THEN 'false' ELSE 'true' END AS is_bookmark FROM hit_products
   			LEFT JOIN book_marks ON book_marks.hit_product_id = hit_products.id
   			LEFT JOIN keyword_pushalarm_lists ON keyword_pushalarm_lists.hit_product_id = hit_products.id
-  		WHERE keyword_pushalarm_lists.app_user_id = #{current_user.id};
+  		WHERE keyword_pushalarm_lists.app_user_id = #{current_user.id}
+  		ORDER BY date DESC;
   	"
   	@productData = ActiveRecord::Base.connection.execute(sql)
   	
