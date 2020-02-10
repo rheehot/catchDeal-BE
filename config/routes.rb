@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   ## 렌더 페이지
   get 'homes/index'
 
+  # ------------------------------------ v 1.1 ---------------------------------------------
   ## 앱 기본통신 URI
   get 'hit_products/index' => 'hit_products#index'
   get 'hit-products/index' => 'hit_products#index'
@@ -52,6 +53,28 @@ Rails.application.routes.draw do
   post 'keyword-create' => 'apis#keyword_create'
   delete 'keyword-destroy' => 'apis#keyword_destroy'
   get 'keyword-pushalarm-list' => 'apis#keyword_pushalarm_list'
+  # ------------------------------------ v 1.1 ---------------------------------------------
+  
+  
+  
+  # ------------------------------------ v 2.0 ---------------------------------------------
+  namespace :api do
+    namespace :v2 do
+      resources :keyword_pushalarms, :only => [:index, :create, :destroy], path: "keyword-pushalarms"
+      resource :keyword_pushalarms, :except => [:index, :show, :new, :create, :edit, :update], path: "keyword-pushalarms" do
+        post 'send-pushalarm' => 'keyword_pushalarms#send_pushalarm'
+        patch 'user-config' => 'keyword_pushalarms#user_config'
+        get 'user-status' => 'keyword_pushalarms#status'
+        post 'combine' => 'keyword_pushalarms#combine'
+        get 'test' => 'keyword_pushalarms#test'
+      end
+      
+      resource :bookmarks, :only => [:index, :create, :destroy] do
+        post 'combine' => 'bookmarks#combine'
+      end
+    end
+  end
+  # ------------------------------------ v 2.0 ---------------------------------------------
   
   ## 공지사항
   resources :notices
